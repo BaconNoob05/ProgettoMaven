@@ -1,4 +1,4 @@
-package com.tuoprogetto.biblioteca.controller;
+package it.unisa.diem.ingegneriadelsoftware.controller;
 
 import com.tuoprogetto.biblioteca.model.InterfaceID;
 import com.tuoprogetto.biblioteca.view.InterfaceView;
@@ -48,4 +48,5 @@ public abstract class CrudController<T extends InterfaceID> extends BaseControll
      * @see InterfaceService#cercaGenerico(String)
      */
     public void cerca();
+
 }
