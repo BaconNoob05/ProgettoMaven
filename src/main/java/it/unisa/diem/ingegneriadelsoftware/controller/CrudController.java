@@ -1,8 +1,8 @@
 package it.unisa.diem.ingegneriadelsoftware.controller;
 
-import com.tuoprogetto.biblioteca.model.InterfaceID;
-import com.tuoprogetto.biblioteca.view.InterfaceView;
-import com.tuoprogetto.biblioteca.service.InterfaceService;
+import it.unisa.diem.ingegneriadelsoftware.model.InterfaceID;
+import it.unisa.diem.ingegneriadelsoftware.view.InterfaceView;
+import it.unisa.diem.ingegneriadelsoftware.service.InterfaceService;
 
 /**
  * @class CrudController
@@ -17,7 +17,7 @@ public abstract class CrudController<T extends InterfaceID> extends BaseControll
      * @param view La vista generica.
      * @param service Il servizio generico.
      */
-    public CrudController(InterfaceView<T> view, InterfaceService<T> service);
+    public CrudController(InterfaceView<T> view, InterfaceService<T> service){}
 
     /**
      * @brief Metodo astratto per la logica di salvataggio di un nuovo elemento.
@@ -39,7 +39,7 @@ public abstract class CrudController<T extends InterfaceID> extends BaseControll
      * @post L'elemento viene rimosso dal repository tramite il servizio e la vista aggiornata.
      * @see InterfaceService#elimina(Object)
      */
-    public void elimina();
+    public void elimina(){}
 
     /**
      * @brief Esegue la ricerca degli elementi basata sul filtro della vista.
@@ -47,6 +47,6 @@ public abstract class CrudController<T extends InterfaceID> extends BaseControll
      * @see InterfaceView#getStringaCerca()
      * @see InterfaceService#cercaGenerico(String)
      */
-    public void cerca();
+    public void cerca(){}
 
 }

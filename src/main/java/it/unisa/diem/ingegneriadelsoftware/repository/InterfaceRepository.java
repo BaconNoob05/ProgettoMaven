@@ -1,6 +1,6 @@
 package it.unisa.diem.ingegneriadelsoftware.repository;
 import java.util.List;
-import com.tuoprogetto.biblioteca.model.InterfaceID;
+import it.unisa.diem.ingegneriadelsoftware.model.InterfaceID;
 
 /**
  * @interface InterfaceRepository
