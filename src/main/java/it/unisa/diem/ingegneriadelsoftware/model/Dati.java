@@ -13,3 +13,11 @@ public abstract class Dati implements InterfaceID, Serializable {
      * a quello dell'oggetto salvato, viene lanciata una InvalidClassException.
      */
     private static final long serialVersionUID = 1L;
+     /**
+     * @brief Restituisce l'identificativo univoco dell'oggetto.
+     * Metodo astratto che deve essere utilizzato da tutte le sottoclassi
+     * per garantire che ogni entità abbia una chiave univoca.
+     * @return L'ID univoco dell'oggetto altrimenti un valore nullo.
+     */
+    @Override
+    public abstract String getId();
