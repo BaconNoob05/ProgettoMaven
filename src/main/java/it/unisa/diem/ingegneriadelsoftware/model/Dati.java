@@ -1,4 +1,4 @@
-package com.tuoprogetto.biblioteca.model;
+package it.unisa.diem.ingegneriadelsoftware;
 import java.io.Serializable;
 
 /**
