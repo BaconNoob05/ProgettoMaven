@@ -1,4 +1,4 @@
-package it.unisa.diem.ingegneriadelsoftware;
+package it.unisa.diem.ingegneriadelsoftware.model;
 
 /**
  * @class InterfaceID
