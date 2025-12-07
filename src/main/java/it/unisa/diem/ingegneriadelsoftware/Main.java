@@ -29,4 +29,5 @@ public class Main extends Application {
      * @post L'applicazione viene lanciata.
      */
     public static void main(String[] args) { }
+    
 }
