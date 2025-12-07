@@ -11,4 +11,5 @@ public interface InterfaceID {
      * @return Una stringa che rappresenta l'identificativo univoco dell'oggetto altrimenti restituisce un valore nullo.
      */
     String getId();
+    
 }
