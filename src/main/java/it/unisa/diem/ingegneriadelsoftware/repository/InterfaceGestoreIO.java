@@ -1,4 +1,4 @@
-package com.tuoprogetto.biblioteca.repository;
+package it.unisa.diem.ingegneriadelsoftware.repository;
 import java.util.List;
 
 /**
@@ -25,4 +25,5 @@ public interface InterfaceGestoreIO<T> {
      * @post Viene restituita un'istanza di List.
      */
     List<T> caricaDati(String nomeFile);
+
 }
