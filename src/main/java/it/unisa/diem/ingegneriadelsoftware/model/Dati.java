@@ -33,4 +33,5 @@ public abstract class Dati implements InterfaceID, Serializable {
      */
     @Override
     public abstract String toString();
+    
 }
