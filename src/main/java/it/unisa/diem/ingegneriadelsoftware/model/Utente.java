@@ -22,10 +22,10 @@ public class Utente extends Dati {
     /** Cognome dell'utente. */
     private String cognome;
     
-    /** Codice matricola univoco. */
+    /** Matricola. */
     private String matricola;
     
-    /** Indirizzo email per le comunicazioni. */
+    /** Indirizzo email. */
     private String email;
     
     /**
