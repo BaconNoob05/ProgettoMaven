@@ -20,7 +20,7 @@ public class UtenteView extends BaseView<Utente> {
     /**
      * @brief Visualizza i dati inseriti nel form per la creazione di un nuovo utente.
      * @return Un oggetto Utente popolato con i dati del form, altrimenti restituisce un valore nullo.
-     * @pre I campi obbligatori devono essere compilati.
+     * @pre I campi obbligatori devono essere popolati.
      */
     public Utente getUtenteNuovo() { }
 
