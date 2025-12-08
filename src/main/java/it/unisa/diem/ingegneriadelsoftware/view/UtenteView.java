@@ -26,7 +26,7 @@ public class UtenteView extends BaseView<Utente> {
 
     /**
      * @brief Visualizza i dati modificati per aggiornare un utente esistente.
-     * @return L'oggetto Utente con i dati aggiornati, altrimenti restituisce un valore nullo.
+     * @return Un'istanza della classe Utente con i dati aggiornati, altrimenti restituisce un valore nullo.
      * @pre Un utente deve essere stato precedentemente selezionato dalla tabella.
      * @post Viene restituita l'istanza aggiornata.
      */
