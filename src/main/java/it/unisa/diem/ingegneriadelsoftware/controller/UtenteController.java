@@ -1,0 +1,53 @@
+
+package it.unisa.diem.ingegneriadelsoftware.controller;
+
+import it.unisa.diem.ingegneriadelsoftware.view.UtenteView;
+import it.unisa.diem.ingegneriadelsoftware.service.UtenteService;
+import it.unisa.diem.ingegneriadelsoftware.model.Utente;
+
+
+/**
+ * @class UtenteController
+ * @brief Controller specifico per la gestione degli Utenti.
+ * @details Estende CrudController per gestire il ciclo di vita degli utenti.
+ *
+ * @see CrudController
+ * @see UtenteView
+ */
+public class UtenteController extends CrudController<Utente> {
+
+    /**
+     * @brief Costruttore.
+     * @param view La vista specifica utenti.
+     * @param service Il servizio specifico utenti.
+     */
+    public UtenteController(UtenteView view, UtenteService service);
+
+    /**
+     * @brief Gestisce l'acquisizione dati e il salvataggio di un nuovo utente.
+     * @pre I campi obbligatori devono essere compilati.
+     * @post L'utente viene salvato nel sistema.
+     * @see UtenteView#getUtenteNuovo()
+     */
+    public void salvaUtente();
+
+    /**
+     * @brief Gestisce l'acquisizione dati e l'aggiornamento di un utente.
+     * @see UtenteView#getUtenteModificato()
+     */
+    public void modificaUtente();
+
+    /**
+     * @brief Implementazione del salvataggio utente.
+     * @param nuovo L'utente da salvare.
+     */
+    @Override
+    public void salva(Utente nuovo);
+
+    /**
+     * @brief Implementazione  della modifica utente.
+     * @param elemento L'utente aggiornato.
+     */
+    @Override
+    public void modifica(Utente elemento);
+}
