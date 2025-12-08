@@ -1,6 +1,6 @@
 package it.unisa.diem.ingegneriadelsoftware.repository;
 import java.util.List;
-import com.tuoprogetto.biblioteca.model.InterfaceID;
+import it.unisa.diem.ingegneriadelsoftware.model.InterfaceID;
 
 /**
  * @file Repository.java
@@ -70,7 +70,10 @@ public class Repository<T extends InterfaceID> implements InterfaceRepository<T>
      * @return L'elemento trovato, altrimenti restituisce un valore nullo.
      */
     @Override
-    public T cerca(String id) { }
+    public T cerca(String id) { 
+    
+        return null;
+    }
 
     /**
      * @brief Restituisce la lista completa degli elementi gestiti dal repository.
@@ -78,5 +81,9 @@ public class Repository<T extends InterfaceID> implements InterfaceRepository<T>
      * @see InterfaceRepository#getAll()
      */
     @Override
-    public List<T> getAll() { }
+    public List<T> getAll() { 
+    
+    
+        return null;
+    }
 }

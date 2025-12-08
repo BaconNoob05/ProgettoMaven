@@ -41,7 +41,10 @@ public class Prestito extends Dati {
      * @brief Verifica se il prestito è in ritardo rispetto alla data prevista per la restituzione del libro.
      * @return Vero se il libro non è stato restituito e la data attuale è successiva alla data prevista, altrimenti restituisce falso.
      */
-    public boolean isScaduto() { }
+    public boolean isScaduto() { 
+    
+        return false;
+    }
 
    /**
      * @brief Registra che la restituzione del libro deve essere effettuata alla data scelta.
@@ -58,7 +61,10 @@ public class Prestito extends Dati {
      * @see Dati#getId()
      */
     @Override 
-    public String getId() { }
+    public String getId() { 
+    
+        return null;
+    }
 
     /**
      * @brief Restituisce una rappresentazione in formato stringa del prestito.
@@ -70,23 +76,44 @@ public class Prestito extends Dati {
      * @see Dati#toString()
      */
     @Override
-    public String toString() { }
+    public String toString() { 
+    
+        return null;
+    }
 
     /** @return Il nome completo o identificativo dell'utente altrimenti restituisce un valore nullo. */
-    public String getNomeUtente() { }
+    public String getNomeUtente() { 
+    
+        return null;
+    }
 
     /** @return Il titolo del libro prestato altrimenti restituisce un valore nullo. */
-    public String getTitoloLibro() { }
+    public String getTitoloLibro() { 
+    
+        return null;
+    }
 
     /** @return La data prevista per la restituzione altrimenti restituisce un valore nullo. */
-    public LocalDate getDataPrevista() { }
+    public LocalDate getDataPrevista() { 
+    
+        return null;
+    }
 
     /** @return La data effettiva di restituzione altrimenti restituisce un valore nullo. */
-    public LocalDate getDataEffettiva() { }
+    public LocalDate getDataEffettiva() { 
+    
+        return null;
+    }
 
     /** @return L'oggetto Utente associato altrimenti restituisce un valore nullo. */
-    public Utente getUtente() { }
+    public Utente getUtente() { 
+    
+        return null;
+    }
 
     /** @return L'oggetto Libro associato altrimenti restituisce un valore nullo. */
-    public Libro getLibro() { }
+    public Libro getLibro() { 
+    
+        return null;
+    }
 }

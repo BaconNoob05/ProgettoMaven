@@ -1,8 +1,8 @@
 package it.unisa.diem.ingegneriadelsoftware.service;
 import java.util.List;
 import java.util.Comparator;
-import com.tuoprogetto.biblioteca.repository.InterfaceRepository;
-import com.tuoprogetto.biblioteca.model.InterfaceID;
+import it.unisa.diem.ingegneriadelsoftware.repository.InterfaceRepository;
+import it.unisa.diem.ingegneriadelsoftware.model.InterfaceID;
 
 /**
  * @class BaseService
@@ -60,7 +60,10 @@ public abstract class BaseService<T extends InterfaceID> implements InterfaceSer
      * @see InterfaceRepository#cerca(String)
      */
     @Override
-    public T cerca(String id) { }
+    public T cerca(String id) { 
+    
+        return null;
+    }
 
     /**
      * @brief Esegue una ricerca generica.
@@ -68,7 +71,10 @@ public abstract class BaseService<T extends InterfaceID> implements InterfaceSer
      * @return La lista filtrata, altrimenti restituisce una lista vuota.
      */
     @Override
-    public List<T> cercaGenerico(String filtro) { }
+    public List<T> cercaGenerico(String filtro) { 
+    
+        return null;
+    }
 
     /**
      * @brief Recupera tutti gli elementi dal repository.
@@ -77,7 +83,10 @@ public abstract class BaseService<T extends InterfaceID> implements InterfaceSer
      * @see InterfaceRepository#getAll()
      */
     @Override
-    public List<T> getAll() { }
+    public List<T> getAll() { 
+    
+        return null;
+    }
 
     /**
      * @brief Ordina la lista degli elementi.
