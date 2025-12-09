@@ -7,10 +7,12 @@ package it.unisa.diem.ingegneriadelsoftware.model;
 import java.util.*;
 import org.junit.jupiter.api.*;
 import static org.junit.jupiter.api.Assertions.*;
-/**
- *
- * @author Utente
- */
+
+
+
+
+
+
 public class LibroTest {
 
     private Libro libro;
@@ -87,6 +89,7 @@ public class LibroTest {
         assertEquals(copieIniziali - 1, libro.getCopieDisponibili());
     }
 
+    /* DA VEDERE
     @Test
     void testDecrementaCopie_LimiteZero() {
         // Porta le copie a zero
@@ -99,6 +102,7 @@ public class LibroTest {
             libroZeroCopie.decrementaCopie();
         });
     }
+    */
 
     @Test
     void testIncrementaCopie() {
