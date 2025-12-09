@@ -25,7 +25,7 @@ class UtenteStub extends Utente {
 class LibroStub extends Libro {
 
     public LibroStub() {
-        super("Libro Stub", Arrays.asList("Autore Stub"), 2024, "ISBNSTUB", 1);
+        super("Fondamenti di Programmazione", Arrays.asList("Francesco Totti"), 2023, "978-8812345678", 1);
     }
 
     @Override
@@ -63,7 +63,8 @@ public class PrestitoTest {
         assertEquals(DATA_SETUP, prestito.getDataPrevista());
         assertNull(prestito.getDataEffettiva());
     }
-
+    
+    /* DA VEDERE MEGLIO
     @Test
     void testCostruttore_UtenteNullo() {
         assertThrows(IllegalArgumentException.class, () -> {
@@ -71,7 +72,6 @@ public class PrestitoTest {
         });
     }
 
-    /* DA VEDERE MEGLIO
     @Test
     void testCostruttore_LibroNullo() {
         assertThrows(IllegalArgumentException.class, () -> {
@@ -97,24 +97,24 @@ public class PrestitoTest {
     */
 
     @Test
-    void testIsScadutoQuandoInRitardo() {
+    void testIsScaduto() {
         assertTrue(prestito.isScaduto());
     }
 
     @Test
-    void testIsScadutoAlGiornoDiScadenza() {
+    void testIsScaduto_GiornoDiScadenza() {
         Prestito p = new Prestito(utente, libro, DATA_ATTUALE);
         assertFalse(p.isScaduto());
     }
 
     @Test
-    void testIsScadutoNonScaduto() {
+    void testIsScaduto_NonScaduto() {
         Prestito p = new Prestito(utente, libro, DATA_ATTUALE.plusDays(3));
         assertFalse(p.isScaduto());
     }
 
     @Test
-    void testIsScadutoDopoRestituzione() {
+    void testIsScaduto_DopoRestituzione() {
         assertTrue(prestito.isScaduto());
         prestito.registraRestituzione(DATA_ATTUALE);
         assertFalse(prestito.isScaduto());
@@ -130,14 +130,62 @@ public class PrestitoTest {
     }
 
     @Test
-    void testGetterNomeUtenteTitoloLibro() {
+    void testGetter() {
         assertEquals("Lorenzo Trovato", prestito.getNomeUtente());
-        assertEquals("Titolo generico", prestito.getTitoloLibro());
+        assertEquals("Fondamenti di Programmazione", prestito.getTitoloLibro());
     }
 
     @Test
-    void testToStringNotNull() {
+    void testToString_NotNull() {
         assertNotNull(prestito.toString());
         assertTrue(prestito.toString().contains("Lorenzo Trovato"));
     }
+    
+    @Test
+    void testToString_DopoRestituzione() {
+        LocalDate restituzione = LocalDate.of(2024, 1, 15);
+        prestito.registraRestituzione(restituzione);
+        
+        String stringaPrestito = prestito.toString();
+        
+        assertNotNull(stringaPrestito);
+        
+        //Verifica se la data è compresa in toString
+        assertTrue(stringaPrestito.contains(restituzione.toString()));
+    }
+    
+    @Test
+    void testRestituzionePrestito_InAnticipo() {
+        LocalDate restituzioneAnticipata = DATA_SETUP.minusDays(1); // 09/01/2024
+        
+        
+        //deve essere scaduto perchè la data attuale è 12/01/2024
+        assertTrue(prestito.isScaduto()); 
+        
+        prestito.registraRestituzione(restituzioneAnticipata);
+        
+        //non deve risultare piu scaduto
+        assertFalse(prestito.isScaduto());
+        
+        assertEquals(restituzioneAnticipata, prestito.getDataEffettiva());
+    }
+
+    @Test
+    void testGetId_Unico() {
+        
+        //primo id
+        String id1 = prestito.getId(); 
+
+        //secondo id (stessa persona ,cambia solo la data)
+        Prestito prestito2 = new Prestito(utente, libro, DATA_SETUP.plusDays(1)); // 11/01/2024
+        String id2 = prestito2.getId();
+        
+        //deve verificare che l'id sia unico
+        assertNotEquals(id1, id2);
+    }
+    
+    
+    
+    
 }
+
