@@ -20,7 +20,10 @@ public class LibroController extends CrudController<Libro> {
      * @param view La vista specifica per i libri.
      * @param service Il servizio specifico per i libri.
      */
-    public LibroController(LibroView view, LibroService service){};
+    public LibroController(LibroView view, LibroService service){
+        super(view,service);
+    
+    };
 
     /**
      * @brief Avvia il salvataggio di un nuovo libro.

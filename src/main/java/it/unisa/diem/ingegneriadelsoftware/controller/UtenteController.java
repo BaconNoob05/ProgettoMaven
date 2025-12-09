@@ -21,7 +21,10 @@ public class UtenteController extends CrudController<Utente> {
      * @param view La vista specifica utenti.
      * @param service Il servizio specifico utenti.
      */
-    public UtenteController(UtenteView view, UtenteService service);
+    public UtenteController(UtenteView view, UtenteService service){
+        super(view,service);
+    
+    }
 
     /**
      * @brief Gestisce l'acquisizione dati e il salvataggio di un nuovo utente.
@@ -29,25 +32,25 @@ public class UtenteController extends CrudController<Utente> {
      * @post L'utente viene salvato nel sistema.
      * @see UtenteView#getUtenteNuovo()
      */
-    public void salvaUtente();
+    public void salvaUtente(){}
 
     /**
      * @brief Gestisce l'acquisizione dati e l'aggiornamento di un utente.
      * @see UtenteView#getUtenteModificato()
      */
-    public void modificaUtente();
+    public void modificaUtente(){}
 
     /**
      * @brief Implementazione del salvataggio utente.
      * @param nuovo L'utente da salvare.
      */
     @Override
-    public void salva(Utente nuovo);
+    public void salva(Utente nuovo){}
 
     /**
      * @brief Implementazione  della modifica utente.
      * @param elemento L'utente aggiornato.
      */
     @Override
-    public void modifica(Utente elemento);
+    public void modifica(Utente elemento){}
 }

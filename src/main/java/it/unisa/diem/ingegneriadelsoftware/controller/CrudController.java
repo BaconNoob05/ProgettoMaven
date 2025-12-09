@@ -17,7 +17,10 @@ public abstract class CrudController<T extends InterfaceID> extends BaseControll
      * @param view La vista generica.
      * @param service Il servizio generico.
      */
-    public CrudController(InterfaceView<T> view, InterfaceService<T> service){}
+    public CrudController(InterfaceView<T> view, InterfaceService<T> service){
+        super(view,service);
+    
+    }
 
     /**
      * @brief Metodo astratto per la logica di salvataggio di un nuovo elemento.

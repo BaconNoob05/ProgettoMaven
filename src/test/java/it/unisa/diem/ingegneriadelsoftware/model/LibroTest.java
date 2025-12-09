@@ -111,7 +111,7 @@ public class LibroTest {
 
     @Test
     void testIsValido() {
-        assertTrue(libroValido.isValido());
+        assertTrue(libro.isValido());
     }
 
     @Test

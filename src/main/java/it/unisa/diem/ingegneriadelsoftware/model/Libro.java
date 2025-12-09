@@ -51,7 +51,10 @@ public class Libro extends Dati {
      * @brief Controlla che i dati del libro siano corretti.
      * @return vero se i dati sono validi altrimenti restituisce falso.
      */
-    public boolean isValido() {}
+    public boolean isValido() {
+    
+        return false;
+    }
 
     /**
      * @brief Decrementa il numero di copie disponibili quando un libro viene prestato.
@@ -74,32 +77,50 @@ public class Libro extends Dati {
      * @see Dati#getId()
      */
     @Override 
-    public String getId() {}
+    public String getId() {
+    
+        return null;
+    }
 
     /** * @brief Restituisce il titolo del libro.
      * @return Il titolo del libro altrimenti restituisce un valore nullo. 
      */
-    public String getTitolo() {}
+    public String getTitolo() {
+    
+        return null;
+    }
 
     /** * @brief Restituisce il codice ISBN.
      * @return Il codice ISBN altrimenti restituisce un valore nullo. 
      */
-    public String getIsbn() { }
+    public String getIsbn() { 
+    
+        return null;
+    }
 
     /** * @brief Restituisce l'anno di pubblicazione.
      * @return L'anno di pubblicazione altrimenti restituisce zero. 
      */
-    public int getAnno() { }
+    public int getAnno() { 
+    
+        return 0;
+    }
 
     /** * @brief Restituisce il numero di copie.
      * @return Il numero di copie attualmente disponibili altrimenti restituisce zero. 
      */
-    public int getCopieDisponibili() { }
+    public int getCopieDisponibili() { 
+    
+        return 0;
+    }
     
     /** * @brief Restituisce un elenco di autori.
      * @return Gli autori in un'unica stringa altrimenti restituisce un valore nullo. 
      */
-    public String getAutoriString() { }
+    public String getAutoriString() { 
+    
+        return null;
+    }
 
     /** * @brief Imposta il titolo del libro.
      * @param [in] t il nuovo titolo del libro. 

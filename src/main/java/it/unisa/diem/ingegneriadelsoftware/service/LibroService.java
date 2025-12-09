@@ -27,7 +27,10 @@ public class LibroService extends BaseService<Libro> {
      * @post Lo stato del repository rimane invariato.
      * @see BaseService#cercaGenerico(String)
      */
-    public List<Libro> cercaPerTitolo(String titolo) {}
+    public List<Libro> cercaPerTitolo(String titolo) {
+    
+        return null;
+    }
 
     /**
      * @brief Cerca i libri scritti da un determinato autore.
@@ -37,5 +40,9 @@ public class LibroService extends BaseService<Libro> {
      * @post Nessuna modifica ai dati.
      * @see Libro#getAutoriString()
      */
-    public List<Libro> cercaPerAutore(String autore) {}
+    public List<Libro> cercaPerAutore(String autore) {
+    
+    
+        return null;
+    }
 }

@@ -17,7 +17,10 @@ public class PrestitoController extends BaseController<Prestito> {
      * @param view La vista specifica prestiti.
      * @param service Il servizio specifico prestiti.
      */
-    public PrestitoController(PrestitoView view, PrestitoService service){}
+    public PrestitoController(PrestitoView view, PrestitoService service){
+        super(view, service);
+    
+    }
 
     /**
      * @brief Gestisce la logica di registrazione di un nuovo prestito.

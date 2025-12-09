@@ -41,7 +41,10 @@ public class Utente extends Dati {
      * @brief Verifica che i dati dell'utente siano validi.
      * @return Vero se i dati sono validi, altrimenti restituisce falso.
      */
-    public boolean isValido() { }
+    public boolean isValido() { 
+    
+        return false;
+    }
 
     /**
      * @brief Ottiene la matricola dell'utente.
@@ -49,19 +52,36 @@ public class Utente extends Dati {
      * @see Dati#getId()
      */
     @Override 
-    public String getId() { }
+    public String getId() { 
+    
+        return null;
+    }
 
     /** @return Il nome dell'utente, altrimenti restituisce un valore nullo. */
-    public String getNome() { }
+    public String getNome() { 
+    
+        return null;
+    }
 
     /** @return Il cognome dell'utente, altrimenti restituisce un valore nullo. */
-    public String getCognome() { }
+    public String getCognome() { 
+    
+        return null;
+    }
 
     /** @return La matricola dell'utente, altrimenti restituisce un valore nullo. */
-    public String getMatricola() { }
+    public String getMatricola() { 
+    
+        return null;
+    
+    }
 
     /** @return L'email dell'utente, altrimenti restituisce un valore nullo. */
-    public String getEmail() { }
+    public String getEmail() { 
+    
+    
+        return null;
+    }
 
      /** @param [in] n Il nuovo nome. */
     public void setNome(String n) { }
@@ -82,5 +102,9 @@ public class Utente extends Dati {
      * @see Dati#toString()
      */
     @Override
-    public String toString() { }
+    public String toString() { 
+    
+        return null;
+    
+    }
 }

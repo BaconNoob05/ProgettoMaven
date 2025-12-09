@@ -15,7 +15,11 @@ public class LibroView extends BaseView<Libro> {
      * @return Un nuovo oggetto Libro popolato con i dati del form, altrimenti restituisce un valore nullo.
      * @pre I campi devono contenere dati validi.
      */
-    public Libro getLibroNuovo() {}
+    public Libro getLibroNuovo() {
+    
+        return null;
+    
+    }
 
     /**
      * @brief Recupera i dati modificati dal form per aggiornare un libro esistente.
@@ -23,6 +27,10 @@ public class LibroView extends BaseView<Libro> {
      * @pre Un libro deve essere stato precedentemente selezionato o caricato nel form.
      * @post Viene restituito l'oggetto pronto per essere passato al controller.
      */
-    public Libro getLibroModificato() {}
+    public Libro getLibroModificato() {
+    
+    
+        return null;
+    }
 
 }

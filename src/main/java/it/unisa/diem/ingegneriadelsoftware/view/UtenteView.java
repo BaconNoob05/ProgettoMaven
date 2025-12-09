@@ -1,18 +1,13 @@
 package it.unisa.diem.ingegneriadelsoftware.view;
 
 import javafx.scene.control.*;
-import com.tuoprogetto.biblioteca.model.Utente;
+import it.unisa.diem.ingegneriadelsoftware.model.Utente;
 
 /**
  * @class UtenteView
  * @brief Permette la modifica e l'inserimento dei dati a video all'amministratore per l'entità Utente.
  * @see BaseView
  */
-public class UtenteView {
-
-
-
-
 public class UtenteView extends BaseView<Utente> {
 
     
@@ -22,7 +17,10 @@ public class UtenteView extends BaseView<Utente> {
      * @return Un oggetto Utente popolato con i dati del form, altrimenti restituisce un valore nullo.
      * @pre I campi obbligatori devono essere popolati.
      */
-    public Utente getUtenteNuovo() { }
+    public Utente getUtenteNuovo() { 
+    
+        return null;
+    }
 
     /**
      * @brief Visualizza i dati modificati per aggiornare un utente esistente.
@@ -30,10 +28,13 @@ public class UtenteView extends BaseView<Utente> {
      * @pre Un utente deve essere stato precedentemente selezionato dalla tabella.
      * @post Viene restituita l'istanza aggiornata.
      */
-    public Utente getUtenteModificato() { }
+    public Utente getUtenteModificato() { 
+    
+        return null;
+    }
+    
 
    
-}
 
 
 

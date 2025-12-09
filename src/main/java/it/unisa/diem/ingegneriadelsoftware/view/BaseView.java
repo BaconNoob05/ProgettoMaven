@@ -40,7 +40,10 @@ public abstract class BaseView<T> implements InterfaceView<T> {
      * @see InterfaceView#getElementoSelezionato()
      */
     @Override
-    public T getElementoSelezionato() { }
+    public T getElementoSelezionato() { 
+    
+        return null;
+    }
 
     /**
      * @brief Ottiene la stringa di ricerca corrente.
@@ -48,5 +51,9 @@ public abstract class BaseView<T> implements InterfaceView<T> {
      * @see InterfaceView#getCampoCerca()
      */
     @Override
-    public String getStringaCerca() { }
+    public String getCampoCerca() { 
+    
+    
+        return null;
+    }
 }

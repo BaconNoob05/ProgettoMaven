@@ -27,5 +27,9 @@ public class UtenteService extends BaseService<Utente> {
      * @post Nessuna modifica viene apportata ai dati.
      * @see BaseService#cercaGenerico(String)
      */
-    public List<Utente> cercaPerCognome(String cognome) { }
+    public List<Utente> cercaPerCognome(String cognome) { 
+    
+    
+        return null;
+    }
 }
