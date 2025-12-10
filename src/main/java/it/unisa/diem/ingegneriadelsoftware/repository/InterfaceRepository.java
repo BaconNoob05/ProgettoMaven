@@ -16,7 +16,7 @@ public interface InterfaceRepository<T extends InterfaceID> {
      * @pre Il gestore di I/O deve essere stato correttamente inizializzato.
      * @post La lista interna del repository contiene tutti i dati presenti su file.
      */
-    void caricaTutti();
+    void caricaTutti(List<T> lista);
 
     /**
      * @brief Salva lo stato corrente del repository su file.

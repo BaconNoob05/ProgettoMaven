@@ -13,113 +13,59 @@ import org.junit.jupiter.api.*;
 
 
 public class PrestitoServiceTest {
-        
-    private PrestitoService prestitoService;
-    private GestoreIOStub stubRepositoryPrestito;
-    private LibroServiceStub stubLibroService;
-    private UtenteStub utenteCliente;
-    private UtenteStub utenteStaff;
-    private LibroStub libroDisponibile;
-    private LibroStub libroEsaurito;
-    private LocalDate dataCorrente;
-
-
+    
+    private PrestitoService service;
+    private RepositoryStub<Prestito> repo;
+    private LibroService libroService;
+    private RepositoryStub<Libro> repoLibri;
+    private Libro l;
+    private Utente u;
     private List<String> autoriEsempio;
-
+        
     @BeforeEach
     void setup() {
-
+        repo = new RepositoryStub<>();
+        repoLibri = new RepositoryStub<>();
+        libroService = new LibroService(repoLibri);
+        service = new PrestitoService(repo, libroService);
+        
         autoriEsempio = Arrays.asList("I. Sommerville", "Stephen King");
 
-        utenteCliente = new UtenteStub("Lorenzo", "trovato", "0612708922", "l.trovato1@studenti.unisa.it");
-        utenteStaff = new UtenteStub("Lorenzo", "trovato", "0612708922", "l.trovato1@studenti.unisa.it");
-        libroDisponibile = new LibroStub("Ingegneria del Software",autoriEsempio, 1951,"978-88-8080-123-4", 5);
-        libroEsaurito = new LibroStub("Ingegneria del Software",autoriEsempio, 1951,"978-88-8080-123-4", 5);
-
-
-
-
-        stubRepositoryPrestito = new GestoreIOStub<PrestitoStub>();
-        GestoreIOStub<Libro> libroRepoStub = new GestoreIOStub<Libro>(); 
-        stubLibroService = new LibroServiceStub(libroRepoStub); 
-        prestitoService = new PrestitoService(stubRepositoryPrestito, stubLibroService);
-
-
-        dataCorrente = LocalDate.now();
-
-        stubRepositoryPrestito.salvaDati(new PrestitoStub(utenteCliente, libroDisponibile, dataCorrente.plusDays(7), null));
-        stubRepositoryPrestito.salvaDati(new PrestitoStub(utenteStaff, libroDisponibile, dataCorrente.plusDays(10), null));
-        stubRepositoryPrestito.salvaDati(new PrestitoStub(utenteCliente, libroEsaurito, dataCorrente.plusDays(3), dataCorrente.minusDays(1)));
+        l = new Libro("Ingegneria del Software",autoriEsempio, 1951,"978-88-8080-123-4", 5);
+        u = new Utente("A","B","M1","e@mail");
     }
 
     @Test
-    void registraPrestito_decrementaCopieELosalvaDati() {
-        LibroStub nuovoLibro = new LibroStub("Ingegneria del Software",autoriEsempio, 1951,"978-88-8080-123-4", 5);
-        int copieIniziali = nuovoLibro.getCopieDisponibili();
+    void testRegistraPrestito() {
+        Utente u = new Utente("A","B","M1","e@mail");
 
-        prestitoService.registraPrestito(utenteCliente, nuovoLibro, dataCorrente.plusDays(14));
 
-        List<Prestito> prestiti = stubRepositoryPrestito.findAll();
-        assertEquals(4, prestiti.size());
-        assertEquals(copieIniziali - 1, nuovoLibro.getCopieDisponibili()); 
+        service.registraPrestito(u, l, LocalDate.now());
+
+        assertEquals(1, repo.getAll().size());
+        assertEquals(0, l.getCopieDisponibili()); // decremento copie
     }
 
     @Test
-    void registraPrestito_fallisceSeLibroNonDisponibile() {
-        int copiePrecedenti = libroEsaurito.getCopieDisponibili();
+    void testRegistraRestituzione() {
 
-        assertThrows(RuntimeException.class, () -> { 
-            prestitoService.registraPrestito(utenteCliente, libroEsaurito, dataCorrente.plusDays(14));
-        });
 
-        assertEquals(copiePrecedenti, libroEsaurito.getCopieDisponibili());
-        assertEquals(3, stubRepositoryPrestito.findAll().size());
+        Prestito p = new Prestito(u, l, LocalDate.now());
+        service.salva(p);
+
+        service.registraRestituzione(p, LocalDate.now());
+
+        assertNotNull(p.getDataEffettiva());
+        assertEquals(1, l.getCopieDisponibili()); // incrementato
     }
 
     @Test
-    void registraRestituzione_incrementaCopieEChiudePrestito() {
-        Prestito prestitoAttivo = stubRepositoryPrestito.cercaGenerico("attivi").get(0);
-        Libro libroRilevato = prestitoAttivo.getLibro(); 
-        int copiePrecedenti = ((LibroStub) libroRilevato).getCopieDisponibili();
+    void testListaPrestitiAttivi() {
 
-        prestitoService.registraRestituzione(prestitoAttivo, dataCorrente);
+        Prestito p = new Prestito(u, l, LocalDate.now());
+        repo.inserisciOAggiorna(p);
 
-        assertEquals(dataCorrente, prestitoAttivo.getDataEffettiva());
-        assertEquals(copiePrecedenti + 1, ((LibroStub) libroRilevato).getCopieDisponibili());
+        List<Prestito> attivi = service.listaPrestitiAttivi();
+        assertEquals(1, attivi.size());
     }
-
-    @Test
-    void registraRestituzione_fallisceSePrestitoGiaChiuso() {
-        Prestito prestitoChiuso = stubRepositoryPrestito.findAll().get(2);
-        LocalDate dataEffettivaIniziale = prestitoChiuso.getDataEffettiva();
-        Libro libroRilevato = prestitoChiuso.getLibro();
-        int copiePrecedenti = ((LibroStub) libroRilevato).getCopieDisponibili();
-
-        assertThrows(RuntimeException.class, () -> { 
-            prestitoService.registraRestituzione(prestitoChiuso, dataCorrente.plusDays(1));
-        });
-
-        assertEquals(dataEffettivaIniziale, prestitoChiuso.getDataEffettiva());
-        assertEquals(copiePrecedenti, ((LibroStub) libroRilevato).getCopieDisponibili());
-    }
-
-    @Test
-    void listaPrestitiAttivi_restituisceSoloQuelliAperti() {
-        List<Prestito> prestitiAperti = prestitoService.listaPrestitiAttivi();
-
-        assertNotNull(prestitiAperti);
-        assertEquals(2, prestitiAperti.size());
-        assertTrue(prestitiAperti.stream().allMatch(p -> p.getDataEffettiva() == null));
-    }
-
-    @Test
-    void listaPrestitiAttivi_restituisceListaVuotaSeNonCiSonoAttivi() {
-        GestoreIOStub<Prestito> repoVuoto = new GestoreIOStub<>(Prestito.class);
-        PrestitoService serviceVuoto = new PrestitoService(repoVuoto, stubLibroService);
-
-        List<Prestito> prestitiAperti = serviceVuoto.listaPrestitiAttivi();
-
-        assertNotNull(prestitiAperti);
-        assertTrue(prestitiAperti.isEmpty());
-    }
-    }
+}

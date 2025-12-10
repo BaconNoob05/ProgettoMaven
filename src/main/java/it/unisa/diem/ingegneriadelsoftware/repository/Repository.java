@@ -43,7 +43,7 @@ public class Repository<T extends InterfaceID> implements InterfaceRepository<T>
      * @details Popola la lista interna leggendo i dati tramite il gestore di I/O.
      */
     @Override
-    public void caricaTutti() { }
+    public void caricaTutti(List<T> lista) { }
 
     /**
      * @brief Inserisce un nuovo elemento o aggiorna uno esistente.

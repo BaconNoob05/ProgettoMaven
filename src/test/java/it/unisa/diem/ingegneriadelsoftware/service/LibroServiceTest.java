@@ -16,13 +16,13 @@ import static org.junit.jupiter.api.Assertions.*;
 // Assumiamo che la classe Libro sia disponibile e abbia i metodi getTitolo() e getAutori()
 public class LibroServiceTest {
 
-    private LibroRepositoryStub libroRepoStub;
-    private LibroServiceStub libroService;
-
+    private LibroService service;
+    private RepositoryStub<Libro> repo;
+    
     // Oggetti Libro di test
-    private LibroStub libroCleanCode;
-    private LibroStub libroDesignPatterns;
-    private LibroStub libroMobyDick;
+    private Libro libroCleanCode;
+    private Libro libroDesignPatterns;
+    private Libro libroMobyDick;
     
     private List<String> autoriEsempio;
 
@@ -31,26 +31,26 @@ public class LibroServiceTest {
         
         autoriEsempio = Arrays.asList("I. Sommerville", "Stephen King");
         
-        libroCleanCode = new LibroStub("Ingegneria del Software", autoriEsempio, 1951,"978-88-8080-123-4", 5);
-        libroDesignPatterns = new LibroStub("Ingegneria del Software", autoriEsempio, 1951,"978-88-8080-123-4", 5);
-        libroMobyDick = new LibroStub("Ingegneria del Software", autoriEsempio, 1951,"978-88-8080-123-4", 5);
+        libroCleanCode = new Libro("Ingegneria del Software", autoriEsempio, 1951,"978-88-8080-123-4", 5);
+        libroDesignPatterns = new Libro("Ingegneria del Software", autoriEsempio, 1951,"978-88-8080-123-4", 5);
+        libroMobyDick = new Libro("Ingegneria del Software", autoriEsempio, 1951,"978-88-8080-123-4", 5);
 
         // 2. Inizializzazione dello Stub e caricamento dei dati iniziali
-        libroRepoStub = new LibroRepositoryStub();
-        List<Libro> initialData = Arrays.asList(libroCleanCode, libroDesignPatterns, libroMobyDick);
-        libroRepoStub.clearAndLoad(initialData);
+        repo = new RepositoryStub<Libro>();
+        List<Libro> datiIniziali = Arrays.asList(libroCleanCode, libroDesignPatterns, libroMobyDick);
+        repo.caricaTutti(datiIniziali);
 
         // 3. Inizializzazione del System Under Test (SUT)
-        libroService = new LibroServiceStub(libroRepoStub);
+        service = new LibroService(repo);
     }
     
 
     @Test
     void testCercaPerTitolo_MatchSingolo() {
-        final String FILTRO_TITOLO = "Moby"; // Match parziale
+        final String FILTRO_TITOLO = "Moby"; 
 
         // Esecuzione
-        List<Libro> risultati = libroService.cercaPerTitolo(FILTRO_TITOLO);
+        List<Libro> risultati = service.cercaPerTitolo(FILTRO_TITOLO);
 
         // Verifica
         assertEquals(1, risultati.size());
@@ -63,7 +63,7 @@ public class LibroServiceTest {
         final String FILTRO_TITOLO = "Code";
 
         // Esecuzione
-        List<Libro> risultati = libroService.cercaPerTitolo(FILTRO_TITOLO);
+        List<Libro> risultati = service.cercaPerTitolo(FILTRO_TITOLO);
 
         // Verifica
         assertEquals(2, risultati.size()); // Clean Code e Design Patterns (contiene 'Code' nel sottotitolo)
@@ -77,7 +77,7 @@ public class LibroServiceTest {
         final String FILTRO_TITOLO = "Matematica";
 
         // Esecuzione
-        List<Libro> risultati = libroService.cercaPerTitolo(FILTRO_TITOLO);
+        List<Libro> risultati = service.cercaPerTitolo(FILTRO_TITOLO);
 
         // Verifica
         assertTrue(risultati.isEmpty());
@@ -88,8 +88,8 @@ public class LibroServiceTest {
     void testCercaPerTitolo_FiltroNullo() {
         // Assumendo che l'implementazione del Service lanci un'eccezione come suggerito
         assertThrows(IllegalArgumentException.class, () -> {
-            libroService.cercaPerTitolo(null);
-        }, "Il titolo di ricerca nullo dovrebbe generare un'eccezione.");
+            service.cercaPerTitolo(null);
+        });
     }
     
 
@@ -98,7 +98,7 @@ public class LibroServiceTest {
         final String FILTRO_AUTORE = "Melville"; 
 
         // Esecuzione
-        List<Libro> risultati = libroService.cercaPerAutore(FILTRO_AUTORE);
+        List<Libro> risultati = service.cercaPerAutore(FILTRO_AUTORE);
 
         // Verifica
         assertEquals(1, risultati.size());
@@ -111,7 +111,7 @@ public class LibroServiceTest {
         final String FILTRO_AUTORE = "Ralph Johnson";
 
         // Esecuzione
-        List<Libro> risultati = libroService.cercaPerAutore(FILTRO_AUTORE);
+        List<Libro> risultati = service.cercaPerAutore(FILTRO_AUTORE);
 
         // Verifica
         assertEquals(1, risultati.size()); // Solo Design Patterns
@@ -124,12 +124,12 @@ public class LibroServiceTest {
        
         List<String> autoriEsempio = Arrays.asList("I. Sommerville", "Stephen King");
         Libro libroSecondoCleanCode = new Libro("Ingegneria del Software", autoriEsempio, 1951,"978-88-8080-123-4", 5);
-        libroRepoStub.inserisciOAggiorna(libroSecondoCleanCode);
+        repo.inserisciOAggiorna(libroSecondoCleanCode);
         
         final String FILTRO_AUTORE = "Martin"; 
 
         // Esecuzione
-        List<Libro> risultati = libroService.cercaPerAutore(FILTRO_AUTORE);
+        List<Libro> risultati = service.cercaPerAutore(FILTRO_AUTORE);
 
         // Verifica
         assertEquals(2, risultati.size()); 
@@ -143,7 +143,7 @@ public class LibroServiceTest {
     @Test
     void testCercaPerAutore_FiltroVuoto() {
         // Se il service restituisce una lista vuota per input non validi
-        assertTrue(libroService.cercaPerAutore(null).isEmpty());
-        assertTrue(libroService.cercaPerAutore("").isEmpty());
+        assertTrue(service.cercaPerAutore(null).isEmpty());
+        assertTrue(service.cercaPerAutore("").isEmpty());
     }
 }

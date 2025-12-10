@@ -11,7 +11,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 public class UtenteServiceTest {
 
-    private UtenteRepositoryStub utenteRepoStub;
+    private RepositoryStub<Utente> utenteRepoStub;
     private UtenteService utenteService;
 
 
@@ -29,9 +29,9 @@ public class UtenteServiceTest {
 
         utenteAnnaVerdi = new Utente("Anna", "Verdi", "M102", "a.v@uni.it"); 
 
-        utenteRepoStub = new UtenteRepositoryStub();
+        utenteRepoStub = new RepositoryStub<>();
         List<Utente> initialData = Arrays.asList(utenteMarioRossi, utenteLucaRossi, utenteAnnaVerdi);
-        utenteRepoStub.resettaECarica(initialData);
+        utenteRepoStub.caricaTutti(initialData);
 
         utenteService = new UtenteService(utenteRepoStub);
     }
