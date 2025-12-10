@@ -10,8 +10,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import static org.junit.jupiter.api.Assertions.*;
-
-
 static class UtenteServiceTest {
         
         private UtenteService UtenteService;
@@ -48,4 +46,5 @@ static class UtenteServiceTest {
             assertNotNull(risultato);
             assertTrue(risultato.isEmpty());
         }
+
     }
