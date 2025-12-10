@@ -5,35 +5,6 @@ import java.time.LocalDate;
 import java.util.*;
 import static org.junit.jupiter.api.Assertions.*;
 
-/**
- * Classi Stub
- * Per simulare classi esterne ed evitare la dipendenza da Libro e Utente
- */
-class UtenteStub extends Utente {
-
-    public UtenteStub() {
-        super("Lorenzo", "Trovato", "0612708922", "l.trovato1@studenti.unisa.it");
-    }
-
-    @Override
-    public String getId() {
-        return "UTENTESTUB";
-    }
-}
-
-
-class LibroStub extends Libro {
-
-    public LibroStub() {
-        super("Fondamenti di Programmazione", Arrays.asList("Francesco Totti"), 2023, "978-8812345678", 1);
-    }
-
-    @Override
-    public String getId() {
-        return "LIBROSTUB";
-    }
-}
-
 
 
 /**

@@ -1,4 +1,14 @@
-static class PrestitoServiceTest {
+package it.unisa.diem.ingegneriadelsoftware.service;
+import it.unisa.diem.ingegneriadelsoftware.model.*;
+import it.unisa.diem.ingegneriadelsoftware.repository.InterfaceRepository;
+import java.time.LocalDate;
+import java.util.*;
+import static org.junit.jupiter.api.Assertions.*;
+import org.junit.jupiter.api.*;
+
+
+
+public class PrestitoServiceTest {
         
         private PrestitoService prestitoService;
         private InterfaceRepositoryStub<Prestito> stubRepositoryPrestito;
