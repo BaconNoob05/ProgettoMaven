@@ -88,7 +88,7 @@ public class GestoreFileTest {
     void testCaricaDati() {
         String fileTest = "test_carica.txt";
         
-        //Utilizziamo salvaDati solo per creare il file con i dati
+
         gestore.salvaDati(fileTest, datiTest);
 
         List<DatiStub> risultato = gestore.caricaDati(fileTest);
@@ -102,7 +102,7 @@ public class GestoreFileTest {
     void testCaricaDati_FileInesistente() {
         String fileInesistente = "file_inesistente.txt";
         
-        //Carichiamo dati da un file inesistente
+
         List<DatiStub> risultato = gestore.caricaDati(fileInesistente);
         
         assertNotNull(risultato);

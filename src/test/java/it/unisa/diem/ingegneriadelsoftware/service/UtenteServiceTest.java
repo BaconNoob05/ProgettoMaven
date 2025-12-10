@@ -1,50 +1,96 @@
 package it.unisa.diem.ingegneriadelsoftware.service;
-import it.unisa.diem.ingegneriadelsoftware.model.Libro;
-import it.unisa.diem.ingegneriadelsoftware.model.Prestito;
+
 import it.unisa.diem.ingegneriadelsoftware.model.*;
-import it.unisa.diem.ingegneriadelsoftware.repository.InterfaceRepository;
+import it.unisa.diem.ingegneriadelsoftware.repository.*;
 import org.junit.jupiter.api.*;
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
 import static org.junit.jupiter.api.Assertions.*;
 
+
+
 public class UtenteServiceTest {
+
+    private UtenteRepositoryStub utenteRepoStub;
+    private UtenteService utenteService;
+
+
+    private Utente utenteMarioRossi;
+    private Utente utenteLucaRossi;
+    private Utente utenteAnnaVerdi;
+
+    @BeforeEach
+    public void setUp() {
+
+
+        utenteMarioRossi = new Utente("Mario", "Rossi", "M100", "m.r@uni.it"); 
+
+        utenteLucaRossi = new Utente("Luca", "Rossi", "M101", "l.r@uni.it"); 
+
+        utenteAnnaVerdi = new Utente("Anna", "Verdi", "M102", "a.v@uni.it"); 
+
+        utenteRepoStub = new UtenteRepositoryStub();
+        List<Utente> initialData = Arrays.asList(utenteMarioRossi, utenteLucaRossi, utenteAnnaVerdi);
+        utenteRepoStub.resettaECarica(initialData);
+
+        utenteService = new UtenteService(utenteRepoStub);
+    }
+
+
+    @Test
+    void testCercaPerCognome_MatchMultiplo() {
+        final String COGNOME_FILTRO = "Rossi";
+
+        // Esecuzione
+        List<Utente> risultati = utenteService.cercaPerCognome(COGNOME_FILTRO);
+
+        // Verifica dello stato (Assert)
+        assertNotNull(risultati);
+        assertEquals(2, risultati.size());
         
-        private UtenteService UtenteService;
-        private InterfaceRepositoryStub<Utente> StubRepository;
+        // Verifica che i risultati contengano gli utenti corretti
+        assertTrue(risultati.contains(utenteMarioRossi));
+        assertTrue(risultati.contains(utenteLucaRossi));
+        assertFalse(risultati.contains(utenteAnnaVerdi));
+    }
 
-        @BeforeEach
-        void setup() {
-            StubRepository = new InterfaceRepositoryStub<>(Utente.class);
-            UtenteService = new UtenteService(StubRepository);
-            
-            StubRepository.salva(new UtenteStub("Lorenzo", "trovato", "0612708922", "l.trovato1@studenti.unisa.it"));
-            StubRepository.salva(new UtenteStub("Lorenzo", "trovato", "0612708922", "l.trovato1@studenti.unisa.it"));
-            StubRepository.salva(new UtenteStub("Lorenzo", "trovato", "0612708922", "l.trovato1@studenti.unisa.it"));
-        }
 
-        @Test
-        void TrovatoCercaPerCognome() {
-            List<Utente> risultato = UtenteService.cercaPerCognome("Rossi");
-            assertNotNull(risultato);
-            assertEquals(2, risultato.size());
-            assertEquals("Rossi", risultato.get(0).getCognome());
-        }
+    @Test
+    void testCercaPerCognome_MatchSingolo() {
+        final String COGNOME_FILTRO = "Verdi";
 
-        @Test
-        void NonTrovatoCercaPerCognome() {
-            List<Utente> risultato = UtenteService.cercaPerCognome("Verdi");
-            assertNotNull(risultato);
-            assertTrue(risultato.isEmpty());
-        }
+        // Esecuzione
+        List<Utente> risultati = utenteService.cercaPerCognome(COGNOME_FILTRO);
 
-        @Test
-        void NullCercaperCognome() {
-            List<Utente> risultato = UtenteService.cercaPerCognome(null);
-            assertNotNull(risultato);
-            assertTrue(risultato.isEmpty());
-        }
+        // Verifica dello stato
+        assertNotNull(risultati);
+        assertEquals(1, risultati.size());
+        assertEquals(utenteAnnaVerdi.getId(), risultati.get(0).getId());
+    }
+
+
+    @Test
+    void testCercaPerCognome_NessunMatch() {
+        final String COGNOME_FILTRO = "Bianchi";
+
+        // Esecuzione
+        List<Utente> risultati = utenteService.cercaPerCognome(COGNOME_FILTRO);
+
+        // Verifica dello stato
+        assertNotNull(risultati);
+        assertTrue(risultati.isEmpty());
+    }
+    
+
+    @Test
+    void testCercaPerCognome_FiltroNullo() {
+
+        
+        // Se il service lancia una IllegalArgumentException
+        assertThrows(IllegalArgumentException.class, () -> {
+            utenteService.cercaPerCognome(null);
+        }, "Chiamare con cognome nullo dovrebbe lanciare un'eccezione.");
+
 
     }
+}
