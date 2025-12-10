@@ -12,5 +12,5 @@ import static org.junit.jupiter.api.Assertions.*;
  * @author Utente
  */
 public class RepositoryTest {
-    
+
 }
