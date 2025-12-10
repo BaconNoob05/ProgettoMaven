@@ -7,7 +7,7 @@ package it.unisa.diem.ingegneriadelsoftware.model;
 
 import java.time.LocalDate;
 
-class PrestitoStub extends Prestito {
+public class PrestitoStub extends Prestito {
     
     public PrestitoStub(Utente utente, Libro libro, LocalDate dataPrevista, LocalDate dataEffettiva) {
         super(utente, libro, dataPrevista);

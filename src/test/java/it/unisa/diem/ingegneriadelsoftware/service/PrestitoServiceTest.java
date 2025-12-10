@@ -12,7 +12,7 @@ import org.junit.jupiter.api.*;
 public class PrestitoServiceTest {
         
         private PrestitoService prestitoService;
-        private InterfaceRepositoryStub<Prestito> stubRepositoryPrestito;
+        private PrestitoRepositoryStub stubRepositoryPrestito;
         private LibroServiceStub stubLibroService;
         private UtenteStub utenteCliente;
         private UtenteStub utenteStaff;
@@ -36,8 +36,8 @@ public class PrestitoServiceTest {
             
             
             
-            stubRepositoryPrestito = new InterfaceRepositoryStub<>(Prestito.class);
-            InterfaceRepositoryStub<Libro> libroRepoStub = new InterfaceRepositoryStub<>(Libro.class); 
+            stubRepositoryPrestito = new PrestitoRepositoryStub<>(Prestito.class);
+            PrestitoRepositoryStub<Libro> libroRepoStub = new PrestitoRepositoryStub<>(Libro.class); 
             stubLibroService = new LibroServiceStub(libroRepoStub); 
             prestitoService = new PrestitoService(stubRepositoryPrestito, stubLibroService);
 
@@ -111,7 +111,7 @@ public class PrestitoServiceTest {
 
         @Test
         void listaPrestitiAttivi_restituisceListaVuotaSeNonCiSonoAttivi() {
-            InterfaceRepositoryStub<Prestito> repoVuoto = new InterfaceRepositoryStub<>(Prestito.class);
+            PrestitoRepositoryStub<Prestito> repoVuoto = new PrestitoRepositoryStub<>(Prestito.class);
             PrestitoService serviceVuoto = new PrestitoService(repoVuoto, stubLibroService);
             
             List<Prestito> prestitiAperti = serviceVuoto.listaPrestitiAttivi();
