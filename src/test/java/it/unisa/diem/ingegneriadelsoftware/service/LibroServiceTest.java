@@ -1,149 +1,144 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package it.unisa.diem.ingegneriadelsoftware.service;
 
 import it.unisa.diem.ingegneriadelsoftware.model.*;
-
 import it.unisa.diem.ingegneriadelsoftware.repository.*;
-
 import org.junit.jupiter.api.*;
 import java.util.*;
 import static org.junit.jupiter.api.Assertions.*;
 
-// Assumiamo che la classe Libro sia disponibile e abbia i metodi getTitolo() e getAutori()
 public class LibroServiceTest {
 
     private LibroService service;
     private RepositoryStub<Libro> repo;
     
-    // Oggetti Libro di test
-    private Libro libroCleanCode;
-    private Libro libroDesignPatterns;
-    private Libro libroMobyDick;
+    private Libro libroNuovoJava;
+    private Libro libroSoftwareEng;
+    private Libro libroChristmasCarol;
+    private Libro libroCriticaRagionPura;
+    private Libro libroEssereETempo;
     
-    private List<String> autoriEsempio;
-
     @BeforeEach
     public void setUp() {
         
-        autoriEsempio = Arrays.asList("I. Sommerville", "Stephen King");
-        
-        libroCleanCode = new Libro("Ingegneria del Software", autoriEsempio, 1951,"978-88-8080-123-4", 5);
-        libroDesignPatterns = new Libro("Ingegneria del Software", autoriEsempio, 1951,"978-88-8080-123-4", 5);
-        libroMobyDick = new Libro("Ingegneria del Software", autoriEsempio, 1951,"978-88-8080-123-4", 5);
+        List<String> autoriDeSio = Arrays.asList("Claudio De Sio Cesari");
+        List<String> autoriSommerville = Arrays.asList("Ian Sommerville");
+        List<String> autoriDickens = Arrays.asList("Charles Dickens");
+        List<String> autoriKant = Arrays.asList("Immanuel Kant");
+        List<String> autoriHeidegger = Arrays.asList("Martin Heidegger");
 
-        // 2. Inizializzazione dello Stub e caricamento dei dati iniziali
+        libroNuovoJava = new Libro("Il nuovo Java. Guida definitiva", autoriDeSio, 2023, "978-8868945620", 12);
+        libroSoftwareEng = new Libro("Software Engineering", autoriSommerville, 2020, "978-0133943030", 15);
+        libroChristmasCarol = new Libro("A Christmas Carol", autoriDickens, 1843, "978-0141439247", 8);
+        libroCriticaRagionPura = new Libro("Critica della ragion pura", autoriKant, 1781, "978-8842095810", 3);
+        libroEssereETempo = new Libro("Essere e tempo", autoriHeidegger, 1927, "978-8842095902", 4);
+
         repo = new RepositoryStub<Libro>();
-        List<Libro> datiIniziali = Arrays.asList(libroCleanCode, libroDesignPatterns, libroMobyDick);
+        List<Libro> datiIniziali = Arrays.asList(
+            libroNuovoJava, 
+            libroSoftwareEng, 
+            libroChristmasCarol, 
+            libroCriticaRagionPura, 
+            libroEssereETempo
+        );
         repo.caricaTutti(datiIniziali);
 
-        // 3. Inizializzazione del System Under Test (SUT)
         service = new LibroService(repo);
     }
     
-
     @Test
     void testCercaPerTitolo_MatchSingolo() {
-        final String FILTRO_TITOLO = "Moby"; 
-
-        // Esecuzione
+        final String FILTRO_TITOLO = "Christmas"; 
         List<Libro> risultati = service.cercaPerTitolo(FILTRO_TITOLO);
 
-        // Verifica
         assertEquals(1, risultati.size());
-        assertEquals(libroMobyDick.getId(), risultati.get(0).getId());
+        assertEquals(libroChristmasCarol.getId(), risultati.get(0).getId());
     }
-
 
     @Test
     void testCercaPerTitolo_MatchMultiplo() {
-        final String FILTRO_TITOLO = "Code";
-
-        // Esecuzione
+        final String FILTRO_TITOLO = "Ragion";
         List<Libro> risultati = service.cercaPerTitolo(FILTRO_TITOLO);
 
-        // Verifica
-        assertEquals(2, risultati.size()); // Clean Code e Design Patterns (contiene 'Code' nel sottotitolo)
-        assertTrue(risultati.contains(libroCleanCode));
-        assertTrue(risultati.contains(libroDesignPatterns));
+        assertEquals(1, risultati.size()); 
+        assertTrue(risultati.contains(libroCriticaRagionPura));
     }
-
 
     @Test
     void testCercaPerTitolo_NessunMatch() {
-        final String FILTRO_TITOLO = "Matematica";
-
-        // Esecuzione
+        final String FILTRO_TITOLO = "Astrologia";
         List<Libro> risultati = service.cercaPerTitolo(FILTRO_TITOLO);
 
-        // Verifica
         assertTrue(risultati.isEmpty());
     }
     
-
     @Test
-    void testCercaPerTitolo_FiltroNullo() {
-        // Assumendo che l'implementazione del Service lanci un'eccezione come suggerito
-        assertThrows(IllegalArgumentException.class, () -> {
-            service.cercaPerTitolo(null);
-        });
-    }
-    
-
-    @Test
-    void testCercaPerAutore_MatchSingolo() {
-        final String FILTRO_AUTORE = "Melville"; 
-
-        // Esecuzione
-        List<Libro> risultati = service.cercaPerAutore(FILTRO_AUTORE);
-
-        // Verifica
-        assertEquals(1, risultati.size());
-        assertEquals(libroMobyDick.getId(), risultati.get(0).getId());
-    }
-
-
-    @Test
-    void testCercaPerAutore_MatchMultiplo() {
-        final String FILTRO_AUTORE = "Ralph Johnson";
-
-        // Esecuzione
-        List<Libro> risultati = service.cercaPerAutore(FILTRO_AUTORE);
-
-        // Verifica
-        assertEquals(1, risultati.size()); // Solo Design Patterns
-        assertTrue(risultati.contains(libroDesignPatterns));
-    }
-    
-
-    @Test
-    void testCercaPerAutore_MatchAutoreConPiuLibri() {
-       
-        List<String> autoriEsempio = Arrays.asList("I. Sommerville", "Stephen King");
-        Libro libroSecondoCleanCode = new Libro("Ingegneria del Software", autoriEsempio, 1951,"978-88-8080-123-4", 5);
-        repo.inserisciOAggiorna(libroSecondoCleanCode);
+    void testCercaPerTitolo_FiltroCaseInsensitive() {
+        final String FILTRO_TITOLO = "guida";
+        List<Libro> risultati = service.cercaPerTitolo(FILTRO_TITOLO);
         
-        final String FILTRO_AUTORE = "Martin"; 
-
-        // Esecuzione
-        List<Libro> risultati = service.cercaPerAutore(FILTRO_AUTORE);
-
-        // Verifica
-        assertEquals(2, risultati.size()); 
-        assertTrue(risultati.contains(libroCleanCode));
-        assertTrue(risultati.contains(libroSecondoCleanCode));
+        assertEquals(1, risultati.size()); 
+        assertTrue(risultati.contains(libroNuovoJava));
     }
     
-    /**
-     * Test della pre-condizione: autore nullo o vuoto.
-     */
     @Test
-    void testCercaPerAutore_FiltroVuoto() {
-        // Se il service restituisce una lista vuota per input non validi
+    void testCercaPerTitolo_FiltroNullo_ComportamentoAtteso() {
+        assertTrue(service.cercaPerTitolo(null).isEmpty());
+    }
+
+    @Test
+    void testCercaPerAutore_MatchSingoloAutoreCompleto() {
+        final String FILTRO_AUTORE = "Charles Dickens"; 
+        List<Libro> risultati = service.cercaPerAutore(FILTRO_AUTORE);
+
+        assertEquals(1, risultati.size());
+        assertEquals(libroChristmasCarol.getId(), risultati.get(0).getId());
+    }
+
+    @Test
+    void testCercaPerAutore_MatchMultiplo_NomeParziale() {
+        final String FILTRO_AUTORE = "Kant";
+        List<Libro> risultati = service.cercaPerAutore(FILTRO_AUTORE);
+
+        assertEquals(1, risultati.size()); 
+        assertTrue(risultati.contains(libroCriticaRagionPura));
+    }
+    
+    @Test
+    void testCercaPerAutore_MatchMultiplo_StessoAutore() {
+        // Aggiungo un secondo libro di De Sio per testare il match multiplo sullo stesso autore
+        List<String> autoriDeSio = Arrays.asList("Claudio De Sio Cesari");
+        Libro libroJavaAdvanced = new Libro("Java Advanced", autoriDeSio, 2022, "978-8868945637", 6);
+        repo.caricaTutti(Arrays.asList(libroJavaAdvanced)); 
+
+        final String FILTRO_AUTORE = "Claudio De Sio Cesari";
+        List<Libro> risultati = service.cercaPerAutore(FILTRO_AUTORE);
+
+        assertEquals(2, risultati.size());
+        assertTrue(risultati.contains(libroNuovoJava));
+        assertTrue(risultati.contains(libroJavaAdvanced));
+    }
+
+    @Test
+    void testCercaPerAutore_NessunMatch() {
+        final String FILTRO_AUTORE = "Stephen King";
+        List<Libro> risultati = service.cercaPerAutore(FILTRO_AUTORE);
+
+        assertTrue(risultati.isEmpty());
+    }
+    
+    @Test
+    void testCercaPerAutore_FiltroCaseInsensitive() {
+        final String FILTRO_AUTORE = "martin heidegger";
+        List<Libro> risultati = service.cercaPerAutore(FILTRO_AUTORE);
+
+        assertEquals(1, risultati.size()); 
+        assertTrue(risultati.contains(libroEssereETempo));
+    }
+    
+    @Test
+    void testCercaPerAutore_FiltroVuotoONullo_ComportamentoAtteso() {
         assertTrue(service.cercaPerAutore(null).isEmpty());
         assertTrue(service.cercaPerAutore("").isEmpty());
+        assertTrue(service.cercaPerAutore(" ").isEmpty());
     }
 }
