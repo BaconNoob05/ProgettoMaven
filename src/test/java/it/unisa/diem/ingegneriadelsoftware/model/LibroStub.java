@@ -6,16 +6,18 @@
 package it.unisa.diem.ingegneriadelsoftware.model;
 
 import java.util.Arrays;
+import java.util.List;
 
-class LibroStub extends Libro {
+public class LibroStub extends Libro {
 
-    public LibroStub() {
-        super("Fondamenti di Programmazione", Arrays.asList("Francesco Totti"), 2023, "978-8812345678", 1);
+    public LibroStub(String titolo, List<String> autori, int anno, String isbn, int copie) {
+        super(titolo, autori, anno, isbn, copie);
     }
 
     @Override
     public String getId() {
         return "LIBROSTUB";
     }
+    
 }
 

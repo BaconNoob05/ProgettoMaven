@@ -8,6 +8,7 @@ import org.junit.jupiter.api.*;
 
 
 
+
 public class PrestitoServiceTest {
         
         private PrestitoService prestitoService;
@@ -18,19 +19,29 @@ public class PrestitoServiceTest {
         private LibroStub libroDisponibile;
         private LibroStub libroEsaurito;
         private LocalDate dataCorrente;
+        
+        
+        private List<String> autoriEsempio;
 
         @BeforeEach
         void setup() {
+            
+            autoriEsempio = Arrays.asList("I. Sommerville", "Stephen King");
+        
+            utenteCliente = new UtenteStub("Lorenzo", "trovato", "0612708922", "l.trovato1@studenti.unisa.it");
+            utenteStaff = new UtenteStub("Lorenzo", "trovato", "0612708922", "l.trovato1@studenti.unisa.it");
+            libroDisponibile = new LibroStub("Ingegneria del Software",autoriEsempio, 1951,"978-88-8080-123-4", 5);
+            libroEsaurito = new LibroStub("Ingegneria del Software",autoriEsempio, 1951,"978-88-8080-123-4", 5);
+            
+            
+            
+            
             stubRepositoryPrestito = new InterfaceRepositoryStub<>(Prestito.class);
             InterfaceRepositoryStub<Libro> libroRepoStub = new InterfaceRepositoryStub<>(Libro.class); 
             stubLibroService = new LibroServiceStub(libroRepoStub); 
             prestitoService = new PrestitoService(stubRepositoryPrestito, stubLibroService);
 
-            utenteCliente = new UtenteStub("A");
-            utenteStaff = new UtenteStub("B");
-            libroDisponibile = new LibroStub("Titolo1", "Autore1", 2); 
-            libroEsaurito = new LibroStub("Titolo2", "Autore2", 0); 
-            
+
             dataCorrente = LocalDate.now();
             
             stubRepositoryPrestito.salva(new PrestitoStub(utenteCliente, libroDisponibile, dataCorrente.plusDays(7), null));
@@ -40,7 +51,7 @@ public class PrestitoServiceTest {
 
         @Test
         void registraPrestito_decrementaCopieELoSalva() {
-            LibroStub nuovoLibro = new LibroStub("TestLibro", "TestAutore", 1);
+            LibroStub nuovoLibro = new LibroStub("Ingegneria del Software",autoriEsempio, 1951,"978-88-8080-123-4", 5);
             int copieIniziali = nuovoLibro.getCopieDisponibili();
             
             prestitoService.registraPrestito(utenteCliente, nuovoLibro, dataCorrente.plusDays(14));

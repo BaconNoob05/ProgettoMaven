@@ -19,11 +19,17 @@ public class PrestitoTest {
     private Prestito prestito;
     private final LocalDate DATA_SETUP = LocalDate.of(2024, 1, 10);
     private final LocalDate DATA_ATTUALE = LocalDate.of(2024, 1, 12);
+    
+    private List<String> autoriEsempio;
 
     @BeforeEach
     void setup() {
-        utente = new UtenteStub();
-        libro = new LibroStub();
+        
+        
+        autoriEsempio = Arrays.asList("I. Sommerville", "Stephen King");
+        
+        utente = new UtenteStub("Lorenzo", "trovato", "0612708922", "l.trovato1@studenti.unisa.it");
+        libro = new LibroStub("Ingegneria del Software",autoriEsempio, 1951,"978-88-8080-123-4", 5);
         prestito = new Prestito(utente, libro, DATA_SETUP);
     }
 

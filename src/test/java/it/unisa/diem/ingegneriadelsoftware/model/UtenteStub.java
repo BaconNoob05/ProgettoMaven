@@ -7,8 +7,8 @@ package it.unisa.diem.ingegneriadelsoftware.model;
 
 public class UtenteStub extends Utente {
 
-    public UtenteStub() {
-        super("Lorenzo", "Trovato", "0612708922", "l.trovato1@studenti.unisa.it");
+    public UtenteStub(String nome, String cognome, String matricola, String email) {
+        super(nome, cognome, matricola,email);
     }
 
     @Override

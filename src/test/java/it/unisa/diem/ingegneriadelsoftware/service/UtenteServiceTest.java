@@ -1,7 +1,7 @@
 package it.unisa.diem.ingegneriadelsoftware.service;
 import it.unisa.diem.ingegneriadelsoftware.model.Libro;
 import it.unisa.diem.ingegneriadelsoftware.model.Prestito;
-import it.unisa.diem.ingegneriadelsoftware.model.Utente;
+import it.unisa.diem.ingegneriadelsoftware.model.*;
 import it.unisa.diem.ingegneriadelsoftware.repository.InterfaceRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -21,9 +21,9 @@ public class UtenteServiceTest {
             StubRepository = new InterfaceRepositoryStub<>(Utente.class);
             UtenteService = new UtenteService(StubRepository);
             
-            StubRepository.salva(new UtenteStub("Rossi"));
-            StubRepository.salva(new UtenteStub("Bianchi"));
-            StubRepository.salva(new UtenteStub("Rossi"));
+            StubRepository.salva(new UtenteStub("Lorenzo", "trovato", "0612708922", "l.trovato1@studenti.unisa.it"));
+            StubRepository.salva(new UtenteStub("Lorenzo", "trovato", "0612708922", "l.trovato1@studenti.unisa.it"));
+            StubRepository.salva(new UtenteStub("Lorenzo", "trovato", "0612708922", "l.trovato1@studenti.unisa.it"));
         }
 
         @Test
