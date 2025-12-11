@@ -5,7 +5,7 @@ import org.junit.jupiter.api.*;
 import static org.junit.jupiter.api.Assertions.*;
 import java.util.*;
 
-class TestBaseService {
+class BaseServiceTest {
 
     private BaseService<Utente> userService;
     private RepositoryStub<Utente> userRepo;
@@ -144,7 +144,69 @@ class TestBaseService {
         assertEquals(6, lTrovato.getCopie());
     }
 
+//TEST PER IL METODO cercaGenerico(String filtro) :
 
+  //Test relativi alla ricerca di utenti
+    
+@Test
+    void testCercaGenericoMatchNomeUtente() {
+        List<Utente> risultati = userService.cercaGenerico("luigi");
+        assertEquals(1, risultati.size());
+        assertTrue(risultati.contains(u1));
+    }
+
+@Test
+    void testCercaGenericoMatchCognomeUtente() {
+        List<Utente> risultati = userService.cercaGenerico("verdi");
+        assertEquals(1, risultati.size());
+        assertTrue(risultati.contains(u2));
+    }
+
+@Test
+    void testCercaGenericoMatchEmailParzialeUtente() {
+        List<Utente> risultati = userService.cercaGenerico("@uni.it");
+        assertEquals(2, risultati.size());
+    }
+
+@Test
+    void testCercaGenericoCaseInsensitiveUtente() {
+        List<Utente> risultati = userService.cercaGenerico("MARCO");
+        assertEquals(1, risultati.size());
+        assertTrue(risultati.contains(u2));
+    }
+
+@Test
+    void testCercaGenericoNessunMatchUtente() {
+        List<Utente> risultati = userService.cercaGenerico("C4rlo");
+        assertTrue(risultati.isEmpty());
+    }
+
+@Test
+    void testCercaGenericoFiltroNullUtente() {
+        List<Utente> risultati = userService.cercaGenerico(null);
+        assertNull(risultati);
+    }
+
+@Test
+    void testCercaGenericoFiltroVuotoUtente() {
+        List<Utente> risultati = userService.cercaGenerico("");
+        assertNull(risultati);
+    }
+
+@Test
+    void testCercaGenericoRepositoryVuotoUtente() {
+        RepositoryStub<Utente> emptyRepo = new RepositoryStub<>();
+        BaseService<Utente> emptyService = new BaseService<>(emptyRepo);
+
+        List<Utente> risultati = emptyService.cercaGenerico("anything");
+        assertTrue(risultati.isEmpty());
+    }
+
+@Test
+    void testCercaGenericoPiuMatchUtente() {
+        List<Utente> risultati = userService.cercaGenerico("i");
+        assertEquals(2, risultati.size()); // "Luigi", "Verdi"
+    }
   
 }
 

@@ -10,5 +10,18 @@ class LibroControllerTest {
 
   private LibroController controller;
   private LibroService service;
+  private LibroViewStub view;
+  private RepositoryStub<Libro> repository;
 
+    @BeforeEach
+    void setup() {
+        repo = new RepositoryStub<>();
+        service = new LibroService(repository);
+        view = new LibroViewStub();
+        controller = new LibroController(view, service);
+    }
 }
+
+
+
+    
