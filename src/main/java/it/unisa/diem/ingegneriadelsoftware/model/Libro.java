@@ -1,5 +1,4 @@
 package it.unisa.diem.ingegneriadelsoftware.model;
-
 import java.util.List;
 import java.util.ArrayList;
 
@@ -45,15 +44,22 @@ public class Libro extends Dati {
      * @param [in] isbn Il codice ISBN.
      * @param [in] copie Il numero di copie.
      */
-    public Libro(String titolo, List<String> autori, int anno, String isbn, int copie) {}
+    public Libro(String titolo, List<String> autori, int anno, String isbn, int copie) {
+        this.titolo = titolo;
+        this.autori = (autori != null) ? autori : new ArrayList<>();
+        this.anno = anno;
+        this.isbn = isbn;
+        this.copie = copie;
+    }
 
     /**
      * @brief Controlla che i dati del libro siano corretti.
      * @return vero se i dati sono validi altrimenti restituisce falso.
      */
     public boolean isValido() {
-    
-        return false;
+        return titolo != null && !titolo.trim().isEmpty() &&
+               isbn != null && !isbn.trim().isEmpty() &&
+               copie >= 0;
     }
 
     /**
@@ -61,7 +67,11 @@ public class Libro extends Dati {
      * @post Il numero di copie disponibili diminuisce di uno.
      * @details Questo metodo deve essere invocato quando bisogna effettuare l'azione del prestito.
      */
-    public void decrementaCopie() {}
+    public void decrementaCopie() {
+        if (copie > 0) {
+            copie--;
+        }
+    }
 
     /**
      * @brief Incrementa il numero di copie disponibili quando un libro viene restituito.
@@ -69,7 +79,9 @@ public class Libro extends Dati {
      * @post Il numero di copie disponibili aumenta di uno.
      * @details Questo metodo deve essere invocato quando bisogna aggiungere una copia di un libro.
      */
-    public void incrementaCopie() {}
+    public void incrementaCopie() {
+        copie++;
+    }
 
     /**
      * @brief Ottiene l'ISBN del libro.
@@ -78,71 +90,73 @@ public class Libro extends Dati {
      */
     @Override 
     public String getId() {
-    
-        return null;
+        return isbn;
     }
 
     /** * @brief Restituisce il titolo del libro.
      * @return Il titolo del libro altrimenti restituisce un valore nullo. 
      */
     public String getTitolo() {
-    
-        return null;
+        return titolo;
     }
 
     /** * @brief Restituisce il codice ISBN.
      * @return Il codice ISBN altrimenti restituisce un valore nullo. 
      */
-    public String getIsbn() { 
-    
-        return null;
+    public String getIsbn() {
+        return isbn;
     }
 
     /** * @brief Restituisce l'anno di pubblicazione.
      * @return L'anno di pubblicazione altrimenti restituisce zero. 
      */
-    public int getAnno() { 
-    
-        return 0;
+    public int getAnno() {
+        return anno;
     }
 
     /** * @brief Restituisce il numero di copie.
      * @return Il numero di copie attualmente disponibili altrimenti restituisce zero. 
      */
-    public int getCopieDisponibili() { 
-    
-        return 0;
+    public int getCopieDisponibili() {
+        return copie;
     }
     
     /** * @brief Restituisce un elenco di autori.
      * @return Gli autori in un'unica stringa altrimenti restituisce un valore nullo. 
      */
-    public String getAutoriString() { 
-    
-        return null;
+    public String getAutoriString() {
+        return String.join(", ", autori);
     }
 
     /** * @brief Imposta il titolo del libro.
      * @param [in] t il nuovo titolo del libro. 
      */
-    public void setTitolo(String t) { }
+    public void setTitolo(String t) {
+        this.titolo = t;
+    }
 
     /** * @brief Imposta la lista degli autori.
      * @param [in] a la nuova lista di autori. 
      */
-    public void setAutori(List<String> a) { }
+    public void setAutori(List<String> a) {
+        this.autori = a;
+    }
 
     /** * @brief Imposta l'anno di pubblicazione.
      * @param [in] a il nuovo anno di pubblicazione. 
      */
-    public void setAnno(int a) { }
+    public void setAnno(int a) {
+        this.anno = a;
+    }
 
     /** * @brief Imposta il numero di copie disponibili.
      * @param [in] c il nuovo numero di copie. 
      * @pre L'argomento c deve essere un numero intero maggiore o uguale a zero.
      * @post il campo copieDisponibili assume esattamente il valore di c.
      */
-    public void setCopieDisponibili(int c) { }
+    public void setCopieDisponibili(int c) {
+        this.copie = c;
+    }
 
     /**
      * @brief Restituisce una rappresentazione in formato stringa del libro.
@@ -154,13 +168,12 @@ public class Libro extends Dati {
      * @see Dati#toString()
      */
     @Override
-    public String toString() {return null;}
-    
-    
-    
-    
-    public List<String> getAutori() { 
-    
-        return null;
+    public String toString() {
+        return String.format("ISBN: %s | Titolo: %s | Autori: %s | Copie: %d",
+                isbn, titolo, getAutoriString(), copie);
     }
+     public List<String> getAutori() { 
+
+        return null;
+     }
 }
