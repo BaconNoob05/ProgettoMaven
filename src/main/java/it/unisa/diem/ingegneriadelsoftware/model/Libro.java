@@ -172,8 +172,13 @@ public class Libro extends Dati {
         return String.format("ISBN: %s | Titolo: %s | Autori: %s | Copie: %d",
                 isbn, titolo, getAutoriString(), copie);
     }
-     public List<String> getAutori() { 
-
-        return null;
-     }
+    /**
+     * @brief Restituisce l'elenco degli autori associati al libro.
+     * @return Una lista di stringhe dove ci sono i nomi degli autori, altrimenti restituisce una lista vuota.
+     * @pre L'oggetto Libro deve essere inizializzato con il costruttore.
+     */
+    public List<String> getAutori() { 
+        return autori;
+    }
+}
 }
