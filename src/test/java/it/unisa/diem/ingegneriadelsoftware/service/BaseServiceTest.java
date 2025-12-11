@@ -143,5 +143,8 @@ class TestBaseService {
         Libro lTrovato = libroService.cerca("978-0366218820");
         assertEquals(6, lTrovato.getCopie());
     }
+
+
+  
 }
 
