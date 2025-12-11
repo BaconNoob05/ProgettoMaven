@@ -120,6 +120,12 @@ public class Prestito extends Dati {
     public Libro getLibro() {
         return libro;
     }
+    /**
+     * @brief Imposta la data di restituzione del libro.
+     * @param [in] dataEffettiva La data in cui il libro è stato restituito.
+     * @pre La data fornita non deve essere nulla e dovrebbe essere successiva alla data del prestito.
+     * @post Il campo dataEffettiva assume il valore della  data specificata.
+     */
      public void setDataEffettiva(LocalDate dataEffettiva) { 
 
         this.dataEffettiva=dataEffettiva;
