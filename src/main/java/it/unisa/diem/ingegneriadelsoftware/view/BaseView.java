@@ -20,10 +20,16 @@ public abstract class BaseView<T> implements InterfaceView<T> {
     
     
     // NUOVA Dichiarazione per il Binding in JavaFX
+    /**
+     * @brief Lista osservabile utilizzata dai dati per i componenti JavaFX .
+     * @details Le modifiche a questa lista vengono automaticamente riflesse nella UI.
+     */
     protected final ObservableList<T> dataList;
 
     
-    
+    /**
+     * @brief Costruttore di base che funge da sorgente dati per i componenti UI di JavaFX.
+     */
     public BaseView() {
         // La lista ObservableList è l'effettiva sorgente dati per la TableView
         this.dataList = FXCollections.observableArrayList(); 
@@ -44,19 +50,18 @@ public abstract class BaseView<T> implements InterfaceView<T> {
      * @brief Aggiorna la lista degli elementi visualizzati.
      * @param [in] lista La nuova lista di dati da visualizzare.
      * @pre La lista non deve essere null.
-     * @post L'attributo elementi è aggiornato.
+     * @post L'attributo elementi è aggiornato .
      * @see InterfaceView#mostraLista(List)
      */
     @Override
     public void mostraLista(List<T> lista) { 
     
         if (lista == null) {
-         throw new IllegalArgumentException("La lista da mostrare non può essere null.");
+            throw new IllegalArgumentException("La lista da mostrare non può essere null.");
         }
         
         
-        
-        this.elementi = lista;
+        this.elementi = lista; 
         System.out.println(" Lista aggiornata: " + lista.size() + " elementi.");
     
     }
@@ -69,6 +74,7 @@ public abstract class BaseView<T> implements InterfaceView<T> {
      */
     @Override
     public T getElementoSelezionato() { 
+        
         
         if (elementi != null && !elementi.isEmpty()) {
             return elementi.get(0); 
