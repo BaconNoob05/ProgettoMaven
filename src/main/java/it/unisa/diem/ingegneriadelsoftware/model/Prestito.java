@@ -116,4 +116,11 @@ public class Prestito extends Dati {
     
         return null;
     }
+    
+    
+
+    public void setDataEffettiva(LocalDate dataEffettiva) { 
+    
+        this.dataEffettiva=dataEffettiva;
+    }
 }
