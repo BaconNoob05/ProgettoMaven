@@ -1,6 +1,5 @@
 package it.unisa.diem.ingegneriadelsoftware.model;
 
-
 /**
  * @class Utente
  * @brief Nel sistema questa classe è l'entità Utente.
@@ -25,7 +24,7 @@ public class Utente extends Dati {
     /** Matricola. */
     private String matricola;
     
-    /** Indirizzo email. */
+     /** Indirizzo email. */
     private String email;
     
     /**
@@ -35,15 +34,19 @@ public class Utente extends Dati {
      * @param [in] matricola La matricola univoca.
      * @param [in] email L'indirizzo email.
      */
-    public Utente(String nome, String cognome, String matricola, String email) { }
+    public Utente(String nome, String cognome, String matricola, String email) {
+        this.nome = nome;
+        this.cognome = cognome;
+        this.matricola = matricola;
+        this.email = email;
+    }
 
      /**
      * @brief Verifica che i dati dell'utente siano validi.
      * @return Vero se i dati sono validi, altrimenti restituisce falso.
      */
-    public boolean isValido() { 
-    
-        return false;
+    public boolean isValido() {
+        return nome != null && !nome.trim().isEmpty() && cognome != null && !cognome.trim().isEmpty() && matricola != null && !matricola.trim().isEmpty();
     }
 
     /**
@@ -52,45 +55,44 @@ public class Utente extends Dati {
      * @see Dati#getId()
      */
     @Override 
-    public String getId() { 
-    
-        return null;
+    public String getId() {
+        return matricola;
     }
 
     /** @return Il nome dell'utente, altrimenti restituisce un valore nullo. */
-    public String getNome() { 
-    
-        return null;
+    public String getNome() {
+        return nome;
     }
 
     /** @return Il cognome dell'utente, altrimenti restituisce un valore nullo. */
-    public String getCognome() { 
-    
-        return null;
+    public String getCognome() {
+        return cognome;
     }
 
     /** @return La matricola dell'utente, altrimenti restituisce un valore nullo. */
-    public String getMatricola() { 
-    
-        return null;
-    
+    public String getMatricola() {
+        return matricola;
     }
 
     /** @return L'email dell'utente, altrimenti restituisce un valore nullo. */
-    public String getEmail() { 
-    
-    
-        return null;
+    public String getEmail() {
+        return email;
     }
 
      /** @param [in] n Il nuovo nome. */
-    public void setNome(String n) { }
+    public void setNome(String n) {
+        this.nome = n;
+    }
 
     /** @param [in] c Il nuovo cognome. */
-    public void setCognome(String c) { }
+    public void setCognome(String c) {
+        this.cognome = c;
+    }
 
     /** @param [in] e La nuova email. */
-    public void setEmail(String e) { }
+    public void setEmail(String e) {
+        this.email = e;
+    }
 
     /**
      * @brief Restituisce una rappresentazione in formato stringa dell'utente.
@@ -102,9 +104,7 @@ public class Utente extends Dati {
      * @see Dati#toString()
      */
     @Override
-    public String toString() { 
-    
-        return null;
-    
+    public String toString() {
+        return String.format("Matricola: %s | Nome: %s |Cognome :%s | Email: %s", matricola, nome, cognome, email);
     }
 }
