@@ -8,29 +8,32 @@ import java.util.*;
 import static org.junit.jupiter.api.Assertions.*;
 
 
-
 public class UtenteServiceTest {
 
     private RepositoryStub<Utente> utenteRepoStub;
     private UtenteService utenteService;
 
 
-    private Utente utenteMarioRossi;
-    private Utente utenteLucaRossi;
-    private Utente utenteAnnaVerdi;
+    private Utente utenteLorenzoTrovato;
+    private Utente utenteAlessandroPicariello;
+    private Utente utenteMatteoIandiorio;
+    private Utente utenteDanieleManzo;
 
     @BeforeEach
     public void setUp() {
 
-
-        utenteMarioRossi = new Utente("Mario", "Rossi", "M100", "m.r@uni.it"); 
-
-        utenteLucaRossi = new Utente("Luca", "Rossi", "M101", "l.r@uni.it"); 
-
-        utenteAnnaVerdi = new Utente("Anna", "Verdi", "M102", "a.v@uni.it"); 
-
+        utenteLorenzoTrovato = new Utente("Lorenzo", "Trovato", "0612709999", "sonoTrovato@uni.com"); 
+        utenteAlessandroPicariello = new Utente("alessandro", "picariello", "0612709975", "picapics@uni.com"); 
+        utenteMatteoIandiorio = new Utente("matteo", "iandiorio", "0612709968", "dior@uni.it"); 
+        utenteDanieleManzo = new Utente("daniele", "manzo", "0612709967", "ciaomanzo@uni.it"); 
+        
         utenteRepoStub = new RepositoryStub<>();
-        List<Utente> initialData = Arrays.asList(utenteMarioRossi, utenteLucaRossi, utenteAnnaVerdi);
+        List<Utente> initialData = Arrays.asList(
+            utenteLorenzoTrovato, 
+            utenteAlessandroPicariello, 
+            utenteMatteoIandiorio,
+            utenteDanieleManzo
+        );
         utenteRepoStub.caricaTutti(initialData);
 
         utenteService = new UtenteService(utenteRepoStub);
@@ -38,34 +41,25 @@ public class UtenteServiceTest {
 
 
     @Test
-    void testCercaPerCognome_MatchMultiplo() {
+    void testCercaPerCognome_MatchMultiplo_Nessuno() {
         final String COGNOME_FILTRO = "Rossi";
 
-        // Esecuzione
         List<Utente> risultati = utenteService.cercaPerCognome(COGNOME_FILTRO);
 
-        // Verifica dello stato (Assert)
         assertNotNull(risultati);
-        assertEquals(2, risultati.size());
-        
-        // Verifica che i risultati contengano gli utenti corretti
-        assertTrue(risultati.contains(utenteMarioRossi));
-        assertTrue(risultati.contains(utenteLucaRossi));
-        assertFalse(risultati.contains(utenteAnnaVerdi));
+        assertEquals(0, risultati.size());
     }
 
 
     @Test
     void testCercaPerCognome_MatchSingolo() {
-        final String COGNOME_FILTRO = "Verdi";
+        final String COGNOME_FILTRO = "iandiorio";
 
-        // Esecuzione
         List<Utente> risultati = utenteService.cercaPerCognome(COGNOME_FILTRO);
 
-        // Verifica dello stato
         assertNotNull(risultati);
         assertEquals(1, risultati.size());
-        assertEquals(utenteAnnaVerdi.getId(), risultati.get(0).getId());
+        assertEquals(utenteMatteoIandiorio.getId(), risultati.get(0).getId());
     }
 
 
@@ -73,24 +67,84 @@ public class UtenteServiceTest {
     void testCercaPerCognome_NessunMatch() {
         final String COGNOME_FILTRO = "Bianchi";
 
-        // Esecuzione
         List<Utente> risultati = utenteService.cercaPerCognome(COGNOME_FILTRO);
 
-        // Verifica dello stato
         assertNotNull(risultati);
         assertTrue(risultati.isEmpty());
     }
     
-
     @Test
     void testCercaPerCognome_FiltroNullo() {
-
-        
-        // Se il service lancia una IllegalArgumentException
         assertThrows(IllegalArgumentException.class, () -> {
             utenteService.cercaPerCognome(null);
-        }, "Chiamare con cognome nullo dovrebbe lanciare un'eccezione.");
+        });
+    }
 
+    @Test
+    void testCercaPerCognome_CaseSensitivityEsatta() {
+        final String COGNOME_FILTRO = "Trovato";
 
+        List<Utente> risultati = utenteService.cercaPerCognome(COGNOME_FILTRO);
+
+        assertNotNull(risultati);
+        assertEquals(1, risultati.size());
+        assertTrue(risultati.contains(utenteLorenzoTrovato));
+    }
+
+    @Test
+    void testCercaPerCognome_CaseSensitivityMinuscola() {
+        final String COGNOME_FILTRO = "manzo";
+
+        List<Utente> risultati = utenteService.cercaPerCognome(COGNOME_FILTRO);
+
+        assertNotNull(risultati);
+        assertEquals(1, risultati.size());
+        assertTrue(risultati.contains(utenteDanieleManzo));
+    }
+    
+    @Test
+    void testCercaPerCognome_FiltroVuoto() {
+        final String COGNOME_FILTRO = "";
+
+        List<Utente> risultati = utenteService.cercaPerCognome(COGNOME_FILTRO);
+
+        assertNotNull(risultati);
+        assertTrue(risultati.isEmpty());
+    }
+
+    @Test
+    void testCercaPerCognome_FiltroSpazi() {
+        final String COGNOME_FILTRO = " ";
+
+        List<Utente> risultati = utenteService.cercaPerCognome(COGNOME_FILTRO);
+
+        assertNotNull(risultati);
+        assertTrue(risultati.isEmpty());
+    }
+
+    @Test
+    void testCercaPerCognome_AltroSingolo() {
+        final String COGNOME_FILTRO = "Trovato";
+        
+        Utente utenteSecondoTrovato = new Utente("Giulia", "Trovato", "0612701111", "g.t@uni.com"); 
+        utenteRepoStub.inserisciOAggiorna(utenteSecondoTrovato);
+        
+        List<Utente> risultati = utenteService.cercaPerCognome(COGNOME_FILTRO);
+
+        assertNotNull(risultati);
+        assertEquals(2, risultati.size());
+        assertTrue(risultati.contains(utenteLorenzoTrovato));
+        assertTrue(risultati.contains(utenteSecondoTrovato));
+    }
+    
+    @Test
+    void testCercaPerCognome_AltroSingoloMinuscolo() {
+        final String COGNOME_FILTRO = "picariello";
+
+        List<Utente> risultati = utenteService.cercaPerCognome(COGNOME_FILTRO);
+
+        assertNotNull(risultati);
+        assertEquals(1, risultati.size());
+        assertTrue(risultati.contains(utenteAlessandroPicariello));
     }
 }
