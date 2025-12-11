@@ -21,8 +21,12 @@ public abstract class BaseView<T> implements InterfaceView<T> {
      * @param [in] messaggio Il testo del messaggio.
      */
     @Override
-    public void mostraMessaggio(String messaggio) { }
-
+    public void mostraMessaggio(String messaggio) {
+    
+        System.out.println("Messaggio: " + messaggio);
+    
+    }
+    
     /**
      * @brief Aggiorna la lista degli elementi visualizzati.
      * @param [in] lista La nuova lista di dati da visualizzare.
@@ -31,7 +35,18 @@ public abstract class BaseView<T> implements InterfaceView<T> {
      * @see InterfaceView#mostraLista(List)
      */
     @Override
-    public void mostraLista(List<T> lista) { }
+    public void mostraLista(List<T> lista) { 
+    
+        if (lista == null) {
+         throw new IllegalArgumentException("La lista da mostrare non può essere null.");
+        }
+        
+        
+        
+        this.elementi = lista;
+        System.out.println(" Lista aggiornata: " + lista.size() + " elementi.");
+    
+    }
 
     /**
      * @brief Restituisce l'elemento selezionato.
@@ -41,7 +56,10 @@ public abstract class BaseView<T> implements InterfaceView<T> {
      */
     @Override
     public T getElementoSelezionato() { 
-    
+        
+        if (elementi != null && !elementi.isEmpty()) {
+            return elementi.get(0); 
+        }
         return null;
     }
 
@@ -54,6 +72,6 @@ public abstract class BaseView<T> implements InterfaceView<T> {
     public String getCampoCerca() { 
     
     
-        return null;
+        return "";
     }
 }

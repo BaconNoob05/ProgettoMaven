@@ -155,4 +155,12 @@ public class Libro extends Dati {
      */
     @Override
     public String toString() {return null;}
+    
+    
+    
+    
+    public List<String> getAutori() { 
+    
+        return null;
+    }
 }
