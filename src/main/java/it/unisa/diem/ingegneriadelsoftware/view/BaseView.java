@@ -1,5 +1,7 @@
 package it.unisa.diem.ingegneriadelsoftware.view;
 import java.util.List;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 
 /**
  * @class BaseView
@@ -15,7 +17,18 @@ public abstract class BaseView<T> implements InterfaceView<T> {
      * Utilizzata per mantenere lo stato dei dati mostrati a video.
      */
     protected List<T> elementi;
+    
+    
+    // NUOVA Dichiarazione per il Binding in JavaFX
+    protected final ObservableList<T> dataList;
 
+    
+    
+    public BaseView() {
+        // La lista ObservableList è l'effettiva sorgente dati per la TableView
+        this.dataList = FXCollections.observableArrayList(); 
+    }
+    
     /**
      * @brief Mostra un messaggio all'utente.
      * @param [in] messaggio Il testo del messaggio.
