@@ -3,6 +3,7 @@ package it.unisa.diem.ingegneriadelsoftware.controller;
 import it.unisa.diem.ingegneriadelsoftware.view.PrestitoView;
 import it.unisa.diem.ingegneriadelsoftware.service.PrestitoService;
 import it.unisa.diem.ingegneriadelsoftware.model.Prestito;
+import it.unisa.diem.ingegneriadelsoftware.view.InterfaceView;
 import java.time.LocalDate;
 import java.util.List;
 

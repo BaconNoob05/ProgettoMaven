@@ -35,6 +35,7 @@ public class PrestitoService extends BaseService<Prestito> {
         super(repo);
     }
 
+
     /**
      * @brief Registra un nuovo prestito nel sistema.
      * @param [in] utente L'oggetto Utente che richiede il prestito.

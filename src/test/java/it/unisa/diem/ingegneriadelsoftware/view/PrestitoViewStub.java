@@ -29,8 +29,7 @@ public class PrestitoViewStub extends PrestitoView {
         public void mostraMessaggio(String messaggio) {
             this.ultimoMessaggio = messaggio;
         }
-
-        @Override
+        
         public Prestito getPrestitoNuovo() { 
             return prestitoNuovo; 
         }
@@ -39,8 +38,13 @@ public class PrestitoViewStub extends PrestitoView {
         public Prestito getElementoSelezionato() { 
             return elementoSelezionato; 
         }
-
+        
         @Override
+        public String getCampoCerca() { 
+
+            return "";
+        }
+
         public LocalDate getDataRestituzione() { return 
             dataRestituzione; 
         }

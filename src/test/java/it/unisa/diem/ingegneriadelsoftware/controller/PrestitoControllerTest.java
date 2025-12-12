@@ -9,6 +9,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 import java.time.LocalDate;
 import java.util.*;
+import javafx.application.Platform;
 
 
 public class PrestitoControllerTest {
@@ -21,6 +22,8 @@ public class PrestitoControllerTest {
     private Utente u;
     private Libro l;
 
+    
+    
     @BeforeEach
     void setUp() {
         viewStub = new PrestitoViewStub();
