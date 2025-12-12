@@ -181,4 +181,3 @@ public class Libro extends Dati {
         return autori;
     }
 }
-}
