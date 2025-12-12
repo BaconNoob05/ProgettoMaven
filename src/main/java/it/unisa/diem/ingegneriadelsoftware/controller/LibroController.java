@@ -32,7 +32,7 @@ public class LibroController extends CrudController<Libro> {
      * @see LibroView#getLibroNuovo()
      */
     public void salvaLibro(){};
-
+        
     /**
      * @brief Avvia la modifica di un libro esistente.
      * @details Recupera i dati modificati da LibroView e invoca il metodo modifica.
