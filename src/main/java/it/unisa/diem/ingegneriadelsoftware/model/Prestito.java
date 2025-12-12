@@ -111,7 +111,6 @@ public class Prestito extends Dati {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
         String stato = (dataEffettiva == null) ? "ATTIVO (Prevista: " + dataPrevista.format(formatter) + ")" : "CHIUSO (Restituito: " + dataEffettiva.format(formatter) + ")";
         
-        // AGGIUNTO dataPrestito nel toString per debug/chiarezza
         return String.format("[%s] Prestito: %s | Utente: %s | Libro: %s | Stato: %s",getId(), dataPrestito.format(formatter), getNomeUtente(), getTitoloLibro(), stato);
     }
 

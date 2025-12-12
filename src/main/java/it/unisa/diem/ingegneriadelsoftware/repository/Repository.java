@@ -69,9 +69,11 @@ public class Repository<T extends InterfaceID> implements InterfaceRepository<T>
      */
     @Override
     public void inserisciOAggiorna(T elemento) {
+        
         if (elemento == null || elemento.getId() == null) {
-            return;
+            throw new IllegalArgumentException("L'elemento da inserire non può essere nullo.");
         }
+
 
         T esistente = cerca(elemento.getId());
 
@@ -125,6 +127,6 @@ public class Repository<T extends InterfaceID> implements InterfaceRepository<T>
      */
     @Override
     public List<T> getAll() {
-        return lista;
+        return new ArrayList<>(lista);
     }
 }

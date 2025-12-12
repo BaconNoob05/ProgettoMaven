@@ -31,7 +31,6 @@ public class LibroViewStub extends LibroView {
         return elementoSelezionato;
     }
 
-    @Override 
     public String getTestoCerca() {
         return testoCerca;
     }

@@ -29,15 +29,16 @@ public class GestoreFileTest {
 
     @Test
     void testSalvaDati() {
-        
         fileTest = "test_salva.txt";
 
         gestore.salvaDati(fileTest, datiTest);
 
         List<DatiStub> risultato = gestore.caricaDati(fileTest);
-        
+
         assertEquals(datiTest.size(), risultato.size());
-        assertEquals(datiTest.get(0), risultato.get(0).toString());
+
+        
+        assertEquals(datiTest.get(0).toString(), risultato.get(0).toString()); 
     }
 
     @Test
