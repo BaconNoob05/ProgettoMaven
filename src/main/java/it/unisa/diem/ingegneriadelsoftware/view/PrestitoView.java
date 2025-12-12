@@ -6,9 +6,11 @@ import it.unisa.diem.ingegneriadelsoftware.model.*;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.scene.control.*;
+
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import java.time.LocalDate;
+
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Optional;
@@ -176,6 +178,7 @@ public class PrestitoView extends DatiBaseView<Prestito> {
      * @brief Crea il pannello dei dettagli Prestito a destra.
      * @return Il GridPane con i campi ComboBox e DatePicker.
      */
+    
     @Override
     protected GridPane creaPaneDettaglio() {
         
@@ -218,9 +221,12 @@ public class PrestitoView extends DatiBaseView<Prestito> {
     /**
      * @brief Pulisce i campi e li riabilita per l'inserimento di un nuovo prestito.
      */
+    
     public void pulisciDettagli() {
+        
         libroComboBox.getSelectionModel().clearSelection();
         utenteComboBox.getSelectionModel().clearSelection();
+        
         dataPrestitoPicker.setValue(LocalDate.now());
         dataRestituzionePicker.setValue(null);     // data prevista da selezionare
         statoComboBox.setValue("In Prestito");
@@ -229,6 +235,7 @@ public class PrestitoView extends DatiBaseView<Prestito> {
         
         libroComboBox.setDisable(false);
         utenteComboBox.setDisable(false);
+        
         dataPrestitoPicker.setDisable(true); // data di prestito è sempre oggi e non è modificabile
         dataRestituzionePicker.setDisable(false);
         

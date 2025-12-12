@@ -4,6 +4,7 @@ import it.unisa.diem.ingegneriadelsoftware.model.*;
 import it.unisa.diem.ingegneriadelsoftware.repository.*;
 import org.junit.jupiter.api.*;
 import java.util.*;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 public class LibroServiceTest {
@@ -14,6 +15,7 @@ public class LibroServiceTest {
     private Libro libroNuovoJava;
     private Libro libroSoftwareEng;
     private Libro libroChristmasCarol;
+    
     private Libro libroCriticaRagionPura;
     private Libro libroEssereETempo;
     
@@ -21,10 +23,13 @@ public class LibroServiceTest {
     public void setUp() {
         
         List<String> autoriDeSio = Arrays.asList("Claudio De Sio Cesari");
+        
         List<String> autoriSommerville = Arrays.asList("Ian Sommerville");
         List<String> autoriDickens = Arrays.asList("Charles Dickens");
+        
         List<String> autoriKant = Arrays.asList("Immanuel Kant");
         List<String> autoriHeidegger = Arrays.asList("Martin Heidegger");
+        
 
         libroNuovoJava = new Libro("Il nuovo Java. Guida definitiva", autoriDeSio, 2023, "978-8868945620", 12);
         libroSoftwareEng = new Libro("Software Engineering", autoriSommerville, 2020, "978-0133943030", 15);
@@ -33,6 +38,7 @@ public class LibroServiceTest {
         libroEssereETempo = new Libro("Essere e tempo", autoriHeidegger, 1927, "978-8842095902", 4);
 
         repo = new RepositoryStub<Libro>();
+        
         List<Libro> datiIniziali = Arrays.asList(
             libroNuovoJava, 
             libroSoftwareEng, 
@@ -47,6 +53,7 @@ public class LibroServiceTest {
     
     @Test
     void testCercaPerTitolo_MatchSingolo() {
+        
         final String FILTRO_TITOLO = "Christmas"; 
         List<Libro> risultati = service.cercaPerTitolo(FILTRO_TITOLO);
 
@@ -56,6 +63,7 @@ public class LibroServiceTest {
 
     @Test
     void testCercaPerTitolo_MatchMultiplo() {
+        
         final String FILTRO_TITOLO = "Ragion";
         List<Libro> risultati = service.cercaPerTitolo(FILTRO_TITOLO);
 
@@ -73,6 +81,7 @@ public class LibroServiceTest {
     
     @Test
     void testCercaPerTitolo_FiltroCaseInsensitive() {
+        
         final String FILTRO_TITOLO = "guida";
         List<Libro> risultati = service.cercaPerTitolo(FILTRO_TITOLO);
         
@@ -105,8 +114,9 @@ public class LibroServiceTest {
     
     @Test
     void testCercaPerAutore_MatchMultiplo_StessoAutore() {
-        // Aggiungo un secondo libro di De Sio per testare il match multiplo sullo stesso autore
+        
         List<String> autoriDeSio = Arrays.asList("Claudio De Sio Cesari");
+        
         Libro libroJavaAdvanced = new Libro("Java Advanced", autoriDeSio, 2022, "978-8868945637", 6);
         repo.caricaTutti(Arrays.asList(libroJavaAdvanced)); 
 
@@ -120,6 +130,7 @@ public class LibroServiceTest {
 
     @Test
     void testCercaPerAutore_NessunMatch() {
+        
         final String FILTRO_AUTORE = "Stephen King";
         List<Libro> risultati = service.cercaPerAutore(FILTRO_AUTORE);
 
@@ -128,6 +139,7 @@ public class LibroServiceTest {
     
     @Test
     void testCercaPerAutore_FiltroCaseInsensitive() {
+        
         final String FILTRO_AUTORE = "martin heidegger";
         List<Libro> risultati = service.cercaPerAutore(FILTRO_AUTORE);
 
@@ -137,8 +149,10 @@ public class LibroServiceTest {
     
     @Test
     void testCercaPerAutore_FiltroVuotoONullo_ComportamentoAtteso() {
+        
         assertTrue(service.cercaPerAutore(null).isEmpty());
         assertTrue(service.cercaPerAutore("").isEmpty());
         assertTrue(service.cercaPerAutore(" ").isEmpty());
+        
     }
 }

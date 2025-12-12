@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public class UtenteServiceStub extends UtenteService{
-    public List<Utente> db = new ArrayList<>();
+    public List<Utente> lista = new ArrayList<>();
     public boolean salvaChiamato = false;
     public boolean modificaChiamato = false;
 
@@ -22,32 +22,32 @@ public class UtenteServiceStub extends UtenteService{
     @Override
     public void salva(Utente utente) {
         this.salvaChiamato = true;
-        db.add(utente);
+        lista.add(utente);
     }
 
     @Override
     public void modifica(Utente utente) {
         this.modificaChiamato = true;
-        db.removeIf(u -> u.getId().equals(utente.getId()));
-        db.add(utente);
+        lista.removeIf(u -> u.getId().equals(utente.getId()));
+        lista.add(utente);
     }
         
     @Override
     public void elimina(Utente utente) {
-        db.removeIf(u -> u.getId().equals(utente.getId()));
+        lista.removeIf(u -> u.getId().equals(utente.getId()));
     }
         
     @Override
     public List<Utente> cercaGenerico(String filtro) {
     if (filtro == null || filtro.isEmpty()) return getAll();
         //Da vedere
-        return db.stream()
+        return lista.stream()
                 .filter(u -> u.toString().toLowerCase().contains(filtro.toLowerCase()))
                 .collect(Collectors.toList());
     }
 
     @Override
     public List<Utente> getAll() {
-        return new ArrayList<>(db);
+        return new ArrayList<>(lista);
     }
 }

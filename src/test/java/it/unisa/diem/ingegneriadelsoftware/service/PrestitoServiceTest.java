@@ -13,6 +13,7 @@ public class PrestitoServiceTest {
     private RepositoryStub<Prestito> repo;
     private LibroService libroService;
     private RepositoryStub<Libro> repoLibri;
+    
     private Libro l1;
     private Libro l2;
     private Utente u1;
@@ -20,6 +21,7 @@ public class PrestitoServiceTest {
         
     @BeforeEach
     void setup() {
+        
         repo = new RepositoryStub<>();
         repoLibri = new RepositoryStub<>();
         libroService = new LibroService(repoLibri);

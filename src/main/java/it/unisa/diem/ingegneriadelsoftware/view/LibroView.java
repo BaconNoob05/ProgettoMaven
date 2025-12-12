@@ -14,11 +14,13 @@ import java.util.List;
  * @see CrudViewBase
  * @see BaseView
  */
+
 public class LibroView extends DatiBaseView<Libro> {
 
     
     /** @brief Campo di input per il titolo del libro. */
     private final TextField titoloInput;
+    
     /** @brief Campo di input per l'anno di pubblicazione. */
     private final TextField annoInput;
     
@@ -51,6 +53,7 @@ public class LibroView extends DatiBaseView<Libro> {
      * @pre La TableView deve essere stata inizializzata nella classe base.
      * @post La TableView contiene le seguenti colonne 'Titolo', 'Autori', 'Anno', 'ISBN', 'Copie disponibili'.
      */
+    
     @Override
     protected void impostaColonneTabella() {
 
@@ -179,6 +182,7 @@ public class LibroView extends DatiBaseView<Libro> {
      * @pre Un libro deve essere stato precedentemente selezionato o caricato nel form.
      * @post Viene restituito l'oggetto pronto per essere passato al controller.
      */
+    
     public Libro getLibroModificato() {
         Libro libroDaModificare = getElementoSelezionato();
         

@@ -18,6 +18,7 @@ public class UtenteControllerTest {
 
     @BeforeEach
     void setUp() {
+        
         view = new UtenteViewStub(); 
         service = new UtenteServiceStub();
         
@@ -52,15 +53,19 @@ public class UtenteControllerTest {
     
     @Test
     void testSalva() {
+        
         Utente utente = new Utente("Matteo", "Iandiorio", "061709000", "matteoiandiorio@uni.it");
+        
         controller.salva(utente);
         
         assertTrue(service.salvaChiamato);
+        
         assertEquals(utente, service.db.get(0));
     }
 
     @Test
     void testModificaUtente() {
+        
         Utente esistente = new Utente("Lorenzo", "Trovato", "0612709999", "lorenzotrovato@uni.it");
         service.db.add(esistente);
         
@@ -80,6 +85,7 @@ public class UtenteControllerTest {
 
     @Test
     void testModificaUtente_NessunaSelezione() {
+        
         view.setSelezionato(null);
         view.setInputModificato(null);
 
@@ -91,6 +97,7 @@ public class UtenteControllerTest {
     
     @Test
     void testModificaUtente_InputNull() {
+        
         Utente utente = new Utente("Vincenzo", "Raimo", "0612709555", "vincenzoraimo@uni.it");
         service.db.add(utente);
         view.setSelezionato(utente);
@@ -104,6 +111,7 @@ public class UtenteControllerTest {
 
     @Test
     void testModifica() {
+        
         Utente u = new Utente("Alessandro", "Picariello", "0612709696", "alessandropicariello@uni.it");
         service.db.add(u);
         
@@ -133,7 +141,6 @@ public class UtenteControllerTest {
         Utente u = new Utente("Nicolò", "Lisena", "061709333", "nicololisena@uni.it");
         service.db.add(u);
         
-        // Nessuna selezione
         view.setSelezionato(null);
 
         controller.elimina();
@@ -190,9 +197,11 @@ public class UtenteControllerTest {
         controller.aggiornaVista();
 
         assertNotNull(view.listaRicevuta);
+        
         assertEquals(2, view.listaRicevuta.size());
         
         assertEquals("0612707542", view.listaRicevuta.get(0).getId());
+        
         assertEquals("0612702574", view.listaRicevuta.get(1).getId());
     }
 
