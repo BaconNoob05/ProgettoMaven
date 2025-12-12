@@ -74,7 +74,8 @@ public class Prestito extends Dati {
      */
     @Override 
     public String getId() {
-        // AGGIORNATO: Usa dataPrestito per garantire univocità anche se la data prevista è la stessa.
+
+        
         if (utente == null || libro == null || dataPrestito == null) { 
             return null; 
         }

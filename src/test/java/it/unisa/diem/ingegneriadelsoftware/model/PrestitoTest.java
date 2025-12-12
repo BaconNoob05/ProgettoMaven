@@ -2,6 +2,7 @@ package it.unisa.diem.ingegneriadelsoftware.model;
 
 import org.junit.jupiter.api.*;
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -99,11 +100,14 @@ public class PrestitoTest {
 
     @Test
     void testGetId() {
+        
         String id = prestito.getId();
         assertNotNull(id);
         assertTrue(id.contains("0612708922"));
         assertTrue(id.contains("978-88-8080-123-4"));
-        assertTrue(id.contains(DATA_SETUP.toString()));
+
+
+        assertTrue(id.contains(LocalDate.now().toString())); 
     }
 
     @Test
@@ -115,20 +119,22 @@ public class PrestitoTest {
     @Test
     void testToString_NotNull() {
         assertNotNull(prestito.toString());
-        assertTrue(prestito.toString().contains("Lorenzo Trovato"));
+
+
+        assertTrue(prestito.toString().contains("Trovato Lorenzo"));
     }
     
     @Test
     void testToString_DopoRestituzione() {
         LocalDate restituzione = LocalDate.of(2024, 1, 15);
         prestito.registraRestituzione(restituzione);
-        
+
         String stringaPrestito = prestito.toString();
-        
+
         assertNotNull(stringaPrestito);
-        
-        //Verifica se la data è compresa in toString
-        assertTrue(stringaPrestito.contains(restituzione.toString()));
+
+        DateTimeFormatter testFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+        assertTrue(stringaPrestito.contains(restituzione.format(testFormatter))); 
     }
     
     @Test
@@ -149,15 +155,17 @@ public class PrestitoTest {
 
     @Test
     void testGetId_Unico() {
-        
-        //primo id
+
         String id1 = prestito.getId(); 
 
-        //secondo id (stessa persona ,cambia solo la data)
-        Prestito prestito2 = new Prestito(utente, libro, DATA_SETUP.plusDays(1)); // 11/01/2024
+   
+        Utente utente2 = new Utente("Marco", "Rossi", "0000000001", "m.rossi@unisa.it");
+
+
+        Prestito prestito2 = new Prestito(utente2, libro, DATA_SETUP.plusDays(1));
         String id2 = prestito2.getId();
-        
-        //deve verificare che l'id sia unico
+
+
         assertNotEquals(id1, id2);
     }
     

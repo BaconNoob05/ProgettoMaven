@@ -8,6 +8,7 @@ package it.unisa.diem.ingegneriadelsoftware.controller;
 import it.unisa.diem.ingegneriadelsoftware.model.Utente;
 import it.unisa.diem.ingegneriadelsoftware.service.UtenteServiceStub;
 import it.unisa.diem.ingegneriadelsoftware.view.UtenteViewStub;
+
 import org.junit.jupiter.api.*;
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -33,7 +34,7 @@ public class UtenteControllerTest {
         controller.salvaUtente();
 
         assertTrue(service.salvaChiamato);
-        assertEquals(1, service.db.size());
+        assertEquals(1, service.lista.size());
         
         assertNotNull(view.listaRicevuta);
         assertEquals(1, view.listaRicevuta.size());
@@ -47,7 +48,7 @@ public class UtenteControllerTest {
         controller.salvaUtente();
 
         assertFalse(service.salvaChiamato);
-        assertTrue(service.db.isEmpty());
+        assertTrue(service.lista.isEmpty());
     }
     
     
@@ -60,14 +61,14 @@ public class UtenteControllerTest {
         
         assertTrue(service.salvaChiamato);
         
-        assertEquals(utente, service.db.get(0));
+        assertEquals(utente, service.lista.get(0));
     }
 
     @Test
     void testModificaUtente() {
         
         Utente esistente = new Utente("Lorenzo", "Trovato", "0612709999", "lorenzotrovato@uni.it");
-        service.db.add(esistente);
+        service.lista.add(esistente);
         
         view.setSelezionato(esistente);
         
@@ -77,7 +78,7 @@ public class UtenteControllerTest {
         controller.modificaUtente();
 
         assertTrue(service.modificaChiamato);
-        assertEquals("trovatolorenzo@uni.it", service.db.get(0).getEmail());
+        assertEquals("trovatolorenzo@uni.it", service.lista.get(0).getEmail());
         
         assertNotNull(view.listaRicevuta);
         assertEquals("trovatolorenzo@uni.it", view.listaRicevuta.get(0).getEmail());
@@ -99,60 +100,60 @@ public class UtenteControllerTest {
     void testModificaUtente_InputNull() {
         
         Utente utente = new Utente("Vincenzo", "Raimo", "0612709555", "vincenzoraimo@uni.it");
-        service.db.add(utente);
+        service.lista.add(utente);
         view.setSelezionato(utente);
         
         view.setInputModificato(null);
         
         controller.modificaUtente();
 
-        assertEquals("vincenzoraimo@uni.it", service.db.get(0).getEmail());
+        assertEquals("vincenzoraimo@uni.it", service.lista.get(0).getEmail());
     }
 
     @Test
     void testModifica() {
         
         Utente u = new Utente("Alessandro", "Picariello", "0612709696", "alessandropicariello@uni.it");
-        service.db.add(u);
+        service.lista.add(u);
         
         Utente uMod = new Utente("Alessandro", "Picariello", "0612709696", "picarielloalessandro@uni.it");
         controller.modifica(uMod);
         
         assertTrue(service.modificaChiamato);
-        assertEquals("picarielloalessandro@uni.it", service.db.get(0).getEmail());
+        assertEquals("picarielloalessandro@uni.it", service.lista.get(0).getEmail());
     }
     
     @Test
     void testElimina() {
         
         Utente u = new Utente("Nicola", "Picarella", "0612709444", "nicolapicarella@uni.it");
-        service.db.add(u);
+        service.lista.add(u);
 
         view.setSelezionato(u);
 
         controller.elimina();
 
-        assertTrue(service.db.isEmpty());
+        assertTrue(service.lista.isEmpty());
         assertTrue(view.listaRicevuta.isEmpty());
     }
 
     @Test
     void testElimina_NessunaSelezione() {
         Utente u = new Utente("Nicolò", "Lisena", "061709333", "nicololisena@uni.it");
-        service.db.add(u);
+        service.lista.add(u);
         
         view.setSelezionato(null);
 
         controller.elimina();
 
-        assertEquals(1, service.db.size());
+        assertEquals(1, service.lista.size());
         assertNotNull(view.ultimoMessaggio);
     }
 
     @Test
     void testCerca_FiltroCorrispondente() {
-        service.db.add(new Utente("Vincenzo", "Raimo", "0612709555", "vincenzoraimo@uni.it"));
-        service.db.add(new Utente("Sofia", "Mancini", "0612709666", "sofiamancini@uni.it"));
+        service.lista.add(new Utente("Vincenzo", "Raimo", "0612709555", "vincenzoraimo@uni.it"));
+        service.lista.add(new Utente("Sofia", "Mancini", "0612709666", "sofiamancini@uni.it"));
 
         view.setTestoCerca("Raimo");
 
@@ -165,8 +166,8 @@ public class UtenteControllerTest {
 
     @Test
     void testCerca_FiltroVuoto() {
-        service.db.add(new Utente("Daniele", "Manzo", "0612709876", "danielemanzo@uni.it"));
-        service.db.add(new Utente("Enrica", "Avitabile", "0612701234", "enricaavitabile@uni.it"));
+        service.lista.add(new Utente("Daniele", "Manzo", "0612709876", "danielemanzo@uni.it"));
+        service.lista.add(new Utente("Enrica", "Avitabile", "0612701234", "enricaavitabile@uni.it"));
 
         view.setTestoCerca(""); // Campo vuoto
 
@@ -177,7 +178,7 @@ public class UtenteControllerTest {
 
     @Test
     void testCerca_NessunaCorrispondenza() {
-        service.db.add(new Utente("Angelo", "Palladino", "0612709567", "angelopalladino@uni.it"));
+        service.lista.add(new Utente("Angelo", "Palladino", "0612709567", "angelopalladino@uni.it"));
 
         view.setTestoCerca("Manzo"); // Non esiste
 
@@ -191,8 +192,8 @@ public class UtenteControllerTest {
         Utente utente1 = new Utente("Alessandro", "Picariello", "0612707542", "alepica@uni.it");
         Utente utente2 = new Utente("Matteo", "Iandiorio", "0612702574", "mattiand@uni.it");
         
-        service.db.add(utente1);
-        service.db.add(utente2);
+        service.lista.add(utente1);
+        service.lista.add(utente2);
 
         controller.aggiornaVista();
 
@@ -207,7 +208,7 @@ public class UtenteControllerTest {
 
     @Test
     void testAggiornaVista_NessunDato() {
-        service.db.clear();
+        service.lista.clear();
 
         controller.aggiornaVista();
 

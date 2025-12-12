@@ -1,6 +1,7 @@
 package it.unisa.diem.ingegneriadelsoftware.model;
 import java.util.List;
 import java.util.ArrayList;
+import java.time.Year;
 
 /**
  * @class Libro
@@ -56,10 +57,15 @@ public class Libro extends Dati {
      * @brief Controlla che i dati del libro siano corretti.
      * @return vero se i dati sono validi altrimenti restituisce falso.
      */
+
     public boolean isValido() {
+        int annoCorrente = Year.now().getValue(); // Ottiene l'anno corrente (e.g., 2025)
+        
         return titolo != null && !titolo.trim().isEmpty() &&
                isbn != null && !isbn.trim().isEmpty() &&
-               copie >= 0;
+               copie >= 0 &&
+               autori != null && !autori.isEmpty() &&
+               anno <= annoCorrente; 
     }
 
     /**
@@ -67,9 +73,13 @@ public class Libro extends Dati {
      * @post Il numero di copie disponibili diminuisce di uno.
      * @details Questo metodo deve essere invocato quando bisogna effettuare l'azione del prestito.
      */
+
     public void decrementaCopie() {
         if (copie > 0) {
             copie--;
+        } else {
+            // controllo copie
+            throw new IllegalStateException("Impossibile prestare: nessuna copia disponibile."); 
         }
     }
 
@@ -168,9 +178,10 @@ public class Libro extends Dati {
      * @see Dati#toString()
      */
     @Override
+
     public String toString() {
-        return String.format("ISBN: %s | Titolo: %s | Autori: %s | Copie: %d",
-                isbn, titolo, getAutoriString(), copie);
+        return String.format("ISBN: %s | Titolo: %s | Autori: %s | Anno: %d | Copie: %d", // Aggiunto Anno
+                isbn, titolo, getAutoriString(), anno, copie); // Aggiunta la variabile 'anno'
     }
     /**
      * @brief Restituisce l'elenco degli autori associati al libro.
