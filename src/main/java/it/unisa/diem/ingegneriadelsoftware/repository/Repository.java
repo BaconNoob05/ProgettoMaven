@@ -1,6 +1,8 @@
 package it.unisa.diem.ingegneriadelsoftware.repository;
 import java.util.List;
 import it.unisa.diem.ingegneriadelsoftware.model.InterfaceID;
+import java.util.ArrayList;
+
 
 /**
  * @file Repository.java
@@ -30,20 +32,32 @@ public class Repository<T extends InterfaceID> implements InterfaceRepository<T>
      * @param [in] file Il nome del file.
      * @param [in] gestore Il gestore per l'I/O.
      */
-    public Repository(String file, InterfaceGestoreIO<T> gestore) { }
+    public Repository(String file, InterfaceGestoreIO<T> gestore) {
+        this.nomeFile = file;
+        this.gestoreIO = gestore;
+        this.lista = new ArrayList<>();
+        caricaTutti(lista);
+    }
 
     /**
      * @brief Avviene il salvataggio dello stato attuale della lista su file.
      */
     @Override
-    public void salvaSuFile() { }
+    public void salvaSuFile() {
+        gestoreIO.salvaDati(nomeFile, lista);
+    }
 
     /**
      * @brief Carica tutti gli elementi dal file alla memoria locale del repository.
      * @details Popola la lista interna leggendo i dati tramite il gestore di I/O.
      */
-    @Override
-    public void caricaTutti(List<T> lista) { }
+    @Override 
+    public void caricaTutti(List<T> lista) {
+        this.lista = gestoreIO.caricaDati(nomeFile);
+        if (this.lista == null) {
+            this.lista = new ArrayList<>();
+        }
+    }
 
     /**
      * @brief Inserisce un nuovo elemento o aggiorna uno esistente.
@@ -54,7 +68,25 @@ public class Repository<T extends InterfaceID> implements InterfaceRepository<T>
      * @post La lista contiene l'elemento aggiornato.
      */
     @Override
-    public void inserisciOAggiorna(T elemento) { }
+    public void inserisciOAggiorna(T elemento) {
+        if (elemento == null || elemento.getId() == null) {
+            return;
+        }
+
+        T esistente = cerca(elemento.getId());
+
+        if (esistente != null) {
+            // Aggiorna: trova l'indice e sostituisce
+            int index = lista.indexOf(esistente);
+            if (index != -1) {
+                lista.set(index, elemento);
+            }
+        } else {
+            // Inserisce nuovo elemento
+            lista.add(elemento);
+        }
+        salvaSuFile();
+    }
 
     /**
      * @brief Elimina un elemento dato il suo ID.
@@ -62,7 +94,13 @@ public class Repository<T extends InterfaceID> implements InterfaceRepository<T>
      * @post Non esiste più alcun elemento nella lista con quell'ID.
      */
     @Override
-    public void elimina(String id) { }
+    public void elimina(String id) {
+        T elementoDaRimuovere = cerca(id);
+        if (elementoDaRimuovere != null) {
+            lista.remove(elementoDaRimuovere);
+            salvaSuFile();
+        }
+    }
 
     /**
      * @brief Cerca un elemento tramite il suo ID.
@@ -70,8 +108,13 @@ public class Repository<T extends InterfaceID> implements InterfaceRepository<T>
      * @return L'elemento trovato, altrimenti restituisce un valore nullo.
      */
     @Override
-    public T cerca(String id) { 
-    
+    public T cerca(String id) {
+        if (id == null) return null;
+        for (T elemento : lista) {
+            if (id.equals(elemento.getId())) {
+                return elemento;
+            }
+        }
         return null;
     }
 
@@ -81,9 +124,7 @@ public class Repository<T extends InterfaceID> implements InterfaceRepository<T>
      * @see InterfaceRepository#getAll()
      */
     @Override
-    public List<T> getAll() { 
-    
-    
-        return null;
+    public List<T> getAll() {
+        return lista;
     }
 }
