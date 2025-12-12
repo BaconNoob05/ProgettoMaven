@@ -1,8 +1,11 @@
 package it.unisa.diem.ingegneriadelsoftware.service;
 
 import java.util.List;
+import java.util.ArrayList;
+import java.util.stream.Collectors;
 import it.unisa.diem.ingegneriadelsoftware.repository.InterfaceRepository;
 import it.unisa.diem.ingegneriadelsoftware.model.Utente;
+
 
 /**
  * @class UtenteService
@@ -15,8 +18,8 @@ public class UtenteService extends BaseService<Utente> {
      * @brief Costruttore.
      * @param [in] repo Il repository degli utenti.
      */
-    public UtenteService(InterfaceRepository<Utente> repo) {
-        super(repo);
+    public UtenteService(InterfaceRepository<Utente> repository) {
+        super(repository);
     }
 
     /**
@@ -28,8 +31,27 @@ public class UtenteService extends BaseService<Utente> {
      * @see BaseService#cercaGenerico(String)
      */
     public List<Utente> cercaPerCognome(String cognome) { 
-    
-    
-        return null;
+        if (cognome == null) 
+            return new ArrayList<>();
+        
+        String filtroLowerCase = cognome.toLowerCase();
+        
+        return getAll().stream().filter(u -> u.getCognome().toLowerCase().contains(filtroLowerCase)).collect(Collectors.toList());
+    }
+
+
+/**
+     * @brief Necessario per il funzionamento della barra di ricerca del Controller.
+     * Collega la ricerca generica alla ricerca specifica per cognome.
+     */
+    @Override
+    public List<Utente> cercaGenerico(String filtro) {
+        if (filtro == null || filtro.trim().isEmpty()) {
+            return getAll();
+        }
+        return cercaPerCognome(filtro);
     }
 }
+
+
+
