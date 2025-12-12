@@ -10,48 +10,44 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-/**
- *
- * @author danie
- */
 public class UtenteServiceStub extends UtenteService{
     public List<Utente> db = new ArrayList<>();
-        public boolean salvaChiamato = false;
-        public boolean modificaChiamato = false;
+    public boolean salvaChiamato = false;
+    public boolean modificaChiamato = false;
 
-        public UtenteServiceStub() {
-            super(null); 
-        }
+    public UtenteServiceStub() {
+        super(null); 
+    }
 
-        @Override
-        public void salva(Utente utente) {
-            this.salvaChiamato = true;
-            db.add(utente);
-        }
+    @Override
+    public void salva(Utente utente) {
+        this.salvaChiamato = true;
+        db.add(utente);
+    }
 
-        @Override
-        public void modifica(Utente utente) {
-            this.modificaChiamato = true;
-            db.removeIf(u -> u.getId().equals(utente.getId()));
-            db.add(utente);
-        }
+    @Override
+    public void modifica(Utente utente) {
+        this.modificaChiamato = true;
+        db.removeIf(u -> u.getId().equals(utente.getId()));
+        db.add(utente);
+    }
         
-        @Override
-        public void elimina(Utente utente) {
-            db.removeIf(u -> u.getId().equals(utente.getId()));
-        }
+    @Override
+    public void elimina(Utente utente) {
+        db.removeIf(u -> u.getId().equals(utente.getId()));
+    }
         
-        @Override
-        public List<Utente> cercaGenerico(String filtro) {
-            if (filtro == null || filtro.isEmpty()) return getAll();
-            //Da vedere
-            return db.stream()
-                    .filter(u -> u.toString().toLowerCase().contains(filtro.toLowerCase()))
-                    .collect(Collectors.toList());
-        }
+    @Override
+    public List<Utente> cercaGenerico(String filtro) {
+    if (filtro == null || filtro.isEmpty()) return getAll();
+        //Da vedere
+        return db.stream()
+                .filter(u -> u.toString().toLowerCase().contains(filtro.toLowerCase()))
+                .collect(Collectors.toList());
+    }
 
-        @Override
-        public List<Utente> getAll() {
-            return new ArrayList<>(db);
-        }
+    @Override
+    public List<Utente> getAll() {
+        return new ArrayList<>(db);
+    }
 }

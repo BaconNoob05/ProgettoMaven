@@ -11,10 +11,6 @@ import it.unisa.diem.ingegneriadelsoftware.view.UtenteViewStub;
 import org.junit.jupiter.api.*;
 import static org.junit.jupiter.api.Assertions.*;
 
-/**
- *
- * @author danie
- */
 public class UtenteControllerTest {
     private UtenteController controller;
     private UtenteViewStub view;

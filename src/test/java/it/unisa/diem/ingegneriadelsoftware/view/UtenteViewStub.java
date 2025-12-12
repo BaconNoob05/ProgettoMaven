@@ -8,10 +8,6 @@ package it.unisa.diem.ingegneriadelsoftware.view;
 import it.unisa.diem.ingegneriadelsoftware.model.Utente;
 import java.util.List;
 
-/**
- *
- * @author danie
- */
 public class UtenteViewStub extends UtenteView {
     private Utente utenteNuovo;
     private Utente utenteModificato;
@@ -53,7 +49,7 @@ public class UtenteViewStub extends UtenteView {
         
     //Metodi utili per i test
     public void setInputNuovo(Utente u) { this.utenteNuovo = u; }
-        public void setInputModificato(Utente u) { this.utenteModificato = u; }
-        public void setSelezionato(Utente u) { this.elementoSelezionato = u; }
-        public void setTestoCerca(String s) { this.testoCerca = s; }
+    public void setInputModificato(Utente u) { this.utenteModificato = u; }
+    public void setSelezionato(Utente u) { this.elementoSelezionato = u; }
+    public void setTestoCerca(String s) { this.testoCerca = s; }
 }
