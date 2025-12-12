@@ -1,6 +1,8 @@
 package it.unisa.diem.ingegneriadelsoftware.service;
 
 import java.util.List;
+import java.util.ArrayList;
+import java.util.stream.Collectors;
 import it.unisa.diem.ingegneriadelsoftware.repository.InterfaceRepository; 
 import it.unisa.diem.ingegneriadelsoftware.model.Libro; 
 
@@ -13,10 +15,10 @@ public class LibroService extends BaseService<Libro> {
 
     /**
      * @brief Costruttore.
-     * @param [in] repo Il repository dei libri.
+     * @param [in] repository Il repository dei libri.
      */
-    public LibroService(InterfaceRepository<Libro> repo) {
-        super(repo);
+    public LibroService(InterfaceRepository<Libro> repository) {
+        super(repository);
     }
 
     /**
@@ -28,8 +30,9 @@ public class LibroService extends BaseService<Libro> {
      * @see BaseService#cercaGenerico(String)
      */
     public List<Libro> cercaPerTitolo(String titolo) {
-    
-        return null;
+        if (titolo == null) 
+            return new ArrayList<>();
+        return getAll().stream().filter(l -> l.getTitolo().equalsIgnoreCase(titolo)).collect(Collectors.toList());
     }
 
     /**
@@ -41,8 +44,25 @@ public class LibroService extends BaseService<Libro> {
      * @see Libro#getAutoriString()
      */
     public List<Libro> cercaPerAutore(String autore) {
-    
-    
-        return null;
+        if (autore == null) 
+            return new ArrayList<>();
+        String autoreLowerCase = autore.toLowerCase();
+        return getAll().stream().filter(l -> l.getAutoriString().toLowerCase().contains(autoreLowerCase)).collect(Collectors.toList());
     }
-}
+
+ /**
+     * @brief Ricerca generica: cerca corrispondenze per titolo o per autore.
+     */
+    @Override
+    public List<Libro> cercaGenerico(String filtro) {
+        if (filtro == null || filtro.trim().isEmpty()) {
+            return getAll();
+        }
+        
+        String filtroLowerCase = filtro.toLowerCase();
+
+        return getAll().stream().filter(l -> l.getTitolo().toLowerCase().contains(filtroLowerCase) || l.getAutoriString().toLowerCase().contains(filtroLowerCase))
+               .collect(Collectors.toList());
+    }
+    
+    }
