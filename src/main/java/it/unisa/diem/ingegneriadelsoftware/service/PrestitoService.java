@@ -2,6 +2,7 @@ package it.unisa.diem.ingegneriadelsoftware.service;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.stream.Collectors;
 import it.unisa.diem.ingegneriadelsoftware.repository.InterfaceRepository;
 import it.unisa.diem.ingegneriadelsoftware.model.Prestito;
 import it.unisa.diem.ingegneriadelsoftware.model.Libro;
@@ -11,7 +12,7 @@ import it.unisa.diem.ingegneriadelsoftware.repository.Repository;
 /**
  * @class PrestitoService
  * @brief Classe per la gestione delle operazioni legate al prestito.
- * @details Estende BaseService per le operazioni ad esempio di decremento.
+ * @details Estende BaseService per le operazioni, come il decremento.
  * @see BaseService
  */
 public class PrestitoService extends BaseService<Prestito> {
@@ -21,10 +22,6 @@ public class PrestitoService extends BaseService<Prestito> {
      * Necessario per aggiornare il numero di copie disponibili quando avviene un prestito o una restituzione.
      */
     private LibroService libroService;
-    /**
-     * @brief Repository specifico per l'accesso ai dati dei prestiti.
-     */
-    private Repository<Prestito> repository;
     
     /**
      * @brief Costruttore per la gestione dei prestiti.
@@ -33,6 +30,7 @@ public class PrestitoService extends BaseService<Prestito> {
      */
     public PrestitoService(InterfaceRepository<Prestito> repo, LibroService libroService) {
         super(repo);
+        this.libroService = libroService;
     }
 
 
@@ -41,23 +39,53 @@ public class PrestitoService extends BaseService<Prestito> {
      * @param [in] utente L'oggetto Utente che richiede il prestito.
      * @param [in] libro L'oggetto Libro da prestare.
      * @param [in] dataPrevista La data entro cui il libro deve essere restituito.
-     * @pre L'utente e il libro non devono essere nulli.
+     * @pre L'utente, il libro e la data di restituzione non devono essere nulli.
      * @pre Il libro deve avere copie disponibili.
      * @post Un nuovo oggetto Prestito viene salvato nel repository.
      * @post Il numero di copie disponibili del libro viene decrementato di 1.
      * @see LibroService
      */
-    public void registraPrestito(Utente utente, Libro libro, LocalDate dataPrevista) { }
+    public void registraPrestito(Utente utente, Libro libro, LocalDate dataPrevista) { 
+        if (utente == null || libro == null || dataPrevista == null) 
+        {
+            throw new IllegalArgumentException("Dati mancanti per consentire la registrazione del prestito.");
+        }
+        if (libro.getCopieDisponibili() > 0) {
+            Prestito nuovoPrestito = new Prestito(utente, libro, dataPrevista);
+            libro.decrementaCopie();
+            libroService.modifica(libro);
+            this.salva(nuovoPrestito);  
+        } 
+        else 
+        {
+            throw new IllegalStateException("Non sono presenti copie disponibili per il libro: " + libro.getTitolo());
+        }
+    }
  
     /**
      * @brief Registra la restituzione di un libro chiudendo il prestito.
      * @param [in] prestito L'oggetto Prestito da chiudere.
      * @param [in] dataEffettiva La data in cui avviene la restituzione fisica del libro.
-     * @pre Il prestito deve essere attivo.
+     * @pre Il prestito deve essere ancora attivo.
      * @post Il campo dataEffettiva del prestito viene impostato.
      * @post Il numero di copie disponibili del libro viene incrementato di 1.
      */
-    public void registraRestituzione(Prestito prestito, LocalDate dataEffettiva) { }
+    public void registraRestituzione(Prestito prestito, LocalDate dataEffettiva) { 
+        if (prestito == null || dataEffettiva == null) 
+        {
+        return;
+        }
+         
+        prestito.registraRestituzione(dataEffettiva);
+        this.modifica(prestito);
+
+        Libro libro = prestito.getLibro();
+        if (libro != null) 
+        {
+            libro.incrementaCopie();
+            libroService.modifica(libro);
+        }
+        }
 
     /**
      * @brief Restituisce la lista dei prestiti ancora attivi.
@@ -66,7 +94,24 @@ public class PrestitoService extends BaseService<Prestito> {
      * @post Lo stato dei dati non viene modificato.
      */
     public List<Prestito> listaPrestitiAttivi() { 
-    
-        return null;
+        return getAll().stream().filter(p -> p.getDataEffettiva() == null).collect(Collectors.toList());
+    }
+      
+
+     /**
+     * @brief Ricerca generica per Prestito (es. per nome utente o titolo libro).
+     */
+    @Override
+    public List<Prestito> cercaGenerico(String filtro) {
+        if (filtro == null || filtro.isEmpty()) 
+            return getAll();
+     
+        String filtroLowerCase = filtro.toLowerCase();
+        
+        return getAll().stream()
+                .filter(p -> p.getNomeUtente().toLowerCase().contains(filtroLowerCase) || p.getTitoloLibro().toLowerCase().contains(filtroLowerCase))
+                .collect(Collectors.toList());
     }
 }
+
+
