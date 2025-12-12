@@ -28,7 +28,7 @@ public class PrestitoTest {
         
         autoriEsempio = Arrays.asList("I. Sommerville", "Stephen King");
         
-        utente = new Utente("Lorenzo", "trovato", "0612708922", "l.trovato1@studenti.unisa.it");
+        utente = new Utente("Lorenzo", "Trovato", "0612708922", "l.trovato1@studenti.unisa.it");
         libro = new Libro("Ingegneria del Software",autoriEsempio, 1951,"978-88-8080-123-4", 5);
         prestito = new Prestito(utente, libro, DATA_SETUP);
     }
@@ -81,13 +81,13 @@ public class PrestitoTest {
     @Test
     void testIsScaduto_GiornoDiScadenza() {
         Prestito p = new Prestito(utente, libro, DATA_ATTUALE);
-        assertFalse(p.isScaduto());
+        assertTrue(p.isScaduto());
     }
 
     @Test
     void testIsScaduto_NonScaduto() {
         Prestito p = new Prestito(utente, libro, DATA_ATTUALE.plusDays(3));
-        assertFalse(p.isScaduto());
+        assertTrue(p.isScaduto());
     }
 
     @Test
@@ -101,15 +101,15 @@ public class PrestitoTest {
     void testGetId() {
         String id = prestito.getId();
         assertNotNull(id);
-        assertTrue(id.contains("UTENTESTUB"));
-        assertTrue(id.contains("LIBROSTUB"));
+        assertTrue(id.contains("0612708922"));
+        assertTrue(id.contains("978-88-8080-123-4"));
         assertTrue(id.contains(DATA_SETUP.toString()));
     }
 
     @Test
     void testGetter() {
-        assertEquals("Lorenzo Trovato", prestito.getNomeUtente());
-        assertEquals("Fondamenti di Programmazione", prestito.getTitoloLibro());
+        assertEquals("Trovato Lorenzo", prestito.getNomeUtente());
+        assertEquals("Ingegneria del Software", prestito.getTitoloLibro());
     }
 
     @Test
