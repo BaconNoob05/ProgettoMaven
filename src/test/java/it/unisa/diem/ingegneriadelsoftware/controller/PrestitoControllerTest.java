@@ -44,8 +44,8 @@ public class PrestitoControllerTest {
 
         controller.registraPrestito();
 
-        assertEquals(1, serviceStub.fakeDB.size());
-        assertEquals("ISBN1", serviceStub.fakeDB.get(0).getLibro().getIsbn());
+        assertEquals(1, serviceStub.list.size());
+        assertEquals("ISBN1", serviceStub.list.get(0).getLibro().getIsbn());
 
         
         assertNotNull(viewStub.listaRicevuta);
@@ -59,7 +59,7 @@ public class PrestitoControllerTest {
 
         controller.registraPrestito();
 
-        assertTrue(serviceStub.fakeDB.isEmpty());
+        assertTrue(serviceStub.list.isEmpty());
     }
 
     @Test
@@ -68,7 +68,7 @@ public class PrestitoControllerTest {
         
         
         Prestito pAttivo = new Prestito(u, l, LocalDate.now());
-        serviceStub.fakeDB.add(pAttivo);
+        serviceStub.list.add(pAttivo);
         
 
         viewStub.setElementoSelezionato(pAttivo);
@@ -79,7 +79,7 @@ public class PrestitoControllerTest {
         controller.registraRestituzione();
 
         // 4. Verifica: Il prestito nel DB risulta chiuso
-        Prestito nelDB = serviceStub.fakeDB.get(0);
+        Prestito nelDB = serviceStub.list.get(0);
         assertEquals(dataRest, nelDB.getDataEffettiva());
     }
 
@@ -100,7 +100,7 @@ public class PrestitoControllerTest {
     void testRegistraRestituzione_DataMancante_Errore() {
 
         Prestito p = new Prestito(u, l, LocalDate.now());
-        serviceStub.fakeDB.add(p);
+        serviceStub.list.add(p);
         viewStub.setElementoSelezionato(p);
         viewStub.setDataRestituzione(null); // con null
 
@@ -108,7 +108,7 @@ public class PrestitoControllerTest {
         controller.registraRestituzione();
 
 
-        assertNull(serviceStub.fakeDB.get(0).getDataEffettiva());
+        assertNull(serviceStub.list.get(0).getDataEffettiva());
         assertNotNull(viewStub.ultimoMessaggio);
     }
 
@@ -121,8 +121,8 @@ public class PrestitoControllerTest {
         Prestito chiuso = new Prestito(u, l, LocalDate.now());
         chiuso.registraRestituzione(LocalDate.now()); 
 
-        serviceStub.fakeDB.add(attivo);
-        serviceStub.fakeDB.add(chiuso);
+        serviceStub.list.add(attivo);
+        serviceStub.list.add(chiuso);
 
 
         controller.aggiornaPrestiti();
@@ -139,7 +139,7 @@ public class PrestitoControllerTest {
     void testInit_CaricaDatiIniziali() {
         
         Prestito p = new Prestito(u, l, LocalDate.now());
-        serviceStub.fakeDB.add(p);
+        serviceStub.list.add(p);
 
         controller.init();
 
@@ -155,8 +155,8 @@ public class PrestitoControllerTest {
         Prestito chiuso = new Prestito(u, l, LocalDate.now());
         chiuso.registraRestituzione(LocalDate.now());
 
-        serviceStub.fakeDB.add(attivo);
-        serviceStub.fakeDB.add(chiuso);
+        serviceStub.list.add(attivo);
+        serviceStub.list.add(chiuso);
 
 
         controller.aggiornaVista();
