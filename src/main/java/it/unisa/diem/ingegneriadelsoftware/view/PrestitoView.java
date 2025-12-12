@@ -1,6 +1,6 @@
 package it.unisa.diem.ingegneriadelsoftware.view;
 import javafx.scene.control.*;
-import it.unisa.diem.ingegneriadelsoftware.model.Prestito;
+import it.unisa.diem.ingegneriadelsoftware.model.*;
 import java.time.LocalDate;
 
 /**

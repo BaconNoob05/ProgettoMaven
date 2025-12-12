@@ -4,6 +4,7 @@ import it.unisa.diem.ingegneriadelsoftware.service.*;
 import it.unisa.diem.ingegneriadelsoftware.model.*;
 import org.junit.jupiter.api.*;
 import java.time.LocalDate;
+import java.util.Arrays;
 import java.util.List;
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -34,8 +35,8 @@ class PrestitoControllerTest {
         vistaFittizia = new PrestitoViewStub();
         controller = new PrestitoController(vistaFittizia, servizioPrestiti);
         
-        List<String> autoriDeSio = List.of("Claudio De Sio Cesari");
-        List<String> autoriDickens = List.of("Charles Dickens");
+        List<String> autoriDeSio = Arrays.asList("Claudio De Sio Cesari");
+        List<String> autoriDickens = Arrays.asList("Charles Dickens");
         
         libroDisponibile = new Libro("Il nuovo Java. Guida definitiva", autoriDeSio, 2023, "978-8868945620", 12);
         libroEsaurito = new Libro("A Christmas Carol", autoriDickens, 1843, "978-0141439247", 0);
