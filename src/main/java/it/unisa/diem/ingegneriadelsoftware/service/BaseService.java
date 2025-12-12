@@ -1,12 +1,14 @@
 package it.unisa.diem.ingegneriadelsoftware.service;
+
 import java.util.List;
 import java.util.Comparator;
+import java.util.ArrayList;
 import it.unisa.diem.ingegneriadelsoftware.repository.InterfaceRepository;
 import it.unisa.diem.ingegneriadelsoftware.model.InterfaceID;
 
 /**
  * @class BaseService
- * @brief Implementazione base astratta per i servizi.
+ * @brief Implementazione base astratta per i service.
  * @tparam T Il tipo di dato gestito, che deve implementare InterfaceID per garantire l'accesso all'ID.
  */
 public abstract class BaseService<T extends InterfaceID> implements InterfaceService<T> {
@@ -20,7 +22,9 @@ public abstract class BaseService<T extends InterfaceID> implements InterfaceSer
      * @brief Costruttore della classe base.
      * @param [in] repo Il repository specifico da associare al servizio.
      */
-    public BaseService(InterfaceRepository<T> repo) { }
+    public BaseService(InterfaceRepository<T> repo) { 
+            this.repository = repo;
+        }
 
     /**
      * @brief Salva o aggiorna un elemento.
@@ -30,7 +34,11 @@ public abstract class BaseService<T extends InterfaceID> implements InterfaceSer
      * @see InterfaceRepository#inserisciOAggiorna(Object)
      */
     @Override
-    public void salva(T elemento) { }
+    public void salva(T elemento) { 
+        if (elemento != null) {
+            repository.inserisciOAggiorna(elemento);
+        }
+    }
 
     /**
      * @brief Modifica un elemento esistente.
@@ -40,7 +48,11 @@ public abstract class BaseService<T extends InterfaceID> implements InterfaceSer
      * @see InterfaceRepository#inserisciOAggiorna(Object)
      */
     @Override
-    public void modifica(T elemento) { }
+    public void modifica(T elemento) { 
+        if (elemento != null) {
+            repository.inserisciOAggiorna(elemento);
+        }
+    }
 
     /**
      * @brief Elimina un elemento utilizzando il suo ID.
@@ -50,7 +62,11 @@ public abstract class BaseService<T extends InterfaceID> implements InterfaceSer
      * @see InterfaceRepository#elimina(String)
      */
     @Override
-    public void elimina(T elemento) { }
+    public void elimina(T elemento) {
+        if (elemento != null && elemento.getId() != null) {
+            repository.elimina(elemento.getId());
+        }
+    }
 
     /**
      * @brief Cerca un elemento per ID delegando al repository.
@@ -61,8 +77,10 @@ public abstract class BaseService<T extends InterfaceID> implements InterfaceSer
      */
     @Override
     public T cerca(String id) { 
-    
-        return null;
+        if (id == null || id.trim().isEmpty()) {
+            return null;
+        }
+        return repository.cerca(id);
     }
 
     /**
@@ -72,8 +90,7 @@ public abstract class BaseService<T extends InterfaceID> implements InterfaceSer
      */
     @Override
     public List<T> cercaGenerico(String filtro) { 
-    
-        return null;
+        return getAll();        //Se non viene sovrascritto dalle sottoclassi, il metodo restituisce tutto
     }
 
     /**
@@ -84,8 +101,7 @@ public abstract class BaseService<T extends InterfaceID> implements InterfaceSer
      */
     @Override
     public List<T> getAll() { 
-    
-        return null;
+        return repository.getAll();
     }
 
     /**
@@ -95,5 +111,7 @@ public abstract class BaseService<T extends InterfaceID> implements InterfaceSer
      * @post L'ordine di visualizzazione cambia.
      */
     @Override
-    public void ordina(Comparator<T> comparatore) { }
+    public void ordina(Comparator<T> comparatore) { 
+            
+    }
 }
