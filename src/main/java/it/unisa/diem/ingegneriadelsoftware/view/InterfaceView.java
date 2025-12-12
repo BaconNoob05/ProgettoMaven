@@ -9,6 +9,7 @@ import java.util.List;
  */
 public interface InterfaceView<T> {
 
+    
     /**
      * @brief Visualizza una lista di elementi nella view.
      * @param [in] lista La lista di oggetti T da mostrare.
@@ -17,6 +18,8 @@ public interface InterfaceView<T> {
      */
     void mostraLista(List<T> lista);
 
+    
+    
     /**
      * @brief Recupera l'elemento attualmente selezionato dall'utente.
      * @return L'oggetto selezionato, altrimenti restituisce un valore nullo.
@@ -33,6 +36,8 @@ public interface InterfaceView<T> {
      */
     String getCampoCerca();
 
+    
+    
     /**
      * @brief Mostra un messaggio all'utente.
      * @param [in] messaggio Il testo da visualizzare.

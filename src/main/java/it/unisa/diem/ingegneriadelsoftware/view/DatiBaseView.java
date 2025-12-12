@@ -156,12 +156,18 @@ public abstract class DatiBaseView<T extends InterfaceID> extends BaseView<T> {
 
     /** @return Il bottone "Modifica". */
     public Button getModificaButton() { return modificaButton; }
+    
     /** @return Il bottone "Cancella". */
     public Button getCancellaButton() { return cancellaButton; }
+    
+    
     /** @return Il bottone "Conferma". */
     public Button getOkButton() { return okButton; }
+    
     /** @return Il campo di testo per la ricerca. */
     public TextField getCercaField() { return cercaField; }
+    
+    
     /** @return La TableView principale. */
     public TableView<T> getTableView() { return tableView; }
 }

@@ -16,20 +16,25 @@ import java.util.List;
  */
 public class LibroView extends DatiBaseView<Libro> {
 
-    // Campi Dettagli Libro (Specifici)
+    
     /** @brief Campo di input per il titolo del libro. */
     private final TextField titoloInput;
     /** @brief Campo di input per l'anno di pubblicazione. */
     private final TextField annoInput;
+    
     /** @brief Campo di input per il codice ISBN . */
     private final TextField isbnInput;
+    
     /** @brief Campo di input per il numero di copie disponibili. */
     private final TextField copieInput;
 
+    
+    
     /**
      * @brief Costruttore di base della vista Libro.
      * @post I campi di input sono istanziati e la vista è pronta per l'inizializzazione.
      */
+    
     public LibroView() {
         
         super("Libro"); 
@@ -65,12 +70,15 @@ public class LibroView extends DatiBaseView<Libro> {
         
         
         TableColumn<Libro, Integer> copieCol = new TableColumn<>("Copie disponibili");
+        
         copieCol.setCellValueFactory(cellData -> new SimpleIntegerProperty(cellData.getValue().getCopieDisponibili()).asObject());
 
         tableView.getColumns().addAll(titoloCol, autoriCol, annoCol, isbnCol, copieCol);
         tableView.setPlaceholder(new Label("Nessun contenuto nella tabella"));
     }
 
+    
+    
     /**
      * @brief Imposta i valori nei campi di input per la modifica o l'inserimento.
      * @param [in] libro L'oggetto Libro i cui dati devono essere mostrati.
@@ -86,6 +94,7 @@ public class LibroView extends DatiBaseView<Libro> {
             titoloInput.setText(libro.getTitolo());
             annoInput.setText(String.valueOf(libro.getAnno()));
             isbnInput.setText(libro.getId());
+            
             copieInput.setText(String.valueOf(libro.getCopieDisponibili()));
             isbnInput.setEditable(false); 
             
@@ -95,6 +104,7 @@ public class LibroView extends DatiBaseView<Libro> {
             titoloInput.setText("");
             annoInput.setText("");
             isbnInput.setText("");
+            
             copieInput.setText("");
             isbnInput.setEditable(true); 
             
@@ -107,6 +117,7 @@ public class LibroView extends DatiBaseView<Libro> {
      * @post Il pannello viene restituito pronto per essere integrato nella vista principale altrimenti un valore nullo.
      * @see CrudViewBase#creaPaneDettaglio()
      */
+    
     @Override
     protected GridPane creaPaneDettaglio() {
 
@@ -133,12 +144,12 @@ public class LibroView extends DatiBaseView<Libro> {
         
         detailPane.add(copieInput, 1, 4);
         
-        detailPane.add(messaggioLabel, 0, 5, 2, 1); // Componente ereditato
+        detailPane.add(messaggioLabel, 0, 5, 2, 1); 
         return detailPane;
     }
     
 
-/**
+    /**
      * @brief Recupera i dati inseriti nel form per creare un nuovo libro.
      * @return Un nuovo oggetto Libro popolato con i dati del form, altrimenti restituisce un valore nullo.
      * @pre I campi devono contenere dati validi.
@@ -162,7 +173,7 @@ public class LibroView extends DatiBaseView<Libro> {
     }
 
 
- /**
+    /**
      * @brief Recupera i dati modificati dal form per aggiornare un libro esistente.
      * @return L'oggetto Libro con i dati aggiornati, altrimenti restituisce un valore nullo.
      * @pre Un libro deve essere stato precedentemente selezionato o caricato nel form.
@@ -172,17 +183,21 @@ public class LibroView extends DatiBaseView<Libro> {
         Libro libroDaModificare = getElementoSelezionato();
         
         if (libroDaModificare == null) {
+            
             mostraMessaggio("Selezionare un libro prima di procedere con la modifica.");
             return null;
         }
 
         try {
             libroDaModificare.setTitolo(titoloInput.getText().trim());
+            
             libroDaModificare.setAnno(Integer.parseInt(annoInput.getText().trim()));
             libroDaModificare.setCopieDisponibili(Integer.parseInt(copieInput.getText().trim()));
             
             return libroDaModificare;
+            
         } catch (NumberFormatException e) {
+            
             mostraMessaggio("Errore: Anno e Copie disponibili devono essere numeri validi.");
             return null;
         }

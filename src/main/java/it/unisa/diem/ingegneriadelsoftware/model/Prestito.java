@@ -22,6 +22,9 @@ public class Prestito extends Dati {
     /** Riferimento al libro prestato. */
     private Libro libro;
     
+    /** Data in cui è stato effettuato il prestito (NUOVO CAMPO). */
+    private LocalDate dataPrestito; 
+    
     /** Data entro la quale il libro deve essere restituito. */
     private LocalDate dataPrevista;
     
@@ -34,13 +37,15 @@ public class Prestito extends Dati {
      * @param [in] libro Il libro oggetto del prestito.
      * @param [in] dataPrevista La data prevista per la restituzione.
      * @pre L'oggetto Utente e l'oggetto Libro non devono avere un valore nullo.
-     * @post Viene creato un oggetto Prestito con dataEffettiva impostata a valore nullo.
+     * @post Viene creato un oggetto Prestito con dataEffettiva impostata a valore nullo e dataPrestito impostata a LocalDate.now().
      */
     public Prestito(Utente utente, Libro libro, LocalDate dataPrevista) {
         this.utente = utente;
         this.libro = libro;
         this.dataPrevista = dataPrevista;
         this.dataEffettiva = null;
+        // INIZIALIZZAZIONE DELLA DATA DI PRESTITO:
+        this.dataPrestito = LocalDate.now(); 
     }
 
     /**
@@ -60,19 +65,20 @@ public class Prestito extends Dati {
         this.dataEffettiva = data;
     }
 
-     /**
+    /**
      * @brief Ottiene l'identificativo univoco del prestito.
      * @details L'ID è generato combinando gli identificativi di Utente e Libro e la data del prestito
-     * per garantire l'univocità all'interno del sistema.
+     * per garantire l'univocità all'interno del sistema (Utilizzando dataPrestito).
      * @return L'ID del prestito altrimenti restituisce un valore nullo.
      * @see Dati#getId()
      */
     @Override 
     public String getId() {
-        if (utente == null || libro == null || dataPrevista == null) {
-            return null;
+        // AGGIORNATO: Usa dataPrestito per garantire univocità anche se la data prevista è la stessa.
+        if (utente == null || libro == null || dataPrestito == null) { 
+            return null; 
         }
-        return utente.getId() + "_" + libro.getId() + "_" + dataPrevista.toString();
+        return utente.getId() + "_" + libro.getId() + "_" + dataPrestito.toString();
     }
 
     /**
@@ -88,8 +94,16 @@ public class Prestito extends Dati {
     public String toString() {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
         String stato = (dataEffettiva == null) ? "ATTIVO (Prevista: " + dataPrevista.format(formatter) + ")" : "CHIUSO (Restituito: " + dataEffettiva.format(formatter) + ")";
-        return String.format("[%s] Utente: %s | Libro: %s | Stato: %s",getId(), getNomeUtente(), getTitoloLibro(), stato);
+        
+        // AGGIUNTO dataPrestito nel toString per debug/chiarezza
+        return String.format("[%s] Prestito: %s | Utente: %s | Libro: %s | Stato: %s",getId(), dataPrestito.format(formatter), getNomeUtente(), getTitoloLibro(), stato);
     }
+
+
+    public LocalDate getDataPrestito() {
+        return dataPrestito;
+    }
+
 
     /** @return Il nome completo o identificativo dell'utente altrimenti restituisce un valore nullo. */
     public String getNomeUtente() {
@@ -124,10 +138,9 @@ public class Prestito extends Dati {
      * @brief Imposta la data di restituzione del libro.
      * @param [in] dataEffettiva La data in cui il libro è stato restituito.
      * @pre La data fornita non deve essere nulla e dovrebbe essere successiva alla data del prestito.
-     * @post Il campo dataEffettiva assume il valore della  data specificata.
+     * @post Il campo dataEffettiva assume il valore della  data specificata.
      */
      public void setDataEffettiva(LocalDate dataEffettiva) { 
-
         this.dataEffettiva=dataEffettiva;
      }
 }
