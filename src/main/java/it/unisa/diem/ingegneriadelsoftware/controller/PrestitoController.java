@@ -3,6 +3,8 @@ package it.unisa.diem.ingegneriadelsoftware.controller;
 import it.unisa.diem.ingegneriadelsoftware.view.PrestitoView;
 import it.unisa.diem.ingegneriadelsoftware.service.PrestitoService;
 import it.unisa.diem.ingegneriadelsoftware.model.Prestito;
+import java.time.LocalDate;
+import java.util.List;
 
 /**
  * @class PrestitoController
@@ -19,7 +21,16 @@ public class PrestitoController extends BaseController<Prestito> {
      */
     public PrestitoController(PrestitoView view, PrestitoService service){
         super(view, service);
+    }
     
+    //DA RIVEDERE DOXYGEN
+    private PrestitoView getSpecificView() {
+        return (PrestitoView) view;
+    }
+
+    //DA RIVEDERE DOXYGEN
+    private PrestitoService getSpecificService() {
+        return (PrestitoService) service;
     }
 
     /**
@@ -29,7 +40,19 @@ public class PrestitoController extends BaseController<Prestito> {
      * @see PrestitoView#getPrestitoNuovo()
      * @see PrestitoService#registraPrestito(Utente, Libro, java.time.LocalDate)
      */
-    public void registraPrestito(){}
+    public void registraPrestito(){
+        Prestito datiInseriti = getSpecificView().getPrestitoNuovo();
+        
+        if (datiInseriti == null) return;
+
+        eseguiOperazione(() -> {
+            getSpecificService().registraPrestito(
+                datiInseriti.getUtente(), 
+                datiInseriti.getLibro(), 
+                datiInseriti.getDataPrevista()
+            );
+        }, "Prestito registrato con successo.");
+    }
 
     /**
      * @brief Gestisce la logica di restituzione di un libro.
@@ -38,11 +61,32 @@ public class PrestitoController extends BaseController<Prestito> {
      * @see PrestitoView#getDataRestituzione()
      * @see PrestitoService#registraRestituzione(Prestito, java.time.LocalDate)
      */
-    public void registraRestituzione(){}
+    public void registraRestituzione(){
+        Prestito prestitoSelezionato = getSpecificView().getElementoSelezionato();
+        LocalDate dataRestituzione = getSpecificView().getDataRestituzione();
+
+        if (prestitoSelezionato == null) {
+            view.mostraMessaggio("Seleziona un prestito attivo dalla lista.");
+            return;
+        }
+
+        if (dataRestituzione == null) {
+            view.mostraMessaggio("Inserisci una data di restituzione valida.");
+            return;
+        }
+
+        eseguiOperazione(() -> {
+            getSpecificService().registraRestituzione(prestitoSelezionato, dataRestituzione);
+            aggiornaPrestiti(); 
+        }, "Restituzione registrata. Prestito chiuso.");
+    }
 
     /**
      * @brief Aggiorna la vista dei prestiti.
      * @see PrestitoService#listaPrestitiAttivi()
      */
-    public void aggiornaPrestiti(){}
+    public void aggiornaPrestiti(){
+        List<Prestito> attivi = getSpecificService().listaPrestitiAttivi();
+        view.mostraLista(attivi);
+    }
 }
