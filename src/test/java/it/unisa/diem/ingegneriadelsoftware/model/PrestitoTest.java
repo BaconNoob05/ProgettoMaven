@@ -42,7 +42,7 @@ public class PrestitoTest {
         assertNull(prestito.getDataEffettiva());
     }
     
-    /* DA VEDERE MEGLIO
+
     @Test
     void testCostruttore_UtenteNullo() {
         assertThrows(IllegalArgumentException.class, () -> {
@@ -56,7 +56,7 @@ public class PrestitoTest {
             new Prestito(utente, null, DATA_SETUP);
         });
     }
-    */
+    
     
     @Test
     void testRegistraRestituzione() {
@@ -65,14 +65,14 @@ public class PrestitoTest {
         assertEquals(restituzione, prestito.getDataEffettiva());
     }
     
-    /* DA VEDERE MEGLIO
+
     @Test
     void testRegistraRestituzione_DataNulla() {
         assertThrows(IllegalArgumentException.class, () -> {
             prestito.registraRestituzione(null);
         });
     }
-    */
+    
 
     @Test
     void testIsScaduto() {

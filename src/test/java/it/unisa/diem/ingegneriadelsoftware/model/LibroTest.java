@@ -86,20 +86,19 @@ public class LibroTest {
         assertEquals(copieIniziali - 1, libro.getCopieDisponibili());
     }
 
-    /* DA VEDERE
+
     @Test
     void testDecrementaCopie_LimiteZero() {
         // Porta le copie a zero
         Libro libroZeroCopie = new Libro(TITOLO, autoriEsempio, ANNO, ISBN_TEST, 1);
         libroZeroCopie.decrementaCopie(); // Copie = 0
 
-        // Test dell'operazione quando le copie sono già zero
-        // Assumiamo che in questo caso venga lanciata una IllegalStateException (non ci sono copie disponibili)
+
         assertThrows(IllegalStateException.class, () -> {
             libroZeroCopie.decrementaCopie();
         });
     }
-    */
+
 
     @Test
     void testIncrementaCopie() {

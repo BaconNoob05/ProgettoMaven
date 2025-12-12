@@ -40,11 +40,23 @@ public class Prestito extends Dati {
      * @post Viene creato un oggetto Prestito con dataEffettiva impostata a valore nullo e dataPrestito impostata a LocalDate.now().
      */
     public Prestito(Utente utente, Libro libro, LocalDate dataPrevista) {
+        
+        if (utente == null) {
+            throw new IllegalArgumentException("L'utente non può essere nullo.");
+        }
+        // Correzione per testCostruttore_LibroNullo
+        if (libro == null) {
+            throw new IllegalArgumentException("Il libro non può essere nullo.");
+        }
+        if (dataPrevista == null) {
+            throw new IllegalArgumentException("La data prevista di restituzione non può essere nulla.");
+        }
+    
         this.utente = utente;
         this.libro = libro;
         this.dataPrevista = dataPrevista;
         this.dataEffettiva = null;
-        // INIZIALIZZAZIONE DELLA DATA DI PRESTITO:
+
         this.dataPrestito = LocalDate.now(); 
     }
 
@@ -62,6 +74,9 @@ public class Prestito extends Dati {
      * @post dataEffettiva != null
      */
     public void registraRestituzione(LocalDate data) {
+        if (data == null) {
+            throw new IllegalArgumentException("La data di restituzione non può essere nulla.");
+        }
         this.dataEffettiva = data;
     }
 
