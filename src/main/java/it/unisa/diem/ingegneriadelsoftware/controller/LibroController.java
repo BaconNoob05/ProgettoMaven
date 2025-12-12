@@ -22,8 +22,12 @@ public class LibroController extends CrudController<Libro> {
      */
     public LibroController(LibroView view, LibroService service){
         super(view,service);
+    }
     
-    };
+    //DA RIVEDERE DOXYGEN
+    private LibroView getSpecificView() {
+        return (LibroView) view;
+    }
 
     /**
      * @brief Avvia il salvataggio di un nuovo libro.
@@ -31,7 +35,12 @@ public class LibroController extends CrudController<Libro> {
      * @post Il nuovo libro viene validato e passato al servizio.
      * @see LibroView#getLibroNuovo()
      */
-    public void salvaLibro(){};
+    public void salvaLibro(){
+        Libro nuovo = getSpecificView().getLibroNuovo();
+        if (nuovo == null) return;
+
+        salva(nuovo);
+    }
         
     /**
      * @brief Avvia la modifica di un libro esistente.
@@ -40,19 +49,28 @@ public class LibroController extends CrudController<Libro> {
      * @post I dati del libro vengono aggiornati.
      * @see LibroView#getLibroModificato()
      */
-    public void modificaLibro(){};
+    public void modificaLibro(){
+        Libro modificato = getSpecificView().getLibroModificato();
+        if (modificato == null) return;
+
+        modifica(modificato);
+    }
 
     /**
      * @brief Implementazione del salvataggio.
      * @param nuovo Il libro da salvare.
      */
     @Override
-    public void salva(Libro nuovo){};
+    public void salva(Libro nuovo){
+        eseguiOperazione(() -> service.salva(nuovo), "Libro inserito nel catalogo correttamente.");
+    }
 
     /**
      * @brief Implementazione  della modifica.
      * @param elemento Il libro aggiornato.
      */
     @Override
-    public void modifica(Libro elemento){};
+    public void modifica(Libro elemento){
+        eseguiOperazione(() -> service.modifica(elemento), "Dati libro aggiornati correttamente.");
+    }
 }

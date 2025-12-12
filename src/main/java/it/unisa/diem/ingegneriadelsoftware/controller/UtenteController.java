@@ -42,7 +42,6 @@ public class UtenteController extends CrudController<Utente> {
      */
     public void salvaUtente(){
         Utente nuovo = getSpecificView().getUtenteNuovo();
-        
         if (nuovo == null) return; 
 
         salva(nuovo);
@@ -54,7 +53,6 @@ public class UtenteController extends CrudController<Utente> {
      */
     public void modificaUtente(){
         Utente modificato = getSpecificView().getUtenteModificato();
-        
         if (modificato == null) return;
 
         modifica(modificato);
@@ -66,7 +64,7 @@ public class UtenteController extends CrudController<Utente> {
      */
     @Override
     public void salva(Utente nuovo){
-        eseguiOperazione(() -> service.salva(nuovo), "Utente salvato correttamente.");
+        eseguiOperazione(() -> service.salva(nuovo), "Utente inserito correttamente.");
     }
 
     /**
@@ -75,6 +73,6 @@ public class UtenteController extends CrudController<Utente> {
      */
     @Override
     public void modifica(Utente elemento){
-        eseguiOperazione(() -> service.modifica(elemento), "Utente modificato correttamente.");
+        eseguiOperazione(() -> service.modifica(elemento), "Dati utente aggiornati correttamente.");
     }
 }
