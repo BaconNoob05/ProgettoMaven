@@ -2,6 +2,7 @@ package it.unisa.diem.ingegneriadelsoftware.controller;
 
 import it.unisa.diem.ingegneriadelsoftware.view.InterfaceView;
 import it.unisa.diem.ingegneriadelsoftware.service.InterfaceService;
+import java.util.List;
 
 /**
  * @class BaseController
@@ -29,14 +30,19 @@ public abstract class BaseController<T> implements InterfaceController {
      * @param view L'istanza della vista .
      * @param service L'istanza del servizio.
      */
-    public BaseController(InterfaceView<T> view, InterfaceService<T> service){};
+    public BaseController(InterfaceView<T> view, InterfaceService<T> service){
+        this.view=view;
+        this.service=service;
+    }
 
     /**
      * @brief Inizializza il controller.
      * @see InterfaceController#init()
      */
     @Override
-    public void init(){};
+    public void init(){
+        aggiornaVista();
+    }
 
     /**
      * @brief Aggiorna la vista recuperando tutti gli elementi dal servizio.
@@ -44,7 +50,10 @@ public abstract class BaseController<T> implements InterfaceController {
      * @see InterfaceService#getAll()
      */
     @Override
-    public void aggiornaVista(){};
+    public void aggiornaVista(){
+        List<T> lista = service.getAll();
+        view.mostraLista(lista);
+    }
 
     /**
      * @brief Esegue un'operazione generica gestendo eccezioni e messaggi utente.
@@ -53,12 +62,26 @@ public abstract class BaseController<T> implements InterfaceController {
      * @pre L'operazione non deve essere nulla.
      * @post Se l'operazione ha successo, la vista viene aggiornata e viene mostrato il messaggio.
      */
-    public void eseguiOperazione(Runnable operazione, String messaggioConferma){};
+    public void eseguiOperazione(Runnable operazione, String messaggioConferma){
+        try {
+            operazione.run();
+            
+            aggiornaVista();
+            if (messaggioConferma != null && !messaggioConferma.isEmpty()) {
+                view.mostraMessaggio(messaggioConferma);
+            }
+        } catch (IllegalArgumentException e) {
+            view.mostraMessaggio("Errore: " + e.getMessage());
+        } catch (Exception e) {
+            view.mostraMessaggio("Errore imprevisto: " + e.getMessage());
+            e.printStackTrace();
+        }
+    }
 
     /**
      * @brief Recupera l'elemento attualmente selezionato nella vista generica.
      * @return L'istanza di tipo T selezionata oppure nulla.
      * @see InterfaceView#getElementoSelezionato()
      */
-    public T getSelezionato(){return null;}
+    public T getSelezionato(){ return view.getElementoSelezionato(); }
 }

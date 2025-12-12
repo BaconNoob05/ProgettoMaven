@@ -3,6 +3,7 @@ package it.unisa.diem.ingegneriadelsoftware.controller;
 import it.unisa.diem.ingegneriadelsoftware.model.InterfaceID;
 import it.unisa.diem.ingegneriadelsoftware.view.InterfaceView;
 import it.unisa.diem.ingegneriadelsoftware.service.InterfaceService;
+import java.util.List;
 
 /**
  * @class CrudController
@@ -19,7 +20,6 @@ public abstract class CrudController<T extends InterfaceID> extends BaseControll
      */
     public CrudController(InterfaceView<T> view, InterfaceService<T> service){
         super(view,service);
-    
     }
 
     /**
@@ -42,7 +42,16 @@ public abstract class CrudController<T extends InterfaceID> extends BaseControll
      * @post L'elemento viene rimosso dal repository tramite il servizio e la vista aggiornata.
      * @see InterfaceService#elimina(Object)
      */
-    public void elimina(){}
+    public void elimina(){
+        T selezionato = view.getElementoSelezionato();
+        
+        if (selezionato == null) {
+            view.mostraMessaggio("Seleziona un elemento da eliminare.");
+            return;
+        }
+
+        eseguiOperazione(() -> service.elimina(selezionato), "Elemento eliminato con successo.");
+    }
 
     /**
      * @brief Esegue la ricerca degli elementi basata sul filtro della vista.
@@ -50,6 +59,10 @@ public abstract class CrudController<T extends InterfaceID> extends BaseControll
      * @see InterfaceView#getStringaCerca()
      * @see InterfaceService#cercaGenerico(String)
      */
-    public void cerca(){}
-
+    public void cerca(){
+        String filtro = view.getCampoCerca();
+        
+        List<T> risultati = service.cercaGenerico(filtro);
+        view.mostraLista(risultati);
+    }
 }
