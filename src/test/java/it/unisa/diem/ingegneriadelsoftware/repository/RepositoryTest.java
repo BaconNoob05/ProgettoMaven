@@ -5,6 +5,7 @@
  */
 package it.unisa.diem.ingegneriadelsoftware.repository;
 import it.unisa.diem.ingegneriadelsoftware.model.DatiStub;
+import java.io.File;
 import java.util.Arrays;
 import java.util.List;
 import org.junit.jupiter.api.*;
@@ -32,6 +33,17 @@ public class RepositoryTest {
 
         dato1 = new DatiStub("ID_1");
         dato2 = new DatiStub("ID_2");
+    }
+    
+    @AfterEach
+    void tearDown() {
+
+        File file = new File(nomeFile);
+        if (file.exists()) {
+            file.delete();
+
+        }
+
     }
     
     @Test
