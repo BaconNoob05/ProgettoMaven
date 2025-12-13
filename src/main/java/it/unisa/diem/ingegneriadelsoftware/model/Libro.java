@@ -85,7 +85,6 @@ public class Libro extends Dati {
 
     /**
      * @brief Incrementa il numero di copie disponibili quando un libro viene restituito.
-     * @pre Il libro deve avere almeno una copia disponibile.
      * @post Il numero di copie disponibili aumenta di uno.
      * @details Questo metodo deve essere invocato quando bisogna aggiungere una copia di un libro.
      */
