@@ -16,19 +16,30 @@ public class Prestito extends Dati {
      */
     private static final long serialVersionUID = 1L;
 
-    /** Riferimento all'utente che ha effettuato il prestito. */
+    /** 
+     * @brief Riferimento all'utente che ha effettuato il prestito. 
+    */
     private Utente utente;
     
-    /** Riferimento al libro prestato. */
+    /**
+    * @brief Riferimento al libro prestato. 
+    */
     private Libro libro;
     
-    /** Data in cui è stato effettuato il prestito (NUOVO CAMPO). */
+    /**
+    * @brief Data in cui è stato effettuato il prestito (NUOVO CAMPO). 
+    */
     private LocalDate dataPrestito; 
     
-    /** Data entro la quale il libro deve essere restituito. */
+    /** 
+    * @brief 
+    Data entro la quale il libro deve essere restituito. 
+    */
     private LocalDate dataPrevista;
     
-    /** Data effettiva di restituzione */
+    /** 
+    *@brief Data effettiva di restituzione
+    */
     private LocalDate dataEffettiva;
 
     /**
@@ -114,38 +125,58 @@ public class Prestito extends Dati {
         return String.format("[%s] Prestito: %s | Utente: %s | Libro: %s | Stato: %s",getId(), dataPrestito.format(formatter), getNomeUtente(), getTitoloLibro(), stato);
     }
 
-
+   /**
+     * @brief Restituisce la data in cui il prestito è stato effettuato.
+     * @return La data del prestito altrimenti restituisce un valore nullo.
+     */
     public LocalDate getDataPrestito() {
         return dataPrestito;
     }
 
 
-    /** @return Il nome completo o identificativo dell'utente altrimenti restituisce un valore nullo. */
+    /**
+     * @brief Restituisce il titolo del libro prestato. 
+     * @returnIl nome completo dell'utente altrimenti restituisce un valore nullo.
+     */
     public String getNomeUtente() {
         return (utente != null) ? utente.getCognome() + " " + utente.getNome() : "N/D";
     }
 
-    /** @return Il titolo del libro prestato altrimenti restituisce un valore nullo. */
+    /** 
+     *@brief Restituisce il titolo del libro prestato
+     * @return Il titolo del libro prestato altrimenti restituisce un valore nullo. 
+     */
     public String getTitoloLibro() {
         return (libro != null) ? libro.getTitolo() : "N/D";
     }
 
-    /** @return La data prevista per la restituzione altrimenti restituisce un valore nullo. */
+    /** 
+     * @brief Restituisce la data prevista per la restituzione del libro
+     * @return La data prevista per la restituzione altrimenti restituisce un valore nullo. 
+     */
     public LocalDate getDataPrevista() {
         return dataPrevista;
     }
 
-    /** @return La data effettiva di restituzione altrimenti restituisce un valore nullo. */
+    /** 
+     * @brief Restituisce la data effettiva di restituzione del libro
+     * @return La data effettiva di restituzione altrimenti restituisce un valore nullo. */
     public LocalDate getDataEffettiva() {
         return dataEffettiva;
     }
 
-    /** @return L'oggetto Utente associato altrimenti restituisce un valore nullo. */
+    /**
+     * @brief Restituisce l'oggetto dell' utente associato 
+     * @return L'oggetto Utente associato altrimenti restituisce un valore nullo. 
+     */
     public Utente getUtente() {
         return utente;
     }
 
-    /** @return L'oggetto Libro associato altrimenti restituisce un valore nullo. */
+    /**
+     * @brief Restituisce l'oggeto del libro associato.
+     * @return L'oggetto Libro associato altrimenti restituisce un valore nullo. 
+     */
     public Libro getLibro() {
         return libro;
     }
