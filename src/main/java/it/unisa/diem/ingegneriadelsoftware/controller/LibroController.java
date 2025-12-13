@@ -24,7 +24,10 @@ public class LibroController extends CrudController<Libro> {
         super(view,service);
     }
     
-    //DA RIVEDERE DOXYGEN
+   /**
+     * @brief Interpreta la vista come un'istanza di LibroView.
+     * @return La vista specifica del libro.
+     */
     private LibroView getSpecificView() {
         return (LibroView) view;
     }
