@@ -14,6 +14,7 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Optional;
+import javafx.scene.layout.VBox;
 
 /**
  * @class PrestitoView
@@ -44,24 +45,20 @@ public class PrestitoView extends DatiBaseView<Prestito> {
     public PrestitoView() {
 
         super("Prestito"); 
-        
+    
 
-      
         this.libroComboBox = new ComboBox<>();
         this.utenteComboBox = new ComboBox<>();
         this.dataPrestitoPicker = new DatePicker(LocalDate.now()); 
         this.dataRestituzionePicker = new DatePicker(); 
-        
-
-        
         this.statoComboBox = new ComboBox<>(FXCollections.observableArrayList("In Prestito", "SCADUTO", "Restituito")); 
-        
         this.statoComboBox.setValue("In Prestito"); 
-        
         this.registraPrestitoButton = new Button("Registra Prestito");
-        
         this.restituisciLibroButton = new Button("Restituisci Libro");
         this.annullaButton = new Button("Annulla");
+
+
+        ((VBox) getRoot()).getChildren().add(creaPaneDettaglio());
 
         
         

@@ -7,6 +7,7 @@ import javafx.scene.control.*;
 import javafx.scene.layout.GridPane;
 import java.util.Arrays;
 import java.util.List;
+import javafx.scene.layout.VBox;
 
 /**
  * @class LibroView
@@ -39,13 +40,22 @@ public class LibroView extends DatiBaseView<Libro> {
     
     public LibroView() {
         
+
         super("Libro"); 
+        
 
         this.titoloInput = new TextField();
         this.annoInput = new TextField();
         this.isbnInput = new TextField();
         this.copieInput = new TextField();
+        
+
+        ((VBox) getRoot()).getChildren().add(creaPaneDettaglio());
+        
+
     }
+    
+
 
 
     /**

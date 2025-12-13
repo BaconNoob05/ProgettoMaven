@@ -5,6 +5,7 @@ import javafx.beans.property.SimpleStringProperty;
 import javafx.scene.control.*;
 import javafx.scene.layout.GridPane;
 import java.util.List;
+import javafx.scene.layout.VBox;
 
 /**
  * @class UtenteView
@@ -31,13 +32,16 @@ public class UtenteView extends DatiBaseView<Utente> {
      */
     public UtenteView() {
         
-        super("Utente"); 
-        
+    super("Utente"); 
+    
 
-        this.nomeInput = new TextField();
-        this.cognomeInput = new TextField();
-        this.matricolaInput = new TextField(); 
-        this.emailInput = new TextField();
+    this.nomeInput = new TextField();
+    this.cognomeInput = new TextField();
+    this.matricolaInput = new TextField(); 
+    this.emailInput = new TextField();
+    
+
+    ((VBox) getRoot()).getChildren().add(creaPaneDettaglio());
     }
 
     /**

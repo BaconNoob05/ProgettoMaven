@@ -1,102 +1,48 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package it.unisa.diem.ingegneriadelsoftware.repository;
 
+import it.unisa.diem.ingegneriadelsoftware.model.DatiStub;
 import org.junit.jupiter.api.*;
+import java.io.File;
 import java.util.*;
 import static org.junit.jupiter.api.Assertions.*;
-import it.unisa.diem.ingegneriadelsoftware.model.*;
-
 
 public class GestoreFileTest {
-    
+
     private GestoreFile<DatiStub> gestore;
-    private String fileTest;
     private List<DatiStub> datiTest;
+    private List<String> filesDaCancellare;
 
     @BeforeEach
     void setUp() {
         
         gestore = new GestoreFile<>();
-        datiTest = new ArrayList<>();
+        datiTest = Arrays.asList(
+                
+            new DatiStub("ID_1"),
+            new DatiStub("ID_2")
+        );
+        filesDaCancellare = new ArrayList<>();
+    }
+
+    @AfterEach
+    void tearDown() {
         
-        datiTest.add(new DatiStub("ID_1"));
-        datiTest.add(new DatiStub("ID_2"));
+        for (String fileName : filesDaCancellare) {
+            File file = new File(fileName);
+            if (file.exists()) {
+                file.delete();
+            }
+        }
     }
 
     @Test
-    void testSalvaDati() {
-        fileTest = "test_salva.txt";
-
-        gestore.salvaDati(fileTest, datiTest);
-
-        List<DatiStub> risultato = gestore.caricaDati(fileTest);
-
-        assertEquals(datiTest.size(), risultato.size());
-
+    void testSalvaECaricaDati() {
         
-        assertEquals(datiTest.get(0).toString(), risultato.get(0).toString()); 
-    }
+        String fileName = "test_salva.txt";
+        filesDaCancellare.add(fileName);
 
-    @Test
-    void testSalvaDati_ListaVuota() {
-        
-        fileTest = "test_lista_vuota.txt";
-        List<DatiStub> listaVuota = new ArrayList<>();
-        
-
-        gestore.salvaDati(fileTest, listaVuota);
-
-        List<DatiStub> risultato = gestore.caricaDati(fileTest);
-        assertNotNull(risultato);
-        assertTrue(risultato.isEmpty());
-    }
-
-    @Test
-    void testSalvaDati_ListaNull() {
-        fileTest = "test_lista_null.txt";
-
-        assertDoesNotThrow(() -> gestore.salvaDati(fileTest, null));
-        
-        List<DatiStub> risultato = gestore.caricaDati(fileTest);
-        
-        assertNotNull(risultato);
-        assertTrue(risultato.isEmpty());
-    }
-
-    @Test
-    void testSalvaDati_Sovrascrittura() {
-        
-        fileTest = "test_sovrascrittura.txt";
-
-        gestore.salvaDati(fileTest, datiTest);
-        
-
-        List<DatiStub> nuoviDati = new ArrayList<>();
-        nuoviDati.add(new DatiStub("ID_NUOVO_1"));
-        gestore.salvaDati(fileTest, nuoviDati);
-        
-
-        
-        List<DatiStub> caricati = gestore.caricaDati(fileTest);
-        
-
-        assertEquals(1, caricati.size());
-        assertEquals(nuoviDati.get(0).toString(), caricati.get(0).toString());
-    }
-    
-    @Test
-    void testCaricaDati() {
-        
-        String fileTest = "test_carica.txt";
-        
-
-        gestore.salvaDati(fileTest, datiTest);
-
-        List<DatiStub> risultato = gestore.caricaDati(fileTest);
+        gestore.salvaDati(fileName, datiTest);
+        List<DatiStub> risultato = gestore.caricaDati(fileName);
 
         assertNotNull(risultato);
         assertEquals(datiTest.size(), risultato.size());
@@ -104,15 +50,70 @@ public class GestoreFileTest {
     }
 
     @Test
-    void testCaricaDati_FileInesistente() {
+    void testSalvaListaVuota() {
         
-        String fileInesistente = "file_inesistente.txt";
-        
+        String fileName = "test_lista_vuota.txt";
+        filesDaCancellare.add(fileName);
 
-        List<DatiStub> risultato = gestore.caricaDati(fileInesistente);
-        
+        gestore.salvaDati(fileName, new ArrayList<>());
+        List<DatiStub> risultato = gestore.caricaDati(fileName);
+
         assertNotNull(risultato);
         assertTrue(risultato.isEmpty());
+    }
+
+    @Test
+    void testSalvaListaNull() {
         
+        String fileName = "test_lista_null.txt";
+        filesDaCancellare.add(fileName);
+
+        gestore.salvaDati(fileName, null);
+        List<DatiStub> risultato = gestore.caricaDati(fileName);
+
+        assertNotNull(risultato);
+        assertTrue(risultato.isEmpty());
+    }
+
+    @Test
+    void testSovrascritturaFile() {
+        
+        String fileName = "test_sovrascrittura.txt";
+        filesDaCancellare.add(fileName);
+
+        gestore.salvaDati(fileName, datiTest);
+
+        List<DatiStub> nuoviDati = Collections.singletonList(new DatiStub("ID_NUOVO_1"));
+        gestore.salvaDati(fileName, nuoviDati);
+
+        List<DatiStub> caricati = gestore.caricaDati(fileName);
+
+        assertEquals(1, caricati.size());
+        assertEquals(nuoviDati.get(0).toString(), caricati.get(0).toString());
+    }
+
+    @Test
+    void testCaricaDati() {
+        
+        String fileName = "test_carica.txt";
+        filesDaCancellare.add(fileName);
+
+        gestore.salvaDati(fileName, datiTest);
+        List<DatiStub> risultato = gestore.caricaDati(fileName);
+
+        assertNotNull(risultato);
+        assertEquals(datiTest.size(), risultato.size());
+        assertEquals(datiTest.get(0).toString(), risultato.get(0).toString());
+    }
+
+    @Test
+    void testCaricaFileInesistente() {
+        
+        String fileName = "file_inesistente.txt";
+
+        List<DatiStub> risultato = gestore.caricaDati(fileName);
+
+        assertNotNull(risultato);
+        assertTrue(risultato.isEmpty());
     }
 }

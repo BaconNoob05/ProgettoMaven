@@ -6,6 +6,7 @@
 package it.unisa.diem.ingegneriadelsoftware.view;
 
 import it.unisa.diem.ingegneriadelsoftware.model.InterfaceID;
+import javafx.scene.Parent;
 import javafx.scene.control.*;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
@@ -20,6 +21,7 @@ import javafx.scene.layout.HBox;
 public abstract class DatiBaseView<T extends InterfaceID> extends BaseView<T> {
 
 
+    private final VBox root;
     /** @brief Campo di testo per la ricerca  degli elementi. */
     protected final TextField cercaField;
     /** @brief Bottone per avviare la modifica dell'elemento . */
@@ -62,8 +64,15 @@ public abstract class DatiBaseView<T extends InterfaceID> extends BaseView<T> {
         
         
 
-        VBox root = new VBox();
-        root.getChildren().addAll(creaTopControls(entità), tableView, creaPaneDettaglio());
+    this.root = new VBox(); 
+    
+    // RIGA CRITICA: Assicurati che creaPaneDettaglio() NON sia più qui (riga ~68)
+    // Era: root.getChildren().addAll(creaTopControls(entità), tableView, creaPaneDettaglio());
+    
+    // CORREZIONE: Aggiungi solo i controlli superiori e la tabella.
+    root.getChildren().addAll(creaTopControls(entità), tableView); 
+    
+    // L'assemblaggio del pannello Dettaglio (che usa i campi della sottoclasse) verrà fatto dopo.
         
     }
 
@@ -170,4 +179,11 @@ public abstract class DatiBaseView<T extends InterfaceID> extends BaseView<T> {
     
     /** @return La TableView principale. */
     public TableView<T> getTableView() { return tableView; }
+    
+    
+    
+    public Parent getRoot() { // <--- NUOVO METODO PUBBLICO
+        return root;
+    }
+    
 }
