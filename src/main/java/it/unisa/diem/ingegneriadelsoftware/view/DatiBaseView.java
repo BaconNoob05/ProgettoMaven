@@ -1,8 +1,7 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+
+Contenuti in evidenza della cartella
+Codice Java per interfacce Grafiche per gestione di Libro, Utente e Prestito mediante classi base.
+
 package it.unisa.diem.ingegneriadelsoftware.view;
 
 import it.unisa.diem.ingegneriadelsoftware.model.InterfaceID;
@@ -11,10 +10,13 @@ import javafx.scene.control.*;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.Priority;
+import javafx.geometry.Pos;
+import javafx.geometry.Insets; // Aggiunto per Insets
 
 /**
  * @class DatiBaseView
- * @brief Classe base astratta per le View che gestiscono i Dati Libri e i Dati  Utenti.
+ * @brief Classe base astratta per le View che gestiscono i Dati Libri e i Dati Utenti.
  * @tparam T Il tipo di dato gestito che deve implementare InterfaceID.
  * @see BaseView
  */
@@ -22,15 +24,15 @@ public abstract class DatiBaseView<T extends InterfaceID> extends BaseView<T> {
 
 
     private final VBox root;
-    /** @brief Campo di testo per la ricerca  degli elementi. */
+    /** @brief Campo di testo per la ricerca degli elementi. */
     protected final TextField cercaField;
     /** @brief Bottone per avviare la modifica dell'elemento . */
     protected final Button modificaButton;
     /** @brief Bottone per avviare la cancellazione dell'elemento . */
     protected final Button cancellaButton;
-    /** @brief Bottone di conferma  per l' inserimento o la modifica. */
+    /** @brief Bottone di conferma per l' inserimento o la modifica. */
     protected final Button okButton;
-    /** @brief Campo di testo per  un nuovo inserimento. */
+    /** @brief Campo di testo per un nuovo inserimento. */
     protected final TextField inserisciNuovoCampo; 
     /** @brief Label utilizzata per far visualizzare messaggi di stato, errore o conferma all'utente. */
     protected final Label messaggioLabel;
@@ -38,6 +40,9 @@ public abstract class DatiBaseView<T extends InterfaceID> extends BaseView<T> {
     
     /** @brief Tableview serve per la visualizzazione della tabella degli elementi. */
     protected final TableView<T> tableView;
+    
+    /** @brief Contenitore HBox per affiancare la tabella al pannello di dettaglio. */
+    protected final HBox contentHBox;
 
     /**
      * @brief Costruttore base della classe .
@@ -51,28 +56,37 @@ public abstract class DatiBaseView<T extends InterfaceID> extends BaseView<T> {
         this.cercaField = new TextField();
         this.modificaButton = new Button("Modifica");
         this.cancellaButton = new Button("Cancella");
-        this.okButton = new Button("OK");
+        this.okButton = new Button("OK"); 
         this.inserisciNuovoCampo = new TextField("Inserisci nuovo " + entità.toLowerCase()); 
         this.messaggioLabel = new Label("Pronto.");
 
         this.tableView = new TableView<>(dataList);
         
-        
+        // MODIFICA: Imposta l'altezza preferita/massima per limitare a circa 10 righe
+        this.tableView.setPrefHeight(300); 
+        this.tableView.setMaxHeight(300); 
      
         impostaColonneTabella();
         impostaListener();
         
-        
+        // Miglioramento: impostazione minima di larghezza preferita per i pulsanti
+        modificaButton.setPrefWidth(80);
+        cancellaButton.setPrefWidth(80);
+        okButton.setPrefWidth(80);
 
-    this.root = new VBox(); 
-    
-    // RIGA CRITICA: Assicurati che creaPaneDettaglio() NON sia più qui (riga ~68)
-    // Era: root.getChildren().addAll(creaTopControls(entità), tableView, creaPaneDettaglio());
-    
-    // CORREZIONE: Aggiungi solo i controlli superiori e la tabella.
-    root.getChildren().addAll(creaTopControls(entità), tableView); 
-    
-    // L'assemblaggio del pannello Dettaglio (che usa i campi della sottoclasse) verrà fatto dopo.
+
+        this.root = new VBox(10); 
+        this.root.setPadding(new Insets(10)); // Padding generale per l'intera vista
+
+        // Configurazione HBox: contiene TableView e Dettaglio (aggiunto nelle sottoclassi)
+        this.contentHBox = new HBox(15); // Aumentato lo spazio tra tabella e dettaglio
+        this.contentHBox.getChildren().add(tableView);
+        HBox.setHgrow(tableView, Priority.ALWAYS); 
+        
+        // La VBox principale contiene i controlli (sopra) e l'HBox (sotto)
+        root.getChildren().addAll(creaTopControls(entità), contentHBox);
+        VBox.setVgrow(contentHBox, Priority.ALWAYS);
+
         
     }
 
@@ -104,21 +118,33 @@ public abstract class DatiBaseView<T extends InterfaceID> extends BaseView<T> {
 
 
     /**
-     * @brief Crea il contenitore con i controlli superiori .
-     * @param [in] entityName Il nome dell'entità da mostrare nel titolo.
-     * @return Il VBox contenente i controlli di ricerca e le azioni principali altrimenti un valore nullo .
-     * @post Vengono restituiti i controlli pronti per l'inserimento.
+     * @brief Crea il contenitore con i controlli superiori (Cerca, Modifica, Cancella, Inserisci).
+     * @param [in] entityName Il nome dell'entità gestita.
+     * @return Il VBox contenente i controlli di ricerca e le azioni principali.
      */
     private VBox creaTopControls(String entityName) {
         
-        Label label = new Label("Gestione " + entityName);
-        HBox box = new HBox(
-            new Label("Cerca:"), cercaField, 
-            modificaButton, cancellaButton,
-            inserisciNuovoCampo, okButton
+        // Prima riga: Cerca
+        HBox searchBox = new HBox(10);
+        searchBox.setAlignment(Pos.CENTER_LEFT);
+        searchBox.getChildren().addAll(new Label("Cerca:"), cercaField);
+        HBox.setHgrow(cercaField, Priority.ALWAYS); 
+        
+        // Seconda riga: Azioni (Modifica, Cancella, ecc.)
+        HBox actionBox = new HBox(10);
+        actionBox.setAlignment(Pos.CENTER_LEFT);
+        actionBox.getChildren().addAll(
+            modificaButton, 
+            cancellaButton,
+            inserisciNuovoCampo, 
+            okButton
         );
-        box.setSpacing(5);
-        return new VBox(label, box);
+        
+        // Contenitore superiore per tutte le azioni
+        VBox topContainer = new VBox(5); 
+        topContainer.getChildren().addAll(searchBox, actionBox);
+        
+        return topContainer;
     }
     
     /**
@@ -182,8 +208,10 @@ public abstract class DatiBaseView<T extends InterfaceID> extends BaseView<T> {
     
     
     
-    public Parent getRoot() { // <--- NUOVO METODO PUBBLICO
+    public Parent getRoot() { 
         return root;
     }
     
+    /** @return Il contenitore HBox per affiancare la tabella al pannello di dettaglio. */
+    public HBox getContentHBox() { return contentHBox; }
 }

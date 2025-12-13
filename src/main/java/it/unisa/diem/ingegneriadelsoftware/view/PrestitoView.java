@@ -1,4 +1,7 @@
 
+Contenuti in evidenza della cartella
+Codice Java per interfacce Grafiche per gestione di Libro, Utente e Prestito mediante classi base.
+
 package it.unisa.diem.ingegneriadelsoftware.view;
 
 import it.unisa.diem.ingegneriadelsoftware.model.*;
@@ -15,6 +18,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Optional;
 import javafx.scene.layout.VBox;
+import javafx.geometry.Pos;
 
 /**
  * @class PrestitoView
@@ -57,9 +61,40 @@ public class PrestitoView extends DatiBaseView<Prestito> {
         this.restituisciLibroButton = new Button("Restituisci Libro");
         this.annullaButton = new Button("Annulla");
 
+        // Styling per i pulsanti (come nell'immagine prototipo)
+        registraPrestitoButton.setStyle("-fx-background-color: #4CAF50; -fx-text-fill: white; -fx-font-weight: bold;");
+        restituisciLibroButton.setStyle("-fx-background-color: #2196F3; -fx-text-fill: white; -fx-font-weight: bold;");
+        annullaButton.setStyle("-fx-background-color: #f44336; -fx-text-fill: white;");
 
-        ((VBox) getRoot()).getChildren().add(creaPaneDettaglio());
 
+        // MODIFICA: Crea un box esterno per incorniciare il dettaglio (frame)
+        GridPane innerDetailPane = creaPaneDettaglio();
+        VBox detailFrame = new VBox(innerDetailPane);
+        detailFrame.setStyle("-fx-border-color: gray; -fx-border-width: 1; -fx-padding: 10; -fx-background-color: white; -fx-border-radius: 5;");
+        
+        // MODIFICA: Imposta l'altezza fissa della box a 300px per uguagliare l'altezza della tabella
+        detailFrame.setPrefHeight(300); 
+        detailFrame.setMaxHeight(300);
+
+        // Aggiunge il frame alla HBox (affiancato alla TableView)
+        contentHBox.getChildren().add(detailFrame); 
+
+        
+        // UI-3.0: Evidenziare prestiti scaduti in rosso
+        tableView.setRowFactory(tv -> new TableRow<Prestito>() {
+            @Override
+            protected void updateItem(Prestito item, boolean empty) {
+                super.updateItem(item, empty);
+                if (item == null || empty) {
+                    setStyle("");
+                } else if (item.isScaduto()) {
+                    // Evidenzia i prestiti SCADUTI in rosso chiaro
+                    setStyle("-fx-background-color: #ffcccc;"); 
+                } else {
+                    setStyle("");
+                }
+            }
+        });
         
         
         super.modificaButton.setDisable(true);
@@ -184,8 +219,22 @@ public class PrestitoView extends DatiBaseView<Prestito> {
         
         detailPane.setHgap(10);
         detailPane.setVgap(10);
-        detailPane.add(new Label("Dettagli Prestito"), 0, 0, 2, 1);
         
+        // Miglioramento: Imposta una larghezza minima per il pannello di dettaglio
+        detailPane.setMinWidth(300);
+        
+        Label dettagliLabel = new Label("Dettagli Prestito");
+        dettagliLabel.setStyle("-fx-font-weight: bold;");
+        detailPane.add(dettagliLabel, 0, 0, 2, 1);
+        
+
+        // Uniformità e larghezza per i ComboBox/DatePicker
+        libroComboBox.setPrefWidth(200);
+        utenteComboBox.setPrefWidth(200);
+        dataPrestitoPicker.setPrefWidth(200);
+        dataRestituzionePicker.setPrefWidth(200);
+        statoComboBox.setPrefWidth(200);
+
 
         detailPane.add(new Label("Libro:"), 0, 1);
         detailPane.add(libroComboBox, 1, 1);
@@ -204,11 +253,19 @@ public class PrestitoView extends DatiBaseView<Prestito> {
         
 
         HBox pulsantiAzione = new HBox(10);
+        pulsantiAzione.setAlignment(Pos.CENTER_LEFT);
         
+        // Miglioramento: Pulsanti con larghezza fissa per coerenza
+        registraPrestitoButton.setPrefWidth(120);
+        restituisciLibroButton.setPrefWidth(120);
+        annullaButton.setPrefWidth(80);
+
+
         pulsantiAzione.getChildren().addAll(registraPrestitoButton, restituisciLibroButton, annullaButton);
-        detailPane.add(pulsantiAzione, 0, 7, 2, 1);
+        
         
         detailPane.add(messaggioLabel, 0, 6, 2, 1); 
+        detailPane.add(pulsantiAzione, 0, 7, 2, 1);
         
         
         return detailPane;

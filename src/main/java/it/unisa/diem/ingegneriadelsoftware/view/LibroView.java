@@ -1,3 +1,7 @@
+
+Contenuti in evidenza della cartella
+Codice Java per interfacce Grafiche per gestione di Libro, Utente e Prestito mediante classi base.
+
 package it.unisa.diem.ingegneriadelsoftware.view;
 
 import it.unisa.diem.ingegneriadelsoftware.model.Libro;
@@ -50,7 +54,17 @@ public class LibroView extends DatiBaseView<Libro> {
         this.copieInput = new TextField();
         
 
-        ((VBox) getRoot()).getChildren().add(creaPaneDettaglio());
+        // MODIFICA: Crea un box esterno per incorniciare il dettaglio (frame)
+        GridPane innerDetailPane = creaPaneDettaglio();
+        VBox detailFrame = new VBox(innerDetailPane);
+        detailFrame.setStyle("-fx-border-color: gray; -fx-border-width: 1; -fx-padding: 10; -fx-background-color: white; -fx-border-radius: 5;");
+        
+        // MODIFICA: Imposta l'altezza fissa della box a 300px per uguagliare l'altezza della tabella
+        detailFrame.setPrefHeight(300); 
+        detailFrame.setMaxHeight(300);
+
+        // Aggiunge il frame alla HBox (affiancato alla TableView)
+        contentHBox.getChildren().add(detailFrame); 
         
 
     }
@@ -140,7 +154,18 @@ public class LibroView extends DatiBaseView<Libro> {
         detailPane.setHgap(10);
         detailPane.setVgap(10);
         
-        detailPane.add(new Label("Dettagli Libro"), 0, 0, 2, 1);
+        // Miglioramento: Imposta una larghezza minima per il pannello di dettaglio
+        detailPane.setMinWidth(250);
+        
+        Label dettagliLabel = new Label("Dettagli Libro");
+        dettagliLabel.setStyle("-fx-font-weight: bold;"); // Etichetta in grassetto
+        detailPane.add(dettagliLabel, 0, 0, 2, 1);
+        
+        // Uniformità dei campi di testo
+        titoloInput.setPrefWidth(200);
+        annoInput.setPrefWidth(200);
+        isbnInput.setPrefWidth(200);
+        copieInput.setPrefWidth(200);
         
         
         detailPane.add(new Label("Titolo:"), 0, 1);

@@ -1,3 +1,7 @@
+
+Contenuti in evidenza della cartella
+Codice Java per interfacce Grafiche per gestione di Libro, Utente e Prestito mediante classi base.
+
 package it.unisa.diem.ingegneriadelsoftware.view;
 import java.util.List;
 import javafx.collections.FXCollections;
@@ -19,7 +23,7 @@ public abstract class BaseView<T> implements InterfaceView<T> {
     protected List<T> elementi;
     
     
-    // NUOVA Dichiarazione per il Binding in JavaFX
+
     /**
      * @brief Lista osservabile utilizzata dai dati per i componenti JavaFX .
      * @details Le modifiche a questa lista vengono automaticamente riflesse nella UI.
@@ -62,6 +66,11 @@ public abstract class BaseView<T> implements InterfaceView<T> {
         
         
         this.elementi = lista; 
+        
+        // CORREZIONE: Aggiorna la ObservableList per visualizzare i dati nella TableView
+        this.dataList.clear();
+        this.dataList.addAll(lista);
+        
         System.out.println(" Lista aggiornata: " + lista.size() + " elementi.");
     
     }

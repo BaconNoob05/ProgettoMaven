@@ -1,3 +1,7 @@
+
+Contenuti in evidenza della cartella
+Codice Java per interfacce Grafiche per gestione di Libro, Utente e Prestito mediante classi base.
+
 package it.unisa.diem.ingegneriadelsoftware.view;
 
 import java.util.List;

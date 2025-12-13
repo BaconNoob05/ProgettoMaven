@@ -1,3 +1,7 @@
+
+Contenuti in evidenza della cartella
+Servizi Java che estendono BaseService per gestire Utente, Libro e Prestito, inclusa la logica per prestiti attivi.
+
 package it.unisa.diem.ingegneriadelsoftware.service;
 
 import java.util.List;
@@ -60,9 +64,13 @@ public class UtenteService extends BaseService<Utente> {
         if (filtro == null || filtro.trim().isEmpty()) {
             return getAll();
         }
-        return cercaPerCognome(filtro);
+        
+        String filtroLowerCase = filtro.toLowerCase();
+        
+        // CORREZIONE: Ricerca per Cognome O Matricola
+        return getAll().stream()
+               .filter(u -> u.getCognome().toLowerCase().contains(filtroLowerCase) || 
+                            u.getMatricola().toLowerCase().contains(filtroLowerCase))
+               .collect(Collectors.toList());
     }
 }
-
-
-

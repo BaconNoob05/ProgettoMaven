@@ -1,3 +1,7 @@
+
+Contenuti in evidenza della cartella
+Codice Java per interfacce Grafiche per gestione di Libro, Utente e Prestito mediante classi base.
+
 package it.unisa.diem.ingegneriadelsoftware.view;
 
 import it.unisa.diem.ingegneriadelsoftware.model.Utente;
@@ -40,8 +44,17 @@ public class UtenteView extends DatiBaseView<Utente> {
     this.matricolaInput = new TextField(); 
     this.emailInput = new TextField();
     
+    // MODIFICA: Crea un box esterno per incorniciare il dettaglio (frame)
+    GridPane innerDetailPane = creaPaneDettaglio();
+    VBox detailFrame = new VBox(innerDetailPane);
+    detailFrame.setStyle("-fx-border-color: gray; -fx-border-width: 1; -fx-padding: 10; -fx-background-color: white; -fx-border-radius: 5;");
+    
+    // MODIFICA: Imposta l'altezza fissa della box a 300px per uguagliare l'altezza della tabella
+    detailFrame.setPrefHeight(300); 
+    detailFrame.setMaxHeight(300);
 
-    ((VBox) getRoot()).getChildren().add(creaPaneDettaglio());
+    // Aggiunge il frame alla HBox (affiancato alla TableView)
+    contentHBox.getChildren().add(detailFrame);
     }
 
     /**
@@ -109,7 +122,19 @@ public class UtenteView extends DatiBaseView<Utente> {
         
         detailPane.setHgap(10);
         detailPane.setVgap(10);
-        detailPane.add(new Label("Dettagli Utente"), 0, 0, 2, 1);
+        
+        // Miglioramento: Imposta una larghezza minima per il pannello di dettaglio
+        detailPane.setMinWidth(250);
+        
+        Label dettagliLabel = new Label("Dettagli Utente");
+        dettagliLabel.setStyle("-fx-font-weight: bold;");
+        detailPane.add(dettagliLabel, 0, 0, 2, 1);
+        
+        // Uniformità dei campi di testo
+        nomeInput.setPrefWidth(200);
+        cognomeInput.setPrefWidth(200);
+        matricolaInput.setPrefWidth(200);
+        emailInput.setPrefWidth(200);
         
         detailPane.add(new Label("Nome:"), 0, 1);
         detailPane.add(nomeInput, 1, 1);

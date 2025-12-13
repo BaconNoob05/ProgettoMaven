@@ -1,3 +1,7 @@
+
+Contenuti in evidenza della cartella
+Servizi Java che estendono BaseService per gestire Utente, Libro e Prestito, inclusa la logica per prestiti attivi.
+
 package it.unisa.diem.ingegneriadelsoftware.service;
 
 import java.util.List;
@@ -5,6 +9,7 @@ import java.util.ArrayList;
 import java.util.stream.Collectors;
 import it.unisa.diem.ingegneriadelsoftware.repository.InterfaceRepository; 
 import it.unisa.diem.ingegneriadelsoftware.model.Libro; 
+import it.unisa.diem.ingegneriadelsoftware.model.Prestito; // Import aggiunto per IF-1.1.2
 
 /**
  * @class LibroService
@@ -13,6 +18,9 @@ import it.unisa.diem.ingegneriadelsoftware.model.Libro;
  */
 public class LibroService extends BaseService<Libro> {
 
+    // Riferimento per i controlli incrociati (IF-1.1.2)
+    private PrestitoService prestitoService;
+
     /**
      * @brief Costruttore.
      * @param [in] repository Il repository dei libri.
@@ -20,6 +28,41 @@ public class LibroService extends BaseService<Libro> {
     public LibroService(InterfaceRepository<Libro> repository) {
         super(repository);
     }
+    
+    /**
+     * @brief Imposta il servizio prestiti per i controlli incrociati (usato in Main.java).
+     * @param [in] prestitoService Il servizio prestiti.
+     */
+    public void setPrestitoService(PrestitoService prestitoService) {
+        this.prestitoService = prestitoService;
+    }
+
+    /**
+     * @brief Elimina un elemento utilizzando il suo ID.
+     * @param [in] elemento L'oggetto da eliminare.
+     * @pre L'elemento non deve essere null.
+     * @post L'elemento viene rimosso dal repository.
+     * @see InterfaceRepository#elimina(String)
+     */
+    @Override
+    public void elimina(Libro elemento) {
+        if (elemento != null && elemento.getId() != null) {
+            
+            // IF-1.1.2: Cancellazione Libro. Può essere effettuata solo se non sono presenti prestiti attivi.
+            if (prestitoService != null) {
+                // Si assume che PrestitoService.listaPrestitiAttivi() sia implementato
+                boolean hasActiveLoans = prestitoService.listaPrestitiAttivi().stream()
+                        .anyMatch(p -> p.getLibro().getId().equals(elemento.getId()));
+                
+                if (hasActiveLoans) {
+                    throw new IllegalStateException("Impossibile eliminare il libro: sono presenti prestiti attivi associati.");
+                }
+            }
+            
+            repository.elimina(elemento.getId());
+        }
+    }
+
 
     /**
      * @brief Cerca i libri che corrispondono a un determinato titolo.
@@ -75,11 +118,11 @@ public class LibroService extends BaseService<Libro> {
         
         String filtroLowerCase = filtro.toLowerCase();
 
-        return getAll().stream().filter(l -> l.getTitolo().toLowerCase().contains(filtroLowerCase) || l.getAutoriString().toLowerCase().contains(filtroLowerCase))
+        // Ricerca per Titolo, Autore o ISBN (IF-1.2.1, IF-1.2.2, IF-1.2.3)
+        return getAll().stream()
+               .filter(l -> l.getTitolo().toLowerCase().contains(filtroLowerCase) || 
+                            l.getAutoriString().toLowerCase().contains(filtroLowerCase) ||
+                            l.getId().toLowerCase().equals(filtroLowerCase)) // ISBN (ID) deve essere esatta
                .collect(Collectors.toList());
     }
-    
-    
-    
-    
 }
