@@ -1,5 +1,4 @@
-Contenuti in evidenza della cartella
-Servizi Java che estendono BaseService per gestire Utente, Libro e Prestito, inclusa la logica per prestiti attivi.
+
 
 package it.unisa.diem.ingegneriadelsoftware.service;
 
