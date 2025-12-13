@@ -15,16 +15,24 @@ public class Utente extends Dati {
      */
      private static final long serialVersionUID = 1L;
 
-    /** Nome dell'utente. */
+   /**
+     * @brief Nome dell'utente.
+     */
     private String nome;
     
-    /** Cognome dell'utente. */
+    /**
+     * @brief Cognome dell'utente.
+     */
     private String cognome;
     
-    /** Matricola. */
+   /**
+     * @brief Matricola univoca dell'utente.
+     */
     private String matricola;
     
-     /** Indirizzo email. */
+     /**
+     * @brief Indirizzo email dell'utente.
+     */
     private String email;
     
     /**
@@ -59,37 +67,66 @@ public class Utente extends Dati {
         return matricola;
     }
 
-    /** @return Il nome dell'utente, altrimenti restituisce un valore nullo. */
+ 
+    /**
+     * @brief Restituisce il nome dell'utente.
+     * @return Il nome dell'utente, altrimenti restituisce un valore nullo.
+     */
     public String getNome() {
         return nome;
     }
 
-    /** @return Il cognome dell'utente, altrimenti restituisce un valore nullo. */
+    /** 
+     * @brief Restituisce il cognome dell'utente.
+     * @return Il cognome dell'utente, altrimenti restituisce un valore nullo.
+     */
+
     public String getCognome() {
         return cognome;
     }
 
-    /** @return La matricola dell'utente, altrimenti restituisce un valore nullo. */
+   /**
+     * @brief Restituisce la matricola dell'utente.
+     * @return La matricola dell'utente, altrimenti restituisce un valore nullo.
+     */
     public String getMatricola() {
         return matricola;
     }
 
-    /** @return L'email dell'utente, altrimenti restituisce un valore nullo. */
+    /**
+     * @brief Restituisce l'email dell'utente.
+     * @return L'email dell'utente, altrimenti restituisce un valore nullo.
+     */
     public String getEmail() {
         return email;
     }
 
-     /** @param [in] n Il nuovo nome. */
+    /**
+     * @brief Imposta il nome dell'utente.
+     * @param n Il nuovo nome.
+     * @pre n non deve essere nullo.
+     * @post Il nome è uguale a n.
+     */
     public void setNome(String n) {
         this.nome = n;
     }
 
-    /** @param [in] c Il nuovo cognome. */
+   /**
+     * @brief Imposta il cognome dell'utente.
+     * @param c Il nuovo cognome.
+     * @pre c non deve essere nullo.
+     * @post Il cognome è uguale a c.
+     */
     public void setCognome(String c) {
         this.cognome = c;
     }
 
-    /** @param [in] e La nuova email. */
+   /**
+     * @brief Imposta l'indirizzo email dell'utente.
+     * @param e La nuova email.
+     * @pre e non deve essere nullo.
+     * @post L' email è uguale ad e.
+     */
     public void setEmail(String e) {
         this.email = e;
     }
