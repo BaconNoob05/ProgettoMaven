@@ -1,5 +1,3 @@
-
-
 package it.unisa.diem.ingegneriadelsoftware.view;
 
 import it.unisa.diem.ingegneriadelsoftware.model.Libro;
@@ -10,6 +8,8 @@ import javafx.scene.layout.GridPane;
 import java.util.Arrays;
 import java.util.List;
 import javafx.scene.layout.VBox;
+import javafx.scene.layout.HBox;
+import javafx.geometry.Pos; 
 
 /**
  * @class LibroView
@@ -181,6 +181,15 @@ public class LibroView extends DatiBaseView<Libro> {
         detailPane.add(copieInput, 1, 4);
         
         detailPane.add(messaggioLabel, 0, 5, 2, 1); 
+        
+        // MODIFICA: Aggiunge il pulsante OK (Salva/Aggiorna) al pannello di dettaglio
+        HBox actionBox = new HBox(10);
+        actionBox.setAlignment(Pos.CENTER_RIGHT);
+        getOkButton().setPrefWidth(120); 
+        getOkButton().setStyle("-fx-background-color: #4CAF50; -fx-text-fill: white; -fx-font-weight: bold;"); 
+        actionBox.getChildren().add(getOkButton());
+        detailPane.add(actionBox, 0, 6, 2, 1); // Row 6, spanning 2 columns
+        
         return detailPane;
     }
     

@@ -10,10 +10,10 @@ import java.util.List;
 /**
  * @class PrestitoController
  * @brief Controller specifico per la gestione dei Prestiti.
- * @see BaseController
+ * @see CrudController
  * @see PrestitoService
  */
-public class PrestitoController extends BaseController<Prestito> {
+public class PrestitoController extends CrudController<Prestito> {
 
     /**
      * @brief Costruttore.
@@ -39,9 +39,29 @@ public class PrestitoController extends BaseController<Prestito> {
     private PrestitoService getSpecificService() {
         return (PrestitoService) service;
     }
+    
+    /**
+     * @brief Implementazione base del salvataggio richiesta da CrudController.
+     * @details Nel flusso standard, si usa registraPrestito, ma questa è necessaria per la compilazione.
+     * @param nuovo Il prestito da salvare.
+     */
+    @Override
+    public void salva(Prestito nuovo) {
+        eseguiOperazione(() -> service.salva(nuovo), "Prestito salvato (uso non standard).");
+    }
 
     /**
-     * @brief Inizializza il controller e collega i listener ai pulsanti specifici.
+     * @brief Implementazione base della modifica richiesta da CrudController.
+     * @details Nel flusso standard, si usa registraRestituzione, ma questa è necessaria per la compilazione.
+     * @param elemento Il prestito aggiornato.
+     */
+    @Override
+    public void modifica(Prestito elemento) {
+        eseguiOperazione(() -> service.modifica(elemento), "Prestito modificato (uso non standard).");
+    }
+
+    /**
+     * @brief Inizializza il controller e collega i listener ai pulsanti specifici e ai campi base.
      */
     @Override
     public void init() {
@@ -57,6 +77,20 @@ public class PrestitoController extends BaseController<Prestito> {
         
         // 3. Listener per Annulla (Resetta il form a stato di nuovo prestito)
         view.getAnnullaButton().setOnAction(e -> view.pulisciDettagli());
+        
+        // 4. MODIFICA: Listener per la Ricerca (abilita la ricerca e ritorna ai prestiti attivi se vuoto)
+        view.getCercaField().textProperty().addListener((observable, oldValue, newValue) -> {
+            if (newValue == null || newValue.isEmpty()) {
+                aggiornaPrestiti(); // Ritorna alla visualizzazione predefinita (attivi ordinati)
+            } else {
+                cerca(); // Usa CrudController.cerca() per cercare tra TUTTI i prestiti
+            }
+        });
+        
+        // 5. MODIFICA: Listener per Cancellazione (usa la logica CrudController.elimina)
+        view.getCancellaButton().setOnAction(e -> elimina());
+        
+        // Il pulsante OK è disabilitato in PrestitoView e non ha listener.
     }
 
 
@@ -67,11 +101,13 @@ public class PrestitoController extends BaseController<Prestito> {
      */
     @Override
     public void aggiornaVista(){
+        // Al caricamento, mostra la lista di default (prestiti attivi ordinati)
         aggiornaPrestiti();
     }
     
     /**
      * @brief Gestisce la logica di registrazione di un nuovo prestito.
+     * @param [in] datiInseriti L'oggetto Prestito temporaneo con Utente, Libro e Data Prevista.
      * @pre La vista deve fornire un Utente valido e un Libro con copie disponibili.
      * @post Le copie del libro vengono decrementate.
      * @see PrestitoView#getPrestitoNuovo()

@@ -70,6 +70,8 @@ public class UtenteController extends CrudController<Utente> {
         view.getCercaField().textProperty().addListener((observable, oldValue, newValue) -> {
             cerca();
         });
+        
+        // Rimosso: Listener per il pulsante "Nuovo"
     }
 
     //DA RIVEDERE DOXYGEN

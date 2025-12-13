@@ -107,6 +107,6 @@ public class LibroController extends CrudController<Libro> {
             cerca();
         });
         
+        // Rimosso: Listener per il pulsante "Nuovo"
     }  
 }
-

@@ -1,5 +1,3 @@
-
-
 package it.unisa.diem.ingegneriadelsoftware.view;
 
 import it.unisa.diem.ingegneriadelsoftware.model.*;
@@ -95,12 +93,9 @@ public class PrestitoView extends DatiBaseView<Prestito> {
         });
         
         
-        super.modificaButton.setDisable(true);
-        
-        super.cancellaButton.setDisable(true);
-        super.okButton.setDisable(true);
-        super.cercaField.setDisable(true);
-        
+        // Disabilita il pulsante Salva/Aggiorna (okButton) poiché in PrestitoView si usano pulsanti specifici
+        super.getOkButton().setDisable(true);
+        // cercaField e cancellaButton sono ora abilitati di default in DatiBaseView
 
        
         pulisciDettagli();
