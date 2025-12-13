@@ -41,6 +41,36 @@ public class PrestitoController extends BaseController<Prestito> {
     }
 
     /**
+     * @brief Inizializza il controller e collega i listener ai pulsanti specifici.
+     */
+    @Override
+    public void init() {
+        super.init(); 
+        
+        PrestitoView view = getSpecificView();
+
+        // 1. Listener per Registra Prestito
+        view.getRegistraPrestitoButton().setOnAction(e -> registraPrestito());
+        
+        // 2. Listener per Registra Restituzione
+        view.getRestituisciLibroButton().setOnAction(e -> registraRestituzione());
+        
+        // 3. Listener per Annulla (Resetta il form a stato di nuovo prestito)
+        view.getAnnullaButton().setOnAction(e -> view.pulisciDettagli());
+    }
+
+
+    /**
+     * @brief Aggiorna la vista recuperando tutti i prestiti attivi.
+     * @see InterfaceController#aggiornaVista()
+     * @see PrestitoService#listaPrestitiAttivi()
+     */
+    @Override
+    public void aggiornaVista(){
+        aggiornaPrestiti();
+    }
+    
+    /**
      * @brief Gestisce la logica di registrazione di un nuovo prestito.
      * @pre La vista deve fornire un Utente valido e un Libro con copie disponibili.
      * @post Le copie del libro vengono decrementate.
@@ -84,16 +114,36 @@ public class PrestitoController extends BaseController<Prestito> {
 
         eseguiOperazione(() -> {
             getSpecificService().registraRestituzione(prestitoSelezionato, dataRestituzione);
-            aggiornaPrestiti(); 
         }, "Restituzione registrata. Prestito chiuso.");
+        
+        // La chiamata ad aggiornaVista() è implicita in eseguiOperazione.
     }
 
     /**
-     * @brief Aggiorna la vista dei prestiti.
+     * @brief Aggiorna la vista dei prestiti attivi, applicando l'ordinamento richiesto (FC-3.1.1).
      * @see PrestitoService#listaPrestitiAttivi()
      */
     public void aggiornaPrestiti(){
         List<Prestito> attivi = getSpecificService().listaPrestitiAttivi();
+        
+        // FC-3.1.1: Ordinamento per data: scaduti prima, poi per data prevista crescente
+        attivi.sort((p1, p2) -> {
+            boolean p1Scaduto = p1.isScaduto();
+            boolean p2Scaduto = p2.isScaduto();
+
+            // Se P1 è scaduto e P2 no, P1 va prima (-1)
+            if (p1Scaduto && !p2Scaduto) {
+                return -1; 
+            }
+            // Se P2 è scaduto e P1 no, P2 va prima (1)
+            if (!p1Scaduto && p2Scaduto) {
+                return 1; 
+            }
+            
+            // Se entrambi scaduti o entrambi attivi, ordina per data prevista (più vicina prima)
+            return p1.getDataPrevista().compareTo(p2.getDataPrevista());
+        });
+        
         view.mostraLista(attivi);
     }
 }

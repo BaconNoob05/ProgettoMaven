@@ -1,9 +1,10 @@
-
 package it.unisa.diem.ingegneriadelsoftware.controller;
 
 import it.unisa.diem.ingegneriadelsoftware.view.UtenteView;
 import it.unisa.diem.ingegneriadelsoftware.service.UtenteService;
 import it.unisa.diem.ingegneriadelsoftware.model.Utente;
+import java.util.Comparator; 
+import java.util.List; 
 
 
 /**
@@ -25,6 +26,53 @@ public class UtenteController extends CrudController<Utente> {
         super(view,service);
     }
 
+    /**
+     * @brief Aggiorna la vista recuperando tutti gli elementi dal servizio e applicando l'ordinamento (FC-2.2.1, FC-2.2.2).
+     * @see InterfaceController#aggiornaVista()
+     * @see InterfaceService#getAll()
+     */
+    @Override
+    public void aggiornaVista() {
+        List<Utente> lista = service.getAll();
+        
+        // FC-2.2.1, FC-2.2.2: Ordinamento primario per Cognome, secondario per Nome
+        lista.sort(Comparator
+                .comparing(Utente::getCognome, String.CASE_INSENSITIVE_ORDER)
+                .thenComparing(Utente::getNome, String.CASE_INSENSITIVE_ORDER)
+        );
+        
+        view.mostraLista(lista);
+    }
+
+    /**
+     * @brief Inizializza il controller e collega i listener ai pulsanti della vista.
+     */
+    @Override
+    public void init() {
+        super.init();
+        
+        UtenteView view = getSpecificView();
+        
+        // 1. Listener per Inserimento (OK) e Modifica (OK)
+        view.getOkButton().setOnAction(e -> {
+            // Se un elemento è selezionato, si assume Modifica. Altrimenti, Salva nuovo.
+            if (view.getTableView().getSelectionModel().getSelectedItem() != null) {
+                modificaUtente();
+            } else {
+                salvaUtente();
+            }
+        });
+        
+        // 2. Listener per Cancellazione
+        view.getCancellaButton().setOnAction(e -> elimina());
+        
+        // 3. Listener per la Ricerca (CORREZIONE: Aggiorna al cambiamento del testo)
+        view.getCercaField().textProperty().addListener((observable, oldValue, newValue) -> {
+            cerca();
+        });
+    }
+
+    //DA RIVEDERE DOXYGEN
     /**
      * @brief  Interpreta la vista come un'istanza di UtenteView.
      * @return L'istanza di UtenteView associata al controller altrimenti un valore nullo.
