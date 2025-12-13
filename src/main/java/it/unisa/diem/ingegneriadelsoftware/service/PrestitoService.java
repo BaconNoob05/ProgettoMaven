@@ -71,6 +71,7 @@ public class PrestitoService extends BaseService<Prestito> {
      * @pre Il prestito deve essere ancora attivo.
      * @post Il campo dataEffettiva del prestito viene impostato.
      * @post Il numero di copie disponibili del libro viene incrementato di 1.
+     * @see LibroService
      */
     public void registraRestituzione(Prestito prestito, LocalDate dataEffettiva) { 
         if (prestito == null) {
