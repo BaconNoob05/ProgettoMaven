@@ -3,6 +3,8 @@ package it.unisa.diem.ingegneriadelsoftware.controller;
 import it.unisa.diem.ingegneriadelsoftware.view.LibroView;
 import it.unisa.diem.ingegneriadelsoftware.service.LibroService;
 import it.unisa.diem.ingegneriadelsoftware.model.Libro;
+import java.util.Comparator; 
+import java.util.List; 
 
 /**
  * @class LibroController
@@ -76,4 +78,35 @@ public class LibroController extends CrudController<Libro> {
     public void modifica(Libro elemento){
         eseguiOperazione(() -> service.modifica(elemento), "Dati libro aggiornati correttamente.");
     }
+
+    
+    /**
+     * @brief Inizializza il controller e collega i listener ai pulsanti della vista.
+     */
+    @Override
+    public void init() {
+        super.init();
+        
+        LibroView view = getSpecificView();
+        
+        // 1. Listener per Inserimento (OK) e Modifica (OK)
+        view.getOkButton().setOnAction(e -> {
+            // Se un elemento è selezionato, si assume Modifica. Altrimenti, Salva nuovo.
+            if (view.getTableView().getSelectionModel().getSelectedItem() != null) {
+                modificaLibro();
+            } else {
+                salvaLibro();
+            }
+        });
+        
+        // 2. Listener per Cancellazione
+        view.getCancellaButton().setOnAction(e -> elimina());
+        
+        // 3. Listener per la Ricerca (CORREZIONE: Aggiorna al cambiamento del testo)
+        view.getCercaField().textProperty().addListener((observable, oldValue, newValue) -> {
+            cerca();
+        });
+        
+    }  
 }
+
