@@ -16,7 +16,7 @@ public class UtenteService extends BaseService<Utente> {
     
     /**
      * @brief Costruttore.
-     * @param [in] repo Il repository degli utenti.
+     * @param [in] repository Il repository degli utenti.
      */
     public UtenteService(InterfaceRepository<Utente> repository) {
         super(repository);
@@ -26,6 +26,7 @@ public class UtenteService extends BaseService<Utente> {
      * @brief Cerca gli utenti che corrispondono a un determinato cognome.
      * @param [in] cognome Il cognome da cercare.
      * @return Una lista di oggetti Utente che rispettano il criterio di ricerca, altrimenti restituisce una lista vuota.
+     * @throws IllegalArgumentException Se il cognome è null.
      * @pre La stringa 'cognome' non deve essere null.
      * @post Nessuna modifica viene apportata ai dati.
      * @see BaseService#cercaGenerico(String)
@@ -48,9 +49,11 @@ public class UtenteService extends BaseService<Utente> {
     }
 
 
-/**
+    /**
      * @brief Necessario per il funzionamento della barra di ricerca del Controller.
      * Collega la ricerca generica alla ricerca specifica per cognome.
+     * @param [in] filtro La stringa di ricerca.
+     * @return La lista degli utenti che hanno un cognome corrispondente al filtro.
      */
     @Override
     public List<Utente> cercaGenerico(String filtro) {
