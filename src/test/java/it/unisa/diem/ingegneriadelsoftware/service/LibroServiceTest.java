@@ -155,4 +155,13 @@ public class LibroServiceTest {
         assertTrue(service.cercaPerAutore(" ").isEmpty());
         
     }
+    
+    @Test
+    void testDebugRepository() {
+        assertEquals(5, repo.getAll().size());
+    }
+    
+    
+    
+    
 }

@@ -30,13 +30,21 @@ public class UtenteService extends BaseService<Utente> {
      * @post Nessuna modifica viene apportata ai dati.
      * @see BaseService#cercaGenerico(String)
      */
-    public List<Utente> cercaPerCognome(String cognome) { 
-        if (cognome == null) 
+    public List<Utente> cercaPerCognome(String cognome) {
+
+        if (cognome == null) {
+            throw new IllegalArgumentException("Filtro nullo");
+        }
+
+        if (cognome.trim().isEmpty()) {
             return new ArrayList<>();
-        
-        String filtroLowerCase = cognome.toLowerCase();
-        
-        return getAll().stream().filter(u -> u.getCognome().toLowerCase().contains(filtroLowerCase)).collect(Collectors.toList());
+        }
+
+        String filtro = cognome.toLowerCase();
+
+        return getAll().stream()
+            .filter(u -> u.getCognome().toLowerCase().contains(filtro))
+            .collect(Collectors.toList());
     }
 
 

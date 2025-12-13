@@ -30,10 +30,16 @@ public class LibroService extends BaseService<Libro> {
      * @see BaseService#cercaGenerico(String)
      */
     public List<Libro> cercaPerTitolo(String titolo) {
-        if (titolo == null) 
+        if (titolo == null || titolo.trim().isEmpty())
             return new ArrayList<>();
-        return getAll().stream().filter(l -> l.getTitolo().equalsIgnoreCase(titolo)).collect(Collectors.toList());
+
+        String filtro = titolo.toLowerCase();
+
+        return getAll().stream()
+            .filter(l -> l.getTitolo().toLowerCase().contains(filtro))
+            .collect(Collectors.toList());
     }
+
 
     /**
      * @brief Cerca i libri scritti da un determinato autore.
@@ -43,12 +49,17 @@ public class LibroService extends BaseService<Libro> {
      * @post Nessuna modifica ai dati.
      * @see Libro#getAutoriString()
      */
-    public List<Libro> cercaPerAutore(String autore) {
-        if (autore == null) 
-            return new ArrayList<>();
-        String autoreLowerCase = autore.toLowerCase();
-        return getAll().stream().filter(l -> l.getAutoriString().toLowerCase().contains(autoreLowerCase)).collect(Collectors.toList());
-    }
+   public List<Libro> cercaPerAutore(String autore) {
+       if (autore == null || autore.trim().isEmpty())
+           return new ArrayList<>();
+
+       String filtro = autore.toLowerCase();
+
+       return getAll().stream()
+           .filter(l -> l.getAutoriString().toLowerCase().contains(filtro))
+           .collect(Collectors.toList());
+   }
+
 
  /**
      * @brief Ricerca generica: cerca corrispondenze per titolo o per autore.
@@ -65,4 +76,7 @@ public class LibroService extends BaseService<Libro> {
                .collect(Collectors.toList());
     }
     
-    }
+    
+    
+    
+}

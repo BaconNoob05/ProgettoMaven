@@ -13,8 +13,12 @@ public class RepositoryStub<T extends InterfaceID> implements InterfaceRepositor
 
     private List<T> lista = new ArrayList<>();
 
+    
     @Override
-    public void caricaTutti(List<T> lista) { }
+    public void caricaTutti(List<T> dati) {
+        if (dati == null) return;
+        lista.addAll(dati);
+    }
 
     @Override
     public void salvaSuFile() { }

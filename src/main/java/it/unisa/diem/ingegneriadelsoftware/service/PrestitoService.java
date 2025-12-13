@@ -46,20 +46,22 @@ public class PrestitoService extends BaseService<Prestito> {
      * @see LibroService
      */
     public void registraPrestito(Utente utente, Libro libro, LocalDate dataPrevista) { 
-        if (utente == null || libro == null || dataPrevista == null) 
-        {
-            throw new IllegalArgumentException("Dati mancanti per consentire la registrazione del prestito.");
+        if (utente == null || libro == null) {
+            throw new IllegalArgumentException("Utente o libro nullo");
         }
-        if (libro.getCopieDisponibili() > 0) {
+
+        if (dataPrevista == null || dataPrevista.isBefore(LocalDate.now())) {
+            throw new IllegalArgumentException("Data prevista non valida");
+        }
+
+        if (libro.getCopieDisponibili() <= 0) {
+            throw new IllegalStateException("Nessuna copia disponibile");
+        }
             Prestito nuovoPrestito = new Prestito(utente, libro, dataPrevista);
             libro.decrementaCopie();
             libroService.modifica(libro);
             this.salva(nuovoPrestito);  
-        } 
-        else 
-        {
-            throw new IllegalStateException("Non sono presenti copie disponibili per il libro: " + libro.getTitolo());
-        }
+       
     }
  
     /**
@@ -71,9 +73,12 @@ public class PrestitoService extends BaseService<Prestito> {
      * @post Il numero di copie disponibili del libro viene incrementato di 1.
      */
     public void registraRestituzione(Prestito prestito, LocalDate dataEffettiva) { 
-        if (prestito == null || dataEffettiva == null) 
-        {
-        return;
+        if (prestito == null) {
+            throw new IllegalArgumentException("Prestito nullo");
+        }
+
+        if (prestito.getDataEffettiva() != null) {
+            throw new IllegalStateException("Prestito già chiuso");
         }
          
         prestito.registraRestituzione(dataEffettiva);
