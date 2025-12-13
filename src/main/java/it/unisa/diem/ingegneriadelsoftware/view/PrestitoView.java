@@ -15,6 +15,7 @@ import java.util.List;
 import java.util.Optional;
 import javafx.scene.layout.VBox;
 import javafx.geometry.Pos;
+import javafx.geometry.Insets; 
 
 /**
  * @class PrestitoView
@@ -40,7 +41,7 @@ public class PrestitoView extends DatiBaseView<Prestito> {
 
     private final Button registraPrestitoButton;
     private final Button restituisciLibroButton;
-    private final Button annullaButton;
+    private final Button annullaSpecifcButton;
 
     public PrestitoView() {
 
@@ -55,12 +56,13 @@ public class PrestitoView extends DatiBaseView<Prestito> {
         this.statoComboBox.setValue("In Prestito"); 
         this.registraPrestitoButton = new Button("Registra Prestito");
         this.restituisciLibroButton = new Button("Restituisci Libro");
-        this.annullaButton = new Button("Annulla");
+        this.annullaSpecifcButton = getAnnullaButton(); // Usa il pulsante ereditato
+        this.annullaSpecifcButton.setText("Annulla"); 
 
         // Styling per i pulsanti (come nell'immagine prototipo)
         registraPrestitoButton.setStyle("-fx-background-color: #4CAF50; -fx-text-fill: white; -fx-font-weight: bold;");
         restituisciLibroButton.setStyle("-fx-background-color: #2196F3; -fx-text-fill: white; -fx-font-weight: bold;");
-        annullaButton.setStyle("-fx-background-color: #f44336; -fx-text-fill: white;");
+        this.annullaSpecifcButton.setStyle("-fx-background-color: #f44336; -fx-text-fill: white;");
 
 
         // MODIFICA: Crea un box esterno per incorniciare il dettaglio (frame)
@@ -68,9 +70,9 @@ public class PrestitoView extends DatiBaseView<Prestito> {
         VBox detailFrame = new VBox(innerDetailPane);
         detailFrame.setStyle("-fx-border-color: gray; -fx-border-width: 1; -fx-padding: 10; -fx-background-color: white; -fx-border-radius: 5;");
         
-        // MODIFICA: Imposta l'altezza fissa della box a 300px per uguagliare l'altezza della tabella
-        detailFrame.setPrefHeight(300); 
-        detailFrame.setMaxHeight(300);
+        // MODIFICA: Ripristino altezza box dettaglio a 350px
+        detailFrame.setPrefHeight(350); 
+        detailFrame.setMaxHeight(350);
 
         // Aggiunge il frame alla HBox (affiancato alla TableView)
         contentHBox.getChildren().add(detailFrame); 
@@ -93,7 +95,7 @@ public class PrestitoView extends DatiBaseView<Prestito> {
         });
         
         
-        // Disabilita il pulsante Salva/Aggiorna (okButton) poiché in PrestitoView si usano pulsanti specifici
+        // Disabilita i pulsanti base non usati
         super.getOkButton().setDisable(true);
         // cercaField e cancellaButton sono ora abilitati di default in DatiBaseView
 
@@ -246,19 +248,20 @@ public class PrestitoView extends DatiBaseView<Prestito> {
         
 
         HBox pulsantiAzione = new HBox(10);
-        pulsantiAzione.setAlignment(Pos.CENTER_LEFT);
+        pulsantiAzione.setAlignment(Pos.CENTER); // Centra i pulsanti
         
-        // Miglioramento: Pulsanti con larghezza fissa per coerenza
+
         registraPrestitoButton.setPrefWidth(120);
         restituisciLibroButton.setPrefWidth(120);
-        annullaButton.setPrefWidth(80);
+        getAnnullaButton().setPrefWidth(80); // Usa il pulsante ereditato
+        
 
-
-        pulsantiAzione.getChildren().addAll(registraPrestitoButton, restituisciLibroButton, annullaButton);
+        pulsantiAzione.getChildren().addAll(registraPrestitoButton, restituisciLibroButton, getAnnullaButton());
         
         
-        detailPane.add(messaggioLabel, 0, 6, 2, 1); 
-        detailPane.add(pulsantiAzione, 0, 7, 2, 1);
+
+        detailPane.add(getMessaggioBox(), 0, 9, 2, 1); 
+        detailPane.add(pulsantiAzione, 0, 12, 2, 1);
         
         
         return detailPane;
@@ -337,10 +340,6 @@ public class PrestitoView extends DatiBaseView<Prestito> {
         return restituisciLibroButton;
     }
     
-    public Button getAnnullaButton() {
-        return annullaButton;
-    }
-
 
     public void setLibriList(List<Libro> libri) {
         

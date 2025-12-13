@@ -78,7 +78,7 @@ public class PrestitoController extends CrudController<Prestito> {
         // 3. Listener per Annulla (Resetta il form a stato di nuovo prestito)
         view.getAnnullaButton().setOnAction(e -> view.pulisciDettagli());
         
-        // 4. MODIFICA: Listener per la Ricerca (abilita la ricerca e ritorna ai prestiti attivi se vuoto)
+        // 4. Listener per la Ricerca (abilita la ricerca e ritorna ai prestiti attivi se vuoto)
         view.getCercaField().textProperty().addListener((observable, oldValue, newValue) -> {
             if (newValue == null || newValue.isEmpty()) {
                 aggiornaPrestiti(); // Ritorna alla visualizzazione predefinita (attivi ordinati)
@@ -87,8 +87,15 @@ public class PrestitoController extends CrudController<Prestito> {
             }
         });
         
-        // 5. MODIFICA: Listener per Cancellazione (usa la logica CrudController.elimina)
+        // 5. Listener per Cancellazione (ora Elimina)
         view.getCancellaButton().setOnAction(e -> elimina());
+        
+        // 6. Listener per Annulla Cerca (Pulisce il campo di ricerca e aggiorna la vista)
+        view.getAnnullaCercaButton().setOnAction(e -> {
+            view.getCercaField().clear();
+            aggiornaPrestiti(); // Torna alla lista predefinita (attivi ordinati)
+            view.mostraMessaggio("Ricerca annullata. Visualizzazione prestiti attivi.");
+        });
         
         // Il pulsante OK è disabilitato in PrestitoView e non ha listener.
     }
@@ -139,12 +146,12 @@ public class PrestitoController extends CrudController<Prestito> {
         LocalDate dataRestituzione = getSpecificView().getDataRestituzione();
 
         if (prestitoSelezionato == null) {
-            view.mostraMessaggio("Seleziona un prestito attivo dalla lista.");
+            view.mostraMessaggio("Errore: Seleziona un prestito attivo dalla lista.");
             return;
         }
 
         if (dataRestituzione == null) {
-            view.mostraMessaggio("Inserisci una data di restituzione valida.");
+            view.mostraMessaggio("Errore: Inserisci una data di restituzione valida.");
             return;
         }
 
@@ -162,7 +169,7 @@ public class PrestitoController extends CrudController<Prestito> {
     public void aggiornaPrestiti(){
         List<Prestito> attivi = getSpecificService().listaPrestitiAttivi();
         
-        // FC-3.1.1: Ordinamento per data: scaduti prima, poi per data prevista crescente
+
         attivi.sort((p1, p2) -> {
             boolean p1Scaduto = p1.isScaduto();
             boolean p2Scaduto = p2.isScaduto();

@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package it.unisa.diem.ingegneriadelsoftware.model;
 import org.junit.jupiter.api.*;
 import static org.junit.jupiter.api.Assertions.*;
@@ -22,7 +17,8 @@ public class UtenteTest {
     
     @BeforeEach
     void setUp(){
-        utente=new Utente(NOME,COGNOME,MATRICOLA,EMAIL);
+        // Il costruttore deve essere chiamato con dati validi per l'inizializzazione
+        utente=new Utente(NOME,COGNOME,MATRICOLA,EMAIL); 
     }
     
     @Test
@@ -69,18 +65,20 @@ public class UtenteTest {
         assertTrue(utente.isValido());
     }
     
+    // MODIFICA: Test aggiornato per verificare che il costruttore lanci l'eccezione (IllegalArgumentException)
     @Test
-    void testIsValido_UtenteSenzaNome(){
-        //aggiungo un utente con nome mancante
-        Utente utenteSenzaNome=new Utente(null,COGNOME,MATRICOLA,EMAIL);
-        assertFalse(utenteSenzaNome.isValido());
+    void testCostruttore_UtenteSenzaNomeLanciaEccezione(){
+        assertThrows(IllegalArgumentException.class, () -> {
+            new Utente(null,COGNOME,MATRICOLA,EMAIL);
+        });
     }   
     
+    // MODIFICA: Test aggiornato per verificare che il costruttore lanci l'eccezione (IllegalArgumentException)
     @Test
-    void testIsValido_UtenteSenzaMatricola(){
-        //aggiungo un utente con matricola mancante
-        Utente utenteSenzaMatricola=new Utente(NOME,COGNOME,null,EMAIL);
-        assertFalse(utenteSenzaMatricola.isValido());
+    void testCostruttore_UtenteSenzaMatricolaLanciaEccezione(){
+        assertThrows(IllegalArgumentException.class, () -> {
+            new Utente(NOME,COGNOME,null,EMAIL);
+        });
     }  
 
     /*

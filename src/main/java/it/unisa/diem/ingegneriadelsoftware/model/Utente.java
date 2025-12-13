@@ -43,6 +43,13 @@ public class Utente extends Dati {
      * @param [in] email L'indirizzo email.
      */
     public Utente(String nome, String cognome, String matricola, String email) {
+        // La validazione qui sotto è quella che causa l'errore nei vecchi test
+        if (nome == null || nome.trim().isEmpty() ||
+            cognome == null || cognome.trim().isEmpty() ||
+            matricola == null || matricola.trim().isEmpty()) {
+            throw new IllegalArgumentException("Nome, cognome e matricola sono obbligatori.");
+        }
+        
         this.nome = nome;
         this.cognome = cognome;
         this.matricola = matricola;
@@ -76,8 +83,7 @@ public class Utente extends Dati {
         return nome;
     }
 
-    /** 
-     * @brief Restituisce il cognome dell'utente.
+    /** * @brief Restituisce il cognome dell'utente.
      * @return Il cognome dell'utente, altrimenti restituisce un valore nullo.
      */
 

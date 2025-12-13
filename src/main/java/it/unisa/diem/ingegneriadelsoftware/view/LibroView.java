@@ -57,9 +57,9 @@ public class LibroView extends DatiBaseView<Libro> {
         VBox detailFrame = new VBox(innerDetailPane);
         detailFrame.setStyle("-fx-border-color: gray; -fx-border-width: 1; -fx-padding: 10; -fx-background-color: white; -fx-border-radius: 5;");
         
-        // MODIFICA: Imposta l'altezza fissa della box a 300px per uguagliare l'altezza della tabella
-        detailFrame.setPrefHeight(300); 
-        detailFrame.setMaxHeight(300);
+        // MODIFICA: Ripristino altezza box dettaglio a 350px
+        detailFrame.setPrefHeight(350); 
+        detailFrame.setMaxHeight(350);
 
         // Aggiunge il frame alla HBox (affiancato alla TableView)
         contentHBox.getChildren().add(detailFrame); 
@@ -180,15 +180,18 @@ public class LibroView extends DatiBaseView<Libro> {
         
         detailPane.add(copieInput, 1, 4);
         
-        detailPane.add(messaggioLabel, 0, 5, 2, 1); 
+        // MODIFICA: Usa la Message Box ereditata
+        detailPane.add(getMessaggioBox(), 0, 8, 2, 1); 
         
-        // MODIFICA: Aggiunge il pulsante OK (Salva/Aggiorna) al pannello di dettaglio
+        // Centra i pulsanti Salva/Aggiorna e Annulla
         HBox actionBox = new HBox(10);
-        actionBox.setAlignment(Pos.CENTER_RIGHT);
-        getOkButton().setPrefWidth(120); 
+        actionBox.setAlignment(Pos.CENTER); 
+        
         getOkButton().setStyle("-fx-background-color: #4CAF50; -fx-text-fill: white; -fx-font-weight: bold;"); 
-        actionBox.getChildren().add(getOkButton());
-        detailPane.add(actionBox, 0, 6, 2, 1); // Row 6, spanning 2 columns
+        getAnnullaButton().setStyle("-fx-background-color: #f44336; -fx-text-fill: white;");
+        
+        actionBox.getChildren().addAll(getOkButton(), getAnnullaButton());
+        detailPane.add(actionBox, 0,11, 2, 1); 
         
         return detailPane;
     }

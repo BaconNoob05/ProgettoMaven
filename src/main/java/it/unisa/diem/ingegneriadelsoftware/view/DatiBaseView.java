@@ -26,8 +26,14 @@ public abstract class DatiBaseView<T extends InterfaceID> extends BaseView<T> {
     protected final Button cancellaButton;
     /** @brief Bottone di conferma per l' inserimento o la modifica. */
     protected final Button okButton;
-    /** @brief Label utilizzata per far visualizzare messaggi di stato, errore o conferma all'utente. */
+    /** @brief Bottone per annullare l'operazione corrente e pulire i campi di dettaglio. */
+    protected final Button annullaButton; 
+    /** @brief Bottone per annullare la ricerca corrente e mostrare tutti gli elementi. */
+    protected final Button annullaCercaButton; 
+    /** @brief Label contenente il testo del messaggio. */
     protected final Label messaggioLabel;
+    /** @brief Contenitore stilizzato per la visualizzazione dei messaggi di stato, errore o conferma. */
+    protected final HBox messaggioBox; 
     
     
     /** @brief Tableview serve per la visualizzazione della tabella degli elementi. */
@@ -46,15 +52,26 @@ public abstract class DatiBaseView<T extends InterfaceID> extends BaseView<T> {
         
   
         this.cercaField = new TextField();
-        this.cancellaButton = new Button("Cancella");
+        // MODIFICA: Renaming 'Cancella' to 'Elimina' and setting the red style
+        this.cancellaButton = new Button("Elimina"); 
+        this.cancellaButton.setStyle("-fx-background-color: #f44336; -fx-text-fill: white; -fx-font-weight: bold;"); // Red style
         this.okButton = new Button("Salva/Aggiorna"); 
+        this.annullaButton = new Button("Annulla"); 
+        this.annullaCercaButton = new Button("Annulla Cerca"); 
+        
         this.messaggioLabel = new Label("Pronto.");
+        this.messaggioBox = new HBox(this.messaggioLabel);
+        this.messaggioBox.setAlignment(Pos.CENTER_LEFT);
+        this.messaggioBox.setPadding(new Insets(5));
+        this.messaggioBox.setStyle("-fx-border-color: gray; -fx-border-width: 1; -fx-padding: 5; -fx-background-color: #f4f4f4; -fx-border-radius: 3;");
+
 
         this.tableView = new TableView<>(dataList);
         
-        // MODIFICA: Imposta l'altezza preferita/massima per limitare a circa 10 righe
-        this.tableView.setPrefHeight(300); 
-        this.tableView.setMaxHeight(300); 
+        this.tableView.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY); 
+        // MODIFICA: Aumento altezza TableView a 350px
+        this.tableView.setPrefHeight(350); 
+        this.tableView.setMaxHeight(350); 
      
         impostaColonneTabella();
         impostaListener();
@@ -62,13 +79,13 @@ public abstract class DatiBaseView<T extends InterfaceID> extends BaseView<T> {
         // Miglioramento: impostazione minima di larghezza preferita per i pulsanti
         cancellaButton.setPrefWidth(80);
         okButton.setPrefWidth(120); 
+        annullaButton.setPrefWidth(80); 
+        annullaCercaButton.setPrefWidth(100); 
         
-        // Impostazione iniziale per la Label (stato normale)
-        this.messaggioLabel.setStyle("-fx-text-fill: black; -fx-font-style: italic;");
 
 
-        this.root = new VBox(10); 
-        this.root.setPadding(new Insets(10)); // Padding generale per l'intera vista
+        this.root = new VBox(15); // AUMENTO SPAZIO VERTICALE (15px)
+        this.root.setPadding(new Insets(10)); 
 
         // Configurazione HBox: contiene TableView e Dettaglio (aggiunto nelle sottoclassi)
         this.contentHBox = new HBox(15); 
@@ -110,19 +127,21 @@ public abstract class DatiBaseView<T extends InterfaceID> extends BaseView<T> {
 
 
     /**
-     * @brief Crea il contenitore con i controlli superiori (Cerca e Cancella).
+     * @brief Crea il contenitore con i controlli superiori (Cerca, Annulla Cerca e Elimina).
      * @param [in] entityName Il nome dell'entità gestita.
      * @return Il VBox contenente i controlli di ricerca e le azioni principali.
      */
     private VBox creaTopControls(String entityName) {
         
-        // Prima riga: Cerca + Cancella
+        // Riga unica: Cerca + Annulla Cerca + Elimina
         HBox searchAndActionBox = new HBox(10);
-        searchAndActionBox.setAlignment(Pos.CENTER_LEFT);
+        // Allinea l'HBox a SINISTRA
+        searchAndActionBox.setAlignment(Pos.CENTER_LEFT); 
         searchAndActionBox.getChildren().addAll(
             new Label("Cerca:"), 
             cercaField,
-            cancellaButton
+            annullaCercaButton,
+            cancellaButton // Ora posizionato dopo i controlli di ricerca
         );
         
         // MODIFICA: Limita la larghezza del campo di ricerca
@@ -142,7 +161,12 @@ public abstract class DatiBaseView<T extends InterfaceID> extends BaseView<T> {
         
         tableView.getSelectionModel().selectedItemProperty().addListener((obs, oldSelection, newSelection) -> {
             impostaValoriDefault(newSelection);
-            
+            // Forza lo stato per il nuovo inserimento quando la selezione è nulla
+            if (newSelection == null) {
+                okButton.setText("Salva Nuovo");
+            } else {
+                okButton.setText("Aggiorna");
+            }
         });
     }
 
@@ -175,23 +199,40 @@ public abstract class DatiBaseView<T extends InterfaceID> extends BaseView<T> {
     public void mostraMessaggio(String messaggio) {
         messaggioLabel.setText(messaggio);
         
-        // MODIFICA: Imposta il colore del messaggio in base al contenuto (rosso per gli errori)
+        // MODIFICA: Implementa la colorazione della box in base al messaggio
         if (messaggio != null && messaggio.toLowerCase().contains("errore")) {
             messaggioLabel.setStyle("-fx-text-fill: red; -fx-font-weight: bold;");
+            messaggioBox.setStyle("-fx-border-color: red; -fx-border-width: 2; -fx-padding: 5; -fx-background-color: #ffe0e0; -fx-border-radius: 3;");
         } else {
-            messaggioLabel.setStyle("-fx-text-fill: black; -fx-font-style: italic;");
+            // Messaggi di successo o stato generico (testo nero, box neutra)
+            messaggioLabel.setStyle("-fx-text-fill: black; -fx-font-weight: bold;");
+            messaggioBox.setStyle("-fx-border-color: gray; -fx-border-width: 1; -fx-padding: 5; -fx-background-color: #f4f4f4; -fx-border-radius: 3;");
         }
     }
     
+    /**
+     * @brief Resetta il form di dettaglio, svuotando i campi e deselezionando la riga in tabella.
+     * @post Il form è pronto per un nuovo inserimento.
+     */
+    public void pulisciDettagli() {
+        tableView.getSelectionModel().clearSelection();
+        impostaValoriDefault(null);
+        mostraMessaggio("Pronto per un nuovo inserimento.");
+    }
 
     
-    /** @return Il bottone "Cancella". */
+    /** @return Il bottone "Cancella" (ora "Elimina"). */
     public Button getCancellaButton() { return cancellaButton; }
     
     
     /** @return Il bottone "Salva/Aggiorna" (ex OK). */
     public Button getOkButton() { return okButton; }
     
+    /** @return Il bottone per annullare i campi di dettaglio. */
+    public Button getAnnullaButton() { return annullaButton; }
+    
+    /** @return Il bottone per annullare la ricerca. */
+    public Button getAnnullaCercaButton() { return annullaCercaButton; }
     
     /** @return Il campo di testo per la ricerca. */
     public TextField getCercaField() { return cercaField; }
@@ -200,6 +241,8 @@ public abstract class DatiBaseView<T extends InterfaceID> extends BaseView<T> {
     /** @return La TableView principale. */
     public TableView<T> getTableView() { return tableView; }
     
+    /** @return Il contenitore della label per il messaggio. */
+    public HBox getMessaggioBox() { return messaggioBox; }
     
     
     public Parent getRoot() { 

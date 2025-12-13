@@ -47,9 +47,9 @@ public class UtenteView extends DatiBaseView<Utente> {
     VBox detailFrame = new VBox(innerDetailPane);
     detailFrame.setStyle("-fx-border-color: gray; -fx-border-width: 1; -fx-padding: 10; -fx-background-color: white; -fx-border-radius: 5;");
     
-    // MODIFICA: Imposta l'altezza fissa della box a 300px per uguagliare l'altezza della tabella
-    detailFrame.setPrefHeight(300); 
-    detailFrame.setMaxHeight(300);
+    // MODIFICA: Ripristino altezza box dettaglio a 350px
+    detailFrame.setPrefHeight(350); 
+    detailFrame.setMaxHeight(350);
 
     // Aggiunge il frame alla HBox (affiancato alla TableView)
     contentHBox.getChildren().add(detailFrame);
@@ -148,15 +148,18 @@ public class UtenteView extends DatiBaseView<Utente> {
         detailPane.add(new Label("Email:"), 0, 4);
         detailPane.add(emailInput, 1, 4);
         
-         detailPane.add(messaggioLabel, 0, 5, 2, 1); // Componente ereditato
+
+        detailPane.add(getMessaggioBox(), 0, 8, 2, 1); 
          
-        // MODIFICA: Aggiunge il pulsante OK (Salva/Aggiorna) al pannello di dettaglio
+
         HBox actionBox = new HBox(10);
-        actionBox.setAlignment(Pos.CENTER_RIGHT);
-        getOkButton().setPrefWidth(120); 
+        actionBox.setAlignment(Pos.CENTER); 
+        
         getOkButton().setStyle("-fx-background-color: #4CAF50; -fx-text-fill: white; -fx-font-weight: bold;"); 
-        actionBox.getChildren().add(getOkButton());
-        detailPane.add(actionBox, 0, 6, 2, 1); // Row 6, spanning 2 columns
+        getAnnullaButton().setStyle("-fx-background-color: #f44336; -fx-text-fill: white;");
+        
+        actionBox.getChildren().addAll(getOkButton(), getAnnullaButton());
+        detailPane.add(actionBox, 0, 11, 2, 1); 
         
         return detailPane;
     }
@@ -176,10 +179,12 @@ public class UtenteView extends DatiBaseView<Utente> {
             String matricola = matricolaInput.getText().trim();
             String email = emailInput.getText().trim();
             
+            // Il costruttore ora valida e lancia IllegalArgumentException se i campi obbligatori sono nulli/vuoti
             return new Utente(nome, cognome, matricola, email);
 
         } catch (IllegalArgumentException e) {
-            mostraMessaggio("Errore: tutti i campi utente sono obbligatori.");
+            // MODIFICA: Messaggio di errore unificato per coerenza
+            mostraMessaggio("Errore: controllare i campi numerici o i dati obbligatori.");
             return null;
         }
     }
@@ -208,9 +213,14 @@ public class UtenteView extends DatiBaseView<Utente> {
             
             utenteDaModificare.setEmail(emailInput.getText().trim());
             
+
+            if (utenteDaModificare.getNome().isEmpty() || utenteDaModificare.getCognome().isEmpty() || utenteDaModificare.getMatricola().isEmpty()) {
+                 throw new IllegalArgumentException("Nome, cognome e matricola non possono essere vuoti.");
+            }
+            
             return utenteDaModificare;
         } catch (IllegalArgumentException e) {
-             mostraMessaggio("Errore: controllare i dati modificati.");
+             mostraMessaggio("Errore: controllare i campi numerici o i dati obbligatori.");
              return null;
         }
     }

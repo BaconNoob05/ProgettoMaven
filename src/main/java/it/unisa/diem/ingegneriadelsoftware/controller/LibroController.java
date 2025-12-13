@@ -99,14 +99,22 @@ public class LibroController extends CrudController<Libro> {
             }
         });
         
-        // 2. Listener per Cancellazione
+        // 2. Listener per Cancellazione (ora Elimina)
         view.getCancellaButton().setOnAction(e -> elimina());
         
-        // 3. Listener per la Ricerca (CORREZIONE: Aggiorna al cambiamento del testo)
+        // 3. Listener per la Ricerca (Aggiorna al cambiamento del testo)
         view.getCercaField().textProperty().addListener((observable, oldValue, newValue) -> {
             cerca();
         });
         
-        // Rimosso: Listener per il pulsante "Nuovo"
+        // 4. Listener per Annulla (Pulisce il form e la selezione)
+        view.getAnnullaButton().setOnAction(e -> view.pulisciDettagli());
+        
+        // 5. Listener per Annulla Cerca (Pulisce il campo di ricerca e aggiorna la vista)
+        view.getAnnullaCercaButton().setOnAction(e -> {
+            view.getCercaField().clear();
+            aggiornaVista(); // Torna alla lista completa e ordinata
+            view.mostraMessaggio("Ricerca annullata.");
+        });
     }  
 }
