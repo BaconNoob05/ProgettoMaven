@@ -13,6 +13,7 @@ public interface InterfaceRepository<T extends InterfaceID> {
 
     /**
      * @brief Carica tutti i dati dal file.
+     * @param[in] lista La lista dove vengono caricati i dati.
      * @pre Il gestore di I/O deve essere stato correttamente inizializzato.
      * @post La lista interna del repository contiene tutti i dati presenti su file.
      */
