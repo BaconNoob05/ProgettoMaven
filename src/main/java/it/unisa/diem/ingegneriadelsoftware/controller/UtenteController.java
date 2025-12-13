@@ -25,10 +25,9 @@ public class UtenteController extends CrudController<Utente> {
         super(view,service);
     }
 
-    //DA RIVEDERE DOXYGEN
     /**
-     * @brief Restituisce la view specifica di UtenteController
-     * @return 
+     * @brief  Interpreta la vista come un'istanza di UtenteView.
+     * @return L'istanza di UtenteView associata al controller altrimenti un valore nullo.
      */
     private UtenteView getSpecificView() {
         return (UtenteView) view;
