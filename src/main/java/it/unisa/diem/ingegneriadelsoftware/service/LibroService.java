@@ -61,8 +61,11 @@ public class LibroService extends BaseService<Libro> {
    }
 
 
- /**
-     * @brief Ricerca generica: cerca corrispondenze per titolo o per autore.
+    /**
+     * @brief Esegue una ricerca generica filtrando per titolo o autore.
+     * @param [in] filtro La stringa di ricerca inserita dall'utente.
+     * @return La lista dei libri che contengono la stringa inserita all'interno del titolo o della lista degli autori.
+     * @note La ricerca è case-insensitive.
      */
     @Override
     public List<Libro> cercaGenerico(String filtro) {
