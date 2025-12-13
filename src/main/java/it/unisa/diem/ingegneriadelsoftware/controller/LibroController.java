@@ -26,7 +26,7 @@ public class LibroController extends CrudController<Libro> {
     
    /**
      * @brief Interpreta la vista come un'istanza di LibroView.
-     * @return La vista specifica del libro.
+     * @return La vista specifica del libro altrimenti restituisce un valore nullo.
      */
     private LibroView getSpecificView() {
         return (LibroView) view;
