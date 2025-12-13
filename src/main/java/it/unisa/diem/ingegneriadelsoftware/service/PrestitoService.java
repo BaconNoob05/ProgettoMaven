@@ -12,7 +12,7 @@ import it.unisa.diem.ingegneriadelsoftware.repository.Repository;
 /**
  * @class PrestitoService
  * @brief Classe per la gestione delle operazioni legate al prestito.
- * @details Estende BaseService per le operazioni, come il decremento.
+ * @details Estende BaseService per le operazioni da effettuare sui prestiti.
  * @see BaseService
  */
 public class PrestitoService extends BaseService<Prestito> {
@@ -25,11 +25,11 @@ public class PrestitoService extends BaseService<Prestito> {
     
     /**
      * @brief Costruttore per la gestione dei prestiti.
-     * @param [in] repo Il repository specifico per l'entità Prestito.
+     * @param [in] repository Il repository specifico per l'entità Prestito.
      * @param [in] libroService Il servizio per la gestione dei libri.
      */
-    public PrestitoService(InterfaceRepository<Prestito> repo, LibroService libroService) {
-        super(repo);
+    public PrestitoService(InterfaceRepository<Prestito> repository, LibroService libroService) {
+        super(repository);
         this.libroService = libroService;
     }
 
@@ -39,7 +39,7 @@ public class PrestitoService extends BaseService<Prestito> {
      * @param [in] utente L'oggetto Utente che richiede il prestito.
      * @param [in] libro L'oggetto Libro da prestare.
      * @param [in] dataPrevista La data entro cui il libro deve essere restituito.
-     * @pre L'utente, il libro e la data di restituzione non devono essere nulli.
+     * @pre L'utente, il libro e la data di restituzione non devono essere null.
      * @pre Il libro deve avere copie disponibili.
      * @post Un nuovo oggetto Prestito viene salvato nel repository.
      * @post Il numero di copie disponibili del libro viene decrementato di 1.
@@ -104,7 +104,9 @@ public class PrestitoService extends BaseService<Prestito> {
       
 
      /**
-     * @brief Ricerca generica per Prestito (es. per nome utente o titolo libro).
+     * @brief Ricerca generica per il Prestito.
+     * @param [in] filtro La stringa di ricerca, rappresentata dal nome dell'utente o dal titolo del libro.
+     * @return La lista dei prestiti corrispondenti al filtro.
      */
     @Override
     public List<Prestito> cercaGenerico(String filtro) {
