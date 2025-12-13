@@ -24,12 +24,18 @@ public class PrestitoController extends BaseController<Prestito> {
         super(view, service);
     }
     
-    //DA RIVEDERE DOXYGEN
+   /**
+     * @brief Interpreta la vista come un'istanza di PrestitoView.
+     * @return La vista specifica per i prestiti altrimenti un valore nullo..
+     */
     private PrestitoView getSpecificView() {
         return (PrestitoView) view;
     }
 
-    //DA RIVEDERE DOXYGEN
+  /**
+     * @brief Trasforma il servizio generico nel servizio specifico PrestitoService.
+     * @return L'istanza di PrestitoService altrimenti un valore nullo.
+     */
     private PrestitoService getSpecificService() {
         return (PrestitoService) service;
     }
