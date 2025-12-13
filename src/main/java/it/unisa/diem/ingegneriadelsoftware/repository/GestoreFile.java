@@ -9,6 +9,7 @@ import java.util.ArrayList;
  * @brief Classe per la gestione dei dati su file.
  * Si occupa di serializzare e deserializzare liste di oggetti.
  * @tparam T Tipo di dato da gestire.
+ * @see InterfaceGestoreIO
  */
 public class GestoreFile<T> implements InterfaceGestoreIO<T> {
 
