@@ -105,7 +105,7 @@ public class Main extends Application {
         tabPane.getTabs().addAll(libroTab, utenteTab, prestitoTab);
 
         BorderPane root = new BorderPane(tabPane);
-        Scene scene = new Scene(root, 1000, 450);
+        Scene scene = new Scene(root, 1000, 500);
         
         primaryStage.setTitle("Sistema Gestione Biblioteca");
         primaryStage.setScene(scene);
