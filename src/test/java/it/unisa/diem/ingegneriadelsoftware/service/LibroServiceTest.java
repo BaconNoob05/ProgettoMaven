@@ -6,19 +6,50 @@ import org.junit.jupiter.api.*;
 import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.*;
-
+/**
+ * @brief Classe di test per LibroService.
+ * @class LibroServiceTest
+ */
 public class LibroServiceTest {
 
+    /**
+     * @brief Istanza del servizio.
+     */
     private LibroService service;
+    
+    /**
+     * @brief Stub del repository.
+     */
     private RepositoryStub<Libro> repo;
     
+    /**
+     * @brief Oggetto Libro per i test.
+     */
     private Libro libroNuovoJava;
+    
+    /**
+     * @brief Oggetto Libro per i test.
+     */
     private Libro libroSoftwareEng;
+    
+    /**
+     * @brief Oggetto Libro per i test.
+     */
     private Libro libroChristmasCarol;
     
+    /**
+     * @brief Oggetto Libro per i test.
+     */
     private Libro libroCriticaRagionPura;
+    
+    /**
+     * @brief Oggetto Libro per i test.
+     */
     private Libro libroEssereETempo;
     
+ /**
+     * @brief Metodo eseguito prima di ogni test.
+     */
     @BeforeEach
     public void setUp() {
         
@@ -51,6 +82,9 @@ public class LibroServiceTest {
         service = new LibroService(repo);
     }
     
+    /**
+     * @brief Testa la ricerca per titolo in base a un filtro con un risultato.
+     */
     @Test
     void testCercaPerTitolo_MatchSingolo() {
         
@@ -61,6 +95,9 @@ public class LibroServiceTest {
         assertEquals(libroChristmasCarol.getId(), risultati.get(0).getId());
     }
 
+    /**
+     * @brief Testa la ricerca per titolo in base a un filtro con più risultati .
+     */
     @Test
     void testCercaPerTitolo_MatchMultiplo() {
         
@@ -71,6 +108,9 @@ public class LibroServiceTest {
         assertTrue(risultati.contains(libroCriticaRagionPura));
     }
 
+    /**
+     * @brief Testa la ricerca per titolo in base a un filtro con zero risultati.
+     */
     @Test
     void testCercaPerTitolo_NessunMatch() {
         final String FILTRO_TITOLO = "Astrologia";
@@ -79,6 +119,9 @@ public class LibroServiceTest {
         assertTrue(risultati.isEmpty());
     }
     
+    /**
+     * @brief Testa la ricerca per titolo con  l'insensibilità case .
+     */
     @Test
     void testCercaPerTitolo_FiltroCaseInsensitive() {
         
@@ -89,11 +132,17 @@ public class LibroServiceTest {
         assertTrue(risultati.contains(libroNuovoJava));
     }
     
+    /**
+     * @brief Testa la ricerca per titolo con un filtro nullo e restituisce una lista vuota.
+     */
     @Test
     void testCercaPerTitolo_FiltroNullo_ComportamentoAtteso() {
         assertTrue(service.cercaPerTitolo(null).isEmpty());
     }
 
+    /**
+     * @brief Testa la ricerca per autore completo con una sola corrispondenza .
+     */
     @Test
     void testCercaPerAutore_MatchSingoloAutoreCompleto() {
         final String FILTRO_AUTORE = "Charles Dickens"; 
@@ -103,6 +152,9 @@ public class LibroServiceTest {
         assertEquals(libroChristmasCarol.getId(), risultati.get(0).getId());
     }
 
+    /**
+     * @brief Testa la ricerca per autore parziale con una sola corrispondenza.
+     */
     @Test
     void testCercaPerAutore_MatchMultiplo_NomeParziale() {
         final String FILTRO_AUTORE = "Kant";
@@ -112,6 +164,9 @@ public class LibroServiceTest {
         assertTrue(risultati.contains(libroCriticaRagionPura));
     }
     
+    /**
+     * @brief Testa la ricerca per autore quando è associato a più libri.
+     */
     @Test
     void testCercaPerAutore_MatchMultiplo_StessoAutore() {
         
@@ -128,6 +183,9 @@ public class LibroServiceTest {
         assertTrue(risultati.contains(libroJavaAdvanced));
     }
 
+    /**
+     * @brief Testa la ricerca per autore con zero risultati.
+     */
     @Test
     void testCercaPerAutore_NessunMatch() {
         
@@ -137,6 +195,9 @@ public class LibroServiceTest {
         assertTrue(risultati.isEmpty());
     }
     
+    /**
+     * @brief Testa la ricerca per autore con l'insensibilità case.
+     */
     @Test
     void testCercaPerAutore_FiltroCaseInsensitive() {
         
@@ -147,6 +208,9 @@ public class LibroServiceTest {
         assertTrue(risultati.contains(libroEssereETempo));
     }
     
+    /**
+     * @brief Testa la ricerca per autore con filtri vuoti o nulli e  restituiscono una lista vuota.
+     */
     @Test
     void testCercaPerAutore_FiltroVuotoONullo_ComportamentoAtteso() {
         
@@ -156,6 +220,9 @@ public class LibroServiceTest {
         
     }
     
+    /**
+     * @brief Test per verificare che il repository stub non abbia problemi.
+     */
     @Test
     void testDebugRepository() {
         assertEquals(5, repo.getAll().size());
