@@ -9,7 +9,7 @@ import java.util.List;
 
 /**
  * @class UtenteController
- * @brief Controller specifico per la gestione degli Utenti.
+ * @brief Controller specifico per la gestione degli utenti.
  * @details Estende CrudController per gestire il ciclo di vita degli utenti.
  *
  * @see CrudController
@@ -19,15 +19,15 @@ public class UtenteController extends CrudController<Utente> {
 
     /**
      * @brief Costruttore.
-     * @param view La vista specifica utenti.
-     * @param service Il servizio specifico utenti.
+     * @param [in] view La view specifica per gli utenti.
+     * @param [in] service Il service specifico per gli utenti.
      */
     public UtenteController(UtenteView view, UtenteService service){
         super(view,service);
     }
 
     /**
-     * @brief Aggiorna la vista recuperando tutti gli elementi dal servizio e applicando l'ordinamento.
+     * @brief Aggiorna la view recuperando tutti gli elementi dal service ed applica l'ordinamento.
      * @see InterfaceController#aggiornaVista()
      * @see InterfaceService#getAll()
      */
@@ -44,7 +44,8 @@ public class UtenteController extends CrudController<Utente> {
     }
 
     /**
-     * @brief Inizializza il controller e collega i listener ai pulsanti della vista.
+     * @brief Inizializza il controller e collega i listener ai pulsanti della view.
+     * @see BaseController#init()
      */
     @Override
     public void init() {
@@ -76,15 +77,15 @@ public class UtenteController extends CrudController<Utente> {
     }
 
     /**
-     * @brief  Interpreta la vista come un'istanza di UtenteView.
-     * @return L'istanza di UtenteView associata al controller altrimenti un valore nullo.
+     * @brief Interpreta la view come un'istanza di UtenteView.
+     * @return L'istanza di UtenteView associata al controller altrimenti il valore null.
      */
     private UtenteView getSpecificView() {
         return (UtenteView) view;
     }
     
     /**
-     * @brief Gestisce l'acquisizione dati e il salvataggio di un nuovo utente.
+     * @brief Gestisce l'acquisizione dei dati e il salvataggio di un nuovo utente.
      * @pre I campi obbligatori devono essere compilati.
      * @post L'utente viene salvato nel sistema.
      * @see UtenteView#getUtenteNuovo()
@@ -97,7 +98,7 @@ public class UtenteController extends CrudController<Utente> {
     }
 
     /**
-     * @brief Gestisce l'acquisizione dati e l'aggiornamento di un utente.
+     * @brief Gestisce l'acquisizione dei dati e l'aggiornamento di un utente.
      * @see UtenteView#getUtenteModificato()
      */
     public void modificaUtente(){
@@ -109,7 +110,7 @@ public class UtenteController extends CrudController<Utente> {
 
     /**
      * @brief Implementazione del salvataggio utente.
-     * @param nuovo L'utente da salvare.
+     * @param [in] nuovo L'utente da salvare.
      */
     @Override
     public void salva(Utente nuovo){
@@ -117,8 +118,8 @@ public class UtenteController extends CrudController<Utente> {
     }
 
     /**
-     * @brief Implementazione  della modifica utente.
-     * @param elemento L'utente aggiornato.
+     * @brief Implementazione della modifica utente.
+     * @param [in] elemento L'utente aggiornato.
      */
     @Override
     public void modifica(Utente elemento){
