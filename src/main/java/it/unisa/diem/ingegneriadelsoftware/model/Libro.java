@@ -9,14 +9,7 @@ import java.time.Year;
  * @see Dati
  */
 public class Libro extends Dati {
-    /**
-     * @brief Identificativo univoco per la serializzazione.
-     * @details Garantisce la compatibilità tra l'oggetto serializzato e la classe 
-     * caricata durante la fase di deserializzazione. Se questo ID non corrisponde 
-     * a quello dell'oggetto salvato, viene lanciata una InvalidClassException.
-     */
-    private static final long serialVersionUID = 1L;
-
+    
     /** * @brief Titolo del libro. 
      */
     private String titolo;
@@ -71,6 +64,7 @@ public class Libro extends Dati {
     /**
      * @brief Decrementa il numero di copie disponibili quando un libro viene prestato.
      * @post Il numero di copie disponibili diminuisce di uno.
+     * @throws IllegalStateException Se il numero di copie non è un valore positivo.
      * @details Questo metodo deve essere invocato quando bisogna effettuare un prestito.
      */
 
@@ -102,7 +96,8 @@ public class Libro extends Dati {
         return isbn;
     }
 
-    /** * @brief Restituisce il titolo del libro.
+    /** 
+    * @brief Restituisce il titolo del libro.
      * @return Il titolo del libro altrimenti restituisce un valore nullo. 
      */
     public String getTitolo() {
@@ -116,49 +111,56 @@ public class Libro extends Dati {
         return isbn;
     }
 
-    /** * @brief Restituisce l'anno di pubblicazione.
+    /** 
+     * @brief Restituisce l'anno di pubblicazione.
      * @return L'anno di pubblicazione altrimenti restituisce zero. 
      */
     public int getAnno() {
         return anno;
     }
 
-    /** * @brief Restituisce il numero di copie.
+    /** 
+     * @brief Restituisce il numero di copie.
      * @return Il numero di copie attualmente disponibili altrimenti restituisce zero. 
      */
     public int getCopieDisponibili() {
         return copie;
     }
     
-    /** * @brief Restituisce un elenco di autori.
-     * @return Gli autori in un'unica stringa altrimenti restituisce un valore nullo. 
+    /** 
+     * @brief Restituisce un elenco di autori.
+     * @return Una stringa contenente l'elenco degli autori altrimenti restituisce un valore nullo. 
      */
     public String getAutoriString() {
         return String.join(", ", autori);
     }
 
-    /** * @brief Imposta il titolo del libro.
+    /** 
+     * @brief Imposta il titolo del libro.
      * @param [in] nuovoTitolo il nuovo titolo del libro. 
      */
     public void setTitolo(String nuovoTitolo) {
         this.titolo = nuovoTitolo;
     }
 
-    /** * @brief Imposta la lista degli autori.
+    /** 
+     * @brief Imposta la lista degli autori.
      * @param [in] nuovoAutori la nuova lista di autori. 
      */
     public void setAutori(List<String> nuovoAutori) {
         this.autori = nuovoAutori;
     }
 
-    /** * @brief Imposta l'anno di pubblicazione.
+    /**
+     * @brief Imposta l'anno di pubblicazione.
      * @param [in] nuovoAnno il nuovo anno di pubblicazione. 
      */
     public void setAnno(int nuovoAnno) {
         this.anno = nuovoAnno;
     }
 
-    /** * @brief Imposta il numero di copie disponibili.
+    /** 
+     * @brief Imposta il numero di copie disponibili.
      * @param [in] nuovoCopie il nuovo numero di copie. 
      * @pre L'argomento nuovoCopie deve essere un numero intero maggiore o uguale a zero.
      * @post il campo copie assume esattamente il valore di nuovoCopie.

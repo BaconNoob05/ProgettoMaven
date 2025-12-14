@@ -7,15 +7,8 @@ package it.unisa.diem.ingegneriadelsoftware.model;
  * @see Dati
  */
 public class Utente extends Dati {
-    /**
-     * @brief Identificativo univoco per la serializzazione. 
-     * @details Garantisce la compatibilità tra l'oggetto serializzato e la classe 
-     * caricata durante la fase di deserializzazione. Se questo ID non corrisponde 
-     * a quello dell'oggetto salvato, viene lanciata una InvalidClassException.
-     */
-     private static final long serialVersionUID = 1L;
 
-    private static final String EMAIL_SUFFIX = "@studenti.unisa.it"; // AGGIUNTO
+    private static final String EMAIL_SUFFIX = "@studenti.unisa.it"; 
 
    /**
      * @brief Nome dell'utente.

@@ -10,32 +10,24 @@ import java.time.format.DateTimeFormatter;
  * @see Dati
  */
 public class Prestito extends Dati {
-    
-    /**
-     * @brief Identificativo univoco per la serializzazione.
-     */
-    private static final long serialVersionUID = 1L;
-
+   
     /** * @brief Riferimento all'utente che ha effettuato il prestito. 
     */
     private Utente utente;
     
-    /**
-    * @brief Riferimento al libro prestato. 
+    /** * @brief Riferimento al libro prestato. 
     */
     private Libro libro;
     
-    /**
-    * @brief Data in cui è stato effettuato il prestito (NUOVO CAMPO). 
+    /** * @brief Data in cui è stato effettuato il prestito. 
     */
     private LocalDate dataPrestito; 
     
-    /** * @brief 
-    Data entro la quale il libro deve essere restituito. 
+    /** * @brief Data entro la quale il libro deve essere restituito. 
     */
     private LocalDate dataPrevista;
     
-    /** *@brief Data effettiva di restituzione
+    /** * @brief Data effettiva di restituzione.
     */
     private LocalDate dataEffettiva;
     
@@ -157,21 +149,24 @@ public class Prestito extends Dati {
         return (utente != null) ? utente.getCognome() + " " + utente.getNome() : "N/D";
     }
 
-    /** *@brief Restituisce il titolo del libro prestato
+    /** 
+     *@brief Restituisce il titolo del libro prestato
      * @return Il titolo del libro prestato altrimenti restituisce un valore nullo. 
      */
     public String getTitoloLibro() {
         return (libro != null) ? libro.getTitolo() : "N/D";
     }
 
-    /** * @brief Restituisce la data prevista per la restituzione del libro
+    /** 
+     * @brief Restituisce la data prevista per la restituzione del libro
      * @return La data prevista per la restituzione altrimenti restituisce un valore nullo. 
      */
     public LocalDate getDataPrevista() {
         return dataPrevista;
     }
 
-    /** * @brief Restituisce la data effettiva di restituzione del libro
+    /** 
+     * @brief Restituisce la data effettiva di restituzione del libro
      * @return La data effettiva di restituzione altrimenti restituisce un valore nullo. */
     public LocalDate getDataEffettiva() {
         return dataEffettiva;
