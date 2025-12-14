@@ -8,7 +8,7 @@ package it.unisa.diem.ingegneriadelsoftware.model;
  */
 public class Utente extends Dati {
 
-    private static final String EMAIL_SUFFIX = "@studenti.unisa.it"; 
+    private static final String suffissoEmail = "@studenti.unisa.it"; 
 
    /**
      * @brief Nome dell'utente.
@@ -38,7 +38,6 @@ public class Utente extends Dati {
      * @param [in] email L'indirizzo email.
      */
     public Utente(String nome, String cognome, String matricola, String email) {
-        // La validazione qui sotto è quella che causa l'errore nei vecchi test
         if (nome == null || nome.trim().isEmpty() ||
             cognome == null || cognome.trim().isEmpty() ||
             matricola == null || matricola.trim().isEmpty()) {
@@ -49,9 +48,8 @@ public class Utente extends Dati {
         this.cognome = cognome;
         this.matricola = matricola;
         
-        // NUOVA VALIDAZIONE EMAIL
-        if (email == null || !email.endsWith(EMAIL_SUFFIX)) {
-             throw new IllegalArgumentException("L'email deve terminare con " + EMAIL_SUFFIX);
+        if (email == null || !email.endsWith(suffissoEmail)) {
+             throw new IllegalArgumentException("L'email deve terminare con " + suffissoEmail);
         }
         this.email = email;
     }
@@ -61,11 +59,10 @@ public class Utente extends Dati {
      * @return Vero se i dati sono validi, altrimenti restituisce falso.
      */
     public boolean isValido() {
-        // AGGIUNTO CONTROLLO EMAIL
         return nome != null && !nome.trim().isEmpty() && 
                cognome != null && !cognome.trim().isEmpty() && 
                matricola != null && !matricola.trim().isEmpty() &&
-               email != null && email.endsWith(EMAIL_SUFFIX);
+               email != null && email.endsWith(suffissoEmail);
     }
 
     /**
@@ -117,8 +114,8 @@ public class Utente extends Dati {
      * @pre n non deve essere nullo.
      * @post Il nome è uguale a n.
      */
-    public void setNome(String n) {
-        this.nome = n;
+    public void setNome(String nuovoNome) {
+        this.nome = nuovoNome;
     }
 
    /**
@@ -127,8 +124,8 @@ public class Utente extends Dati {
      * @pre c non deve essere nullo.
      * @post Il cognome è uguale a c.
      */
-    public void setCognome(String c) {
-        this.cognome = c;
+    public void setCognome(String nuovoCognome) {
+        this.cognome = nuovoCognome;
     }
 
    /**
@@ -137,12 +134,11 @@ public class Utente extends Dati {
      * @pre e non deve essere nullo.
      * @post L' email è uguale ad e.
      */
-    public void setEmail(String e) {
-        // AGGIUNTA VALIDAZIONE
-        if (e == null || !e.endsWith(EMAIL_SUFFIX)) {
-            throw new IllegalArgumentException("L'email deve terminare con " + EMAIL_SUFFIX);
+    public void setEmail(String nuovaEmail) {
+        if (nuovaEmail == null || !nuovaEmail.endsWith(suffissoEmail)) {
+            throw new IllegalArgumentException("L'email deve terminare con " + suffissoEmail);
         }
-        this.email = e;
+        this.email = nuovaEmail;
     }
     
     /**
@@ -151,11 +147,11 @@ public class Utente extends Dati {
      * @pre m non deve essere nullo o vuoto.
      * @post La matricola è uguale a m.
      */
-    public void setMatricola(String m) {
-        if (m == null || m.trim().isEmpty()) {
+    public void setMatricola(String nuovaMatricola) {
+        if (nuovaMatricola == null || nuovaMatricola.trim().isEmpty()) {
             throw new IllegalArgumentException("La matricola non può essere vuota.");
         }
-        this.matricola = m;
+        this.matricola = nuovaMatricola;
     }
 
 

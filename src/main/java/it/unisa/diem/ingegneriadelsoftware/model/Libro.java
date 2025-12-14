@@ -72,7 +72,6 @@ public class Libro extends Dati {
         if (copie > 0) {
             copie--;
         } else {
-            //Controllo copie
             throw new IllegalStateException("Impossibile prestare: nessuna copia disponibile."); 
         }
     }
@@ -102,6 +101,15 @@ public class Libro extends Dati {
      */
     public String getTitolo() {
         return titolo;
+    }
+    
+    /**
+     * @brief Restituisce l'elenco degli autori associati al libro.
+     * @return Una lista di stringhe dove ci sono i nomi degli autori, altrimenti restituisce una lista vuota.
+     * @pre L'oggetto Libro deve essere inizializzato con il costruttore.
+     */
+    public List<String> getAutori() { 
+        return autori;
     }
 
     /** * @brief Restituisce il codice ISBN.
@@ -185,12 +193,4 @@ public class Libro extends Dati {
                 isbn, titolo, getAutoriString(), anno, copie);
     }
     
-    /**
-     * @brief Restituisce l'elenco degli autori associati al libro.
-     * @return Una lista di stringhe dove ci sono i nomi degli autori, altrimenti restituisce una lista vuota.
-     * @pre L'oggetto Libro deve essere inizializzato con il costruttore.
-     */
-    public List<String> getAutori() { 
-        return autori;
-    }
 }
