@@ -16,19 +16,19 @@ import java.util.List;
 public abstract class BaseController<T> implements InterfaceController {
 
     /**
-     * @brief Riferimento all'interfaccia della vista.
+     * @brief Riferimento all'interfaccia della view.
      */
     protected InterfaceView<T> view;
 
     /**
-     * @brief Riferimento all'interfaccia del servizio.
+     * @brief Riferimento all'interfaccia del service.
      */
     protected InterfaceService<T> service;
 
     /**
      * @brief Costruttore del BaseController.
-     * @param view L'istanza della vista .
-     * @param service L'istanza del servizio.
+     * @param [in] view L'istanza della view.
+     * @param [in] service L'istanza del service.
      */
     public BaseController(InterfaceView<T> view, InterfaceService<T> service){
         this.view=view;
@@ -45,7 +45,7 @@ public abstract class BaseController<T> implements InterfaceController {
     }
 
     /**
-     * @brief Aggiorna la vista recuperando tutti gli elementi dal servizio.
+     * @brief Aggiorna la view recuperando tutti gli elementi dal servizio.
      * @see InterfaceController#aggiornaVista()
      * @see InterfaceService#getAll()
      */
@@ -57,10 +57,11 @@ public abstract class BaseController<T> implements InterfaceController {
 
     /**
      * @brief Esegue un'operazione generica gestendo eccezioni e messaggi utente.
-     * @param operazione L'azione logica da eseguire .
-     * @param messaggioDiConferma Il messaggio da mostrare alla vista in caso di successo.
-     * @pre L'operazione non deve essere nulla.
-     * @post Se l'operazione ha successo, la vista viene aggiornata e viene mostrato il messaggio.
+     * @param [in] operazione L'azione da eseguire.
+     * @param [in] messaggioDiConferma Il messaggio da mostrare alla view in caso di successo.
+     * @pre L'operazione non deve essere null.
+     * @post Se l'operazione ha successo, la view viene aggiornata e viene mostrato il messaggio.
+     * @note Cattura le eccezioni generate dall'operazione e le mostra come messaggi di errore alla view.
      */
     public void eseguiOperazione(Runnable operazione, String messaggioDiConferma){
         try {
@@ -80,7 +81,7 @@ public abstract class BaseController<T> implements InterfaceController {
 
     /**
      * @brief Recupera l'elemento attualmente selezionato nella vista generica.
-     * @return L'istanza di tipo T selezionata oppure nulla.
+     * @return L'istanza di tipo T selezionata, altrimenti il valore null in assenza di selezioni attive.
      * @see InterfaceView#getElementoSelezionato()
      */
     public T getSelezionato(){ return view.getElementoSelezionato(); }
