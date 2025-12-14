@@ -17,7 +17,7 @@ public class GestoreFile<T> implements InterfaceGestoreIO<T> {
      * @brief Salva una lista di oggetti su file.
      * @param [in] nomeFile Il percorso/nome del file di destinazione.
      * @param [in] dati La lista di oggetti da salvare.
-     * @pre La lista passata può essere vuota, ma non null evitando così il NullPointerException.
+     * @pre La lista passata può essere vuota ma non null, evitando in tal modo il NullPointerException.
      * @post Il file viene creato o sovrascritto con i dati della lista.
      */
     @Override
