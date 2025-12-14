@@ -12,10 +12,10 @@ import it.unisa.diem.ingegneriadelsoftware.model.InterfaceID;
 public interface InterfaceRepository<T extends InterfaceID> {
 
     /**
-     * @brief Carica tutti i dati dal file.
-     * @param[in] lista La lista dove vengono caricati i dati.
+     * @brief Carica tutti i dati dal file all'interno della della lista fornita.
+     * @param [in] lista La lista in cui vengono caricati i dati del file.
      * @pre Il gestore di I/O deve essere stato correttamente inizializzato.
-     * @post La lista interna del repository contiene tutti i dati presenti su file.
+     * @post La lista interna del repository contiene tutti i dati presenti sul file.
      */
     void caricaTutti(List<T> lista);
 
@@ -37,14 +37,14 @@ public interface InterfaceRepository<T extends InterfaceID> {
      * @brief Elimina un elemento dal repository in base al suo ID.
      * @param [in] id L'identificativo univoco dell'elemento da rimuovere.
      * @pre L'ID non deve essere null.
-     * @post Se l'elemento esisteva, viene rimosso, altrimenti lo stato del repository rimane invariato.
+     * @post Se l'elemento esiste, viene rimosso, altrimenti lo stato del repository rimane invariato.
      */
     void elimina(String id);
 
     /**
      * @brief Cerca un singolo elemento tramite il suo ID.
      * @param [in] id L'identificativo dell'elemento da recuperare.
-     * @return L'oggetto trovato, altrimenti restituisce un valore nullo.
+     * @return L'oggetto trovato, altrimenti restituisce il valore null.
      * @pre L'ID non deve essere null.
      * @post Lo stato del repository non viene modificato.
      */
