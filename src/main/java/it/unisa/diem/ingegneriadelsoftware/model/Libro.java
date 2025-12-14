@@ -10,23 +10,28 @@ import java.time.Year;
  */
 public class Libro extends Dati {
     
-    /** * @brief Titolo del libro. 
+    /** 
+     * @brief Titolo del libro. 
      */
     private String titolo;
 
-    /** * @brief Lista degli autori del libro. 
+    /** 
+     * @brief Lista degli autori del libro. 
      */
     private List<String> autori;
 
-    /** * @brief Anno di pubblicazione. 
+    /** 
+     * @brief Anno di pubblicazione. 
      */
     private int anno;
 
-    /** * @brief Codice ISBN univoco. 
+    /** 
+     * @brief Codice ISBN univoco. 
      */
     private String isbn;
 
-    /** * @brief Numero di copie fisiche attualmente disponibili per il prestito. 
+    /** 
+     * @brief Numero di copie fisiche attualmente disponibili per il prestito. 
      */
     private int copie;
 
@@ -187,7 +192,6 @@ public class Libro extends Dati {
      * @see Dati#toString()
      */
     @Override
-
     public String toString() {
         return String.format("ISBN: %s | Titolo: %s | Autori: %s | Anno: %d | Copie: %d",
                 isbn, titolo, getAutoriString(), anno, copie);

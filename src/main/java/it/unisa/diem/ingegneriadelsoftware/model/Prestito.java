@@ -11,23 +11,28 @@ import java.time.format.DateTimeFormatter;
  */
 public class Prestito extends Dati {
    
-    /** * @brief Riferimento all'utente che ha effettuato il prestito. 
+    /** 
+     * @brief Riferimento all'utente che ha effettuato il prestito. 
     */
     private Utente utente;
     
-    /** * @brief Riferimento al libro prestato. 
+    /** 
+     * @brief Riferimento al libro prestato. 
     */
     private Libro libro;
     
-    /** * @brief Data in cui è stato effettuato il prestito. 
+    /** 
+     * @brief Data in cui è stato effettuato il prestito. 
     */
     private LocalDate dataPrestito; 
     
-    /** * @brief Data entro la quale il libro deve essere restituito. 
+    /** 
+     * @brief Data entro la quale il libro deve essere restituito. 
     */
     private LocalDate dataPrevista;
     
-    /** * @brief Data effettiva di restituzione.
+    /** 
+     * @brief Data effettiva di restituzione.
     */
     private LocalDate dataEffettiva;
     
@@ -41,7 +46,11 @@ public class Prestito extends Dati {
      * @post Viene creato un oggetto Prestito con dataEffettiva impostata a valore nullo e dataPrestito impostata a LocalDate.now().
      */
     public Prestito(Utente utente, Libro libro, LocalDate dataPrevista) {
-        this(utente, libro, dataPrevista, LocalDate.now());
+        this.utente = utente;
+        this.libro = libro;
+        this.dataPrevista = dataPrevista;
+        this.dataEffettiva = null;
+        this.dataPrestito = LocalDate.now();
     }
 
 
@@ -55,25 +64,10 @@ public class Prestito extends Dati {
      * @post Viene creato un oggetto Prestito con dataEffettiva impostata a valore nullo.
      */
     public Prestito(Utente utente, Libro libro, LocalDate dataPrevista, LocalDate dataPrestito) {
-        
-        if (utente == null) {
-            throw new IllegalArgumentException("L'utente non può essere nullo.");
-        }
-        if (libro == null) {
-            throw new IllegalArgumentException("Il libro non può essere nullo.");
-        }
-        if (dataPrevista == null) {
-            throw new IllegalArgumentException("La data prevista di restituzione non può essere nulla.");
-        }
-        if (dataPrestito == null) {
-            throw new IllegalArgumentException("La data di prestito non può essere nulla.");
-        }
-    
         this.utente = utente;
         this.libro = libro;
         this.dataPrevista = dataPrevista;
         this.dataEffettiva = null;
-
         this.dataPrestito = dataPrestito; 
     }
 
@@ -86,7 +80,7 @@ public class Prestito extends Dati {
         return dataEffettiva == null && LocalDate.now().isAfter(dataPrevista);
     }
 
-   /**
+    /**
      * @brief Registra che la restituzione del libro deve essere effettuata alla data scelta.
      * @param [in] data La data in cui avviene la restituzione.
      * @post dataEffettiva != null
@@ -132,7 +126,7 @@ public class Prestito extends Dati {
         return String.format("[%s] Prestito: %s | Utente: %s | Libro: %s | Stato: %s",getId(), dataPrestito.format(formatter), getNomeUtente(), getTitoloLibro(), stato);
     }
 
-   /**
+    /**
      * @brief Restituisce la data in cui il prestito è stato effettuato.
      * @return La data del prestito altrimenti restituisce un valore nullo.
      */
@@ -194,7 +188,7 @@ public class Prestito extends Dati {
      * @pre La data fornita non deve essere nulla e dovrebbe essere successiva alla data del prestito.
      * @post Il campo dataEffettiva assume il valore della  data specificata.
      */
-     public void setDataEffettiva(LocalDate dataEffettiva) { 
+    public void setDataEffettiva(LocalDate dataEffettiva) { 
         this.dataEffettiva=dataEffettiva;
-     }
+    }
 }

@@ -10,7 +10,7 @@ public class Utente extends Dati {
 
     private static final String suffissoEmail = "@studenti.unisa.it"; 
 
-   /**
+    /**
      * @brief Nome dell'utente.
      */
     private String nome;
@@ -20,12 +20,12 @@ public class Utente extends Dati {
      */
     private String cognome;
     
-   /**
+    /**
      * @brief Matricola univoca dell'utente.
      */
     private String matricola;
     
-     /**
+    /**
      * @brief Indirizzo email dell'utente.
      */
     private String email;
@@ -54,7 +54,7 @@ public class Utente extends Dati {
         this.email = email;
     }
 
-     /**
+    /**
      * @brief Verifica che i dati dell'utente siano validi.
      * @return Vero se i dati sono validi, altrimenti restituisce falso.
      */
@@ -92,7 +92,7 @@ public class Utente extends Dati {
         return cognome;
     }
 
-   /**
+    /**
      * @brief Restituisce la matricola dell'utente.
      * @return La matricola dell'utente, altrimenti restituisce un valore nullo.
      */
@@ -118,7 +118,7 @@ public class Utente extends Dati {
         this.nome = nuovoNome;
     }
 
-   /**
+    /**
      * @brief Imposta il cognome dell'utente.
      * @param c Il nuovo cognome.
      * @pre c non deve essere nullo.
@@ -128,7 +128,7 @@ public class Utente extends Dati {
         this.cognome = nuovoCognome;
     }
 
-   /**
+    /**
      * @brief Imposta l'indirizzo email dell'utente.
      * @param e La nuova email.
      * @pre e non deve essere nullo.
