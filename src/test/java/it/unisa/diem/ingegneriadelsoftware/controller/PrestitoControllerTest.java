@@ -11,19 +11,42 @@ import java.time.LocalDate;
 import java.util.*;
 import javafx.application.Platform;
 
-
+/**
+ * @brief Classe di test per PrestitoController.
+ * @class PrestitoControllerTest
+ */
 public class PrestitoControllerTest {
     
+    /**
+     * @brief L'istanza del controller.
+     */
     private PrestitoController controller;
+    
+    /**
+     * @brief La stub della view per simulare il comportamento con l'utente e l'output.
+     */
     private PrestitoViewStub viewStub;
+    
+    /**
+     * @brief La stub del service per simulare l'accesso ai dati.
+     */
     private PrestitoServiceStub serviceStub;
     
-
+    /**
+     * @brief Oggetto Utente di esempio.
+     */
     private Utente u;
+    
+    /**
+     * @brief Oggetto Libro di esempio.
+     */
     private Libro l;
 
     
     
+   /**
+     * @brief Metodo eseguito prima di ogni test.
+     */
     @BeforeEach
     void setUp() {
         viewStub = new PrestitoViewStub();
@@ -37,6 +60,9 @@ public class PrestitoControllerTest {
 
 
 
+    /**
+     * @brief Testa la  registrazione di un prestito con valori validi.
+     */
     @Test
     void testRegistraPrestito_InputValido_Successo() {
 
@@ -54,6 +80,9 @@ public class PrestitoControllerTest {
         assertNotNull(viewStub.listaRicevuta);
     }
 
+    /**
+     * @brief Testa la registrazione di un prestito con input nullo.
+     */
     @Test
     void testRegistraPrestito_InputNull_NessunaAzione() {
 
@@ -65,6 +94,9 @@ public class PrestitoControllerTest {
         assertTrue(serviceStub.list.isEmpty());
     }
 
+    /**
+     * @brief Testa la registrazione della restituzione di un prestito attivo.
+     */
     @Test
     void testRegistraRestituzione_Valida_Successo() {
 
@@ -86,6 +118,9 @@ public class PrestitoControllerTest {
         assertEquals(dataRest, nelDB.getDataEffettiva());
     }
 
+    /**
+     * @brief Testa la registrazione della restituzione senza aver selezionato un prestito.
+     */
     @Test
     void testRegistraRestituzione_NessunaSelezione_Errore() {
 
@@ -99,6 +134,9 @@ public class PrestitoControllerTest {
         assertNotNull(viewStub.ultimoMessaggio);
     }
 
+    /**
+     * @brief Testa la registrazione della restituzione con la data di restituzione assente.
+     */
     @Test
     void testRegistraRestituzione_DataMancante_Errore() {
 
@@ -115,6 +153,9 @@ public class PrestitoControllerTest {
         assertNotNull(viewStub.ultimoMessaggio);
     }
 
+    /**
+     * @brief Testa il metodo aggiornaPrestiti.
+     */
     @Test
     void testAggiornaPrestiti_FiltraSoloAttivi() {
 
@@ -137,7 +178,9 @@ public class PrestitoControllerTest {
     }
 
     
-
+    /**
+     * @brief Testa il metodo init.
+     */
     @Test
     void testInit_CaricaDatiIniziali() {
         
@@ -151,6 +194,9 @@ public class PrestitoControllerTest {
     }
 
 
+    /**
+     * @brief Testa il metodo aggiornaVista.
+     */
     @Test
     void testAggiornaVista_MostraTutto() {
         
@@ -169,6 +215,9 @@ public class PrestitoControllerTest {
     }
 
     
+    /**
+     * @brief Testa il recupero dell'elemento selezionato dalla view.
+     */
     @Test
     void testGetSelezionato_FunzionaCorrettamente() {
         Prestito p = new Prestito(u, l, LocalDate.now());
@@ -181,6 +230,9 @@ public class PrestitoControllerTest {
     }
 
 
+    /**
+     * @brief Testa il recupero dell'elemento selezionato quando la selezione non è presente.
+     */
     @Test
     void testGetSelezionato_NullSeNessunaSelezione() {
         
@@ -189,12 +241,14 @@ public class PrestitoControllerTest {
     }
 
 
-
+    /**
+     * @brief Testa eseguiOperazione.
+     */
     @Test
     void testEseguiOperazione_EccezioneGestita() {
         
         
-        // Simuliamo un'operazione che fallisce
+      
         controller.eseguiOperazione(() -> {
             throw new IllegalArgumentException("Errore simulato");
         }, "Successo");
