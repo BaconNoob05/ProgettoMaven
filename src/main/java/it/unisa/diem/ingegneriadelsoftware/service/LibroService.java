@@ -13,7 +13,6 @@ import it.unisa.diem.ingegneriadelsoftware.model.Libro;
  */
 public class LibroService extends BaseService<Libro> {
 
-    // Riferimento per i controlli incrociati (IF-1.1.2)
     private PrestitoService prestitoService;
 
     /**
