@@ -13,27 +13,27 @@ public class Prestito extends Dati {
    
     /** 
      * @brief Riferimento all'utente che ha effettuato il prestito. 
-    */
+     */
     private Utente utente;
     
     /** 
      * @brief Riferimento al libro prestato. 
-    */
+     */
     private Libro libro;
     
     /** 
      * @brief Data in cui è stato effettuato il prestito. 
-    */
+     */
     private LocalDate dataPrestito; 
     
     /** 
      * @brief Data entro la quale il libro deve essere restituito. 
-    */
+     */
     private LocalDate dataPrevista;
     
     /** 
      * @brief Data effettiva di restituzione.
-    */
+     */
     private LocalDate dataEffettiva;
     
 
@@ -76,7 +76,7 @@ public class Prestito extends Dati {
      * @return Vero se il libro non è stato restituito e la data attuale è successiva alla data prevista, altrimenti restituisce falso.
      */
     public boolean isScaduto() {
-        // Nota: isAfter e isBefore confrontano con la data attuale (LocalDate.now() implicita)
+        // I metodi isAfter e isBefore confrontano la data su cui viene chiamata il metodo con la data passata come parametro.
         return dataEffettiva == null && LocalDate.now().isAfter(dataPrevista);
     }
 
@@ -101,8 +101,6 @@ public class Prestito extends Dati {
      */
     @Override 
     public String getId() {
-
-        
         if (utente == null || libro == null || dataPrestito == null) { 
             return null; 
         }
@@ -120,10 +118,10 @@ public class Prestito extends Dati {
      */
     @Override
     public String toString() {
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
-        String stato = (dataEffettiva == null) ? "ATTIVO (Prevista: " + dataPrevista.format(formatter) + ")" : "CHIUSO (Restituito: " + dataEffettiva.format(formatter) + ")";
+        DateTimeFormatter formattatore = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+        String stato = (dataEffettiva == null) ? "ATTIVO (Prevista: " + dataPrevista.format(formattatore) + ")" : "CHIUSO (Restituito: " + dataEffettiva.format(formattatore) + ")";
         
-        return String.format("[%s] Prestito: %s | Utente: %s | Libro: %s | Stato: %s",getId(), dataPrestito.format(formatter), getNomeUtente(), getTitoloLibro(), stato);
+        return String.format("[%s] Prestito: %s | Utente: %s | Libro: %s | Stato: %s",getId(), dataPrestito.format(formattatore), getNomeUtente(), getTitoloLibro(), stato);
     }
 
     /**
@@ -161,7 +159,8 @@ public class Prestito extends Dati {
 
     /** 
      * @brief Restituisce la data effettiva di restituzione del libro
-     * @return La data effettiva di restituzione altrimenti restituisce un valore nullo. */
+     * @return La data effettiva di restituzione altrimenti restituisce un valore nullo. 
+     */
     public LocalDate getDataEffettiva() {
         return dataEffettiva;
     }

@@ -110,9 +110,9 @@ public class Utente extends Dati {
 
     /**
      * @brief Imposta il nome dell'utente.
-     * @param n Il nuovo nome.
-     * @pre n non deve essere nullo.
-     * @post Il nome è uguale a n.
+     * @param nuovoNome Il nuovo nome.
+     * @pre nuovoNome non deve essere nullo.
+     * @post Il nome è uguale a nuovoNome.
      */
     public void setNome(String nuovoNome) {
         this.nome = nuovoNome;
@@ -120,9 +120,9 @@ public class Utente extends Dati {
 
     /**
      * @brief Imposta il cognome dell'utente.
-     * @param c Il nuovo cognome.
-     * @pre c non deve essere nullo.
-     * @post Il cognome è uguale a c.
+     * @param nuovoCognome Il nuovo cognome.
+     * @pre nuovoCognome non deve essere nullo.
+     * @post Il cognome è uguale a nuovoCognome.
      */
     public void setCognome(String nuovoCognome) {
         this.cognome = nuovoCognome;
@@ -130,9 +130,9 @@ public class Utente extends Dati {
 
     /**
      * @brief Imposta l'indirizzo email dell'utente.
-     * @param e La nuova email.
-     * @pre e non deve essere nullo.
-     * @post L' email è uguale ad e.
+     * @param nuovaEmail La nuova email.
+     * @pre nuovaEmail non deve essere nullo.
+     * @post L' email è uguale ad nuovaEmail.
      */
     public void setEmail(String nuovaEmail) {
         if (nuovaEmail == null || !nuovaEmail.endsWith(suffissoEmail)) {
@@ -143,9 +143,9 @@ public class Utente extends Dati {
     
     /**
      * @brief Imposta la matricola dell'utente.
-     * @param m La nuova matricola.
-     * @pre m non deve essere nullo o vuoto.
-     * @post La matricola è uguale a m.
+     * @param nuovaMatricola La nuova matricola.
+     * @pre nuovaMatricola non deve essere nullo o vuoto.
+     * @post La matricola è uguale a nuovaMatricola.
      */
     public void setMatricola(String nuovaMatricola) {
         if (nuovaMatricola == null || nuovaMatricola.trim().isEmpty()) {
@@ -166,6 +166,6 @@ public class Utente extends Dati {
      */
     @Override
     public String toString() {
-        return String.format("Matricola: %s | Nome: %s |Cognome :%s | Email: %s", matricola, nome, cognome, email);
+        return String.format("Matricola: %s | Nome: %s | Cognome: %s | Email: %s", matricola, nome, cognome, email);
     }
 }
