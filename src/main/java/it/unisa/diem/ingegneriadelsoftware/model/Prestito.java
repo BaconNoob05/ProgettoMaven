@@ -146,7 +146,7 @@ public class Prestito extends Dati {
         return String.format("[%s] Prestito: %s | Utente: %s | Libro: %s | Stato: %s",getId(), dataPrestito.format(formattatore), getNomeUtente(), getTitoloLibro(), stato);
     }
 
-   /**
+    /**
      * @brief Restituisce la data in cui il prestito è stato effettuato.
      * @return La data del prestito altrimenti restituisce un valore nullo.
      */
@@ -198,6 +198,7 @@ public class Prestito extends Dati {
     public Libro getLibro() {
         return libro;
     }
+    
     /**
      * @brief Imposta la data di restituzione del libro.
      * @param [in] dataEffettiva La data in cui il libro è stato restituito.
