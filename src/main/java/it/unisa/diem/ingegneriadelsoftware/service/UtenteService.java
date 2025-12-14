@@ -36,11 +36,7 @@ public class UtenteService extends BaseService<Utente> {
      */
     public List<Utente> cercaPerCognome(String cognome) {
 
-        if (cognome == null) {
-            throw new IllegalArgumentException("Filtro nullo");
-        }
-
-        if (cognome.trim().isEmpty()) {
+        if (cognome == null || cognome.trim().isEmpty()) {
             return new ArrayList<>();
         }
 
@@ -66,7 +62,6 @@ public class UtenteService extends BaseService<Utente> {
         
         String filtroLowerCase = filtro.toLowerCase();
         
-        // CORREZIONE: Ricerca per Cognome O Matricola
         return getAll().stream()
                .filter(u -> u.getCognome().toLowerCase().contains(filtroLowerCase) || 
                             u.getMatricola().toLowerCase().contains(filtroLowerCase))

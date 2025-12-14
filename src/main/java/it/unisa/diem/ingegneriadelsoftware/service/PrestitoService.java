@@ -54,19 +54,15 @@ public class PrestitoService extends BaseService<Prestito> {
             throw new IllegalArgumentException("Data prevista non valida: deve essere futura.");
         }
         
-        // FC-3.0.2: Limitazione a massimo tre prestiti per utente
         long prestitiAttiviUtente = listaPrestitiAttivi().stream()
                 .filter(p -> p.getUtente().getId().equals(utente.getId()))
                 .count();
 
         if (prestitiAttiviUtente >= 3) {
-            // UI-3.0.2.1: Messaggio errore/conferma limite prestiti
             throw new IllegalStateException("L'utente ha già il massimo di 3 prestiti attivi consentiti.");
         }
-        // Fine FC-3.0.2
 
         if (libro.getCopieDisponibili() <= 0) {
-            // UI-3.0.1.1: Messaggio errore/conferma copia non disponibile
             throw new IllegalStateException("Nessuna copia disponibile");
         }
             Prestito nuovoPrestito = new Prestito(utente, libro, dataPrevista);
