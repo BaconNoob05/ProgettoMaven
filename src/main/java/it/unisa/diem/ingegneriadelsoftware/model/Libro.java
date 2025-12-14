@@ -182,6 +182,7 @@ public class Libro extends Dati {
         return String.format("ISBN: %s | Titolo: %s | Autori: %s | Anno: %d | Copie: %d",
                 isbn, titolo, getAutoriString(), anno, copie);
     }
+    
     /**
      * @brief Restituisce l'elenco degli autori associati al libro.
      * @return Una lista di stringhe dove ci sono i nomi degli autori, altrimenti restituisce una lista vuota.
