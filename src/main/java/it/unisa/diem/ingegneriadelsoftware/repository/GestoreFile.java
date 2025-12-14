@@ -22,14 +22,13 @@ public class GestoreFile<T> implements InterfaceGestoreIO<T> {
      */
     @Override
     public void salvaDati(String nomeFile, List<T> dati) {
-        try (FileOutputStream streamBase = new FileOutputStream(nomeFile);
-             ObjectOutputStream streamOggettiOut = new ObjectOutputStream(streamBase)) {
+        try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(nomeFile))) {
 
-            streamOggettiOut.writeObject(dati);
+            oos.writeObject(dati);
 
-        } catch (IOException problemaScrittura) {
-            System.err.println("ERRORE di Salvataggio: Impossibile salvare i dati nel file '" + nomeFile + "'.");
-            System.err.println("Dettagli Tecnici: Si è verificato un problema di serializzazione/scrittura. Causa: " + problemaScrittura.getLocalizedMessage());
+        } catch (IOException ex) {
+            System.err.println("Impossibile salvare i dati nel file '" + nomeFile + "'.");
+            System.err.println("Si è verificato un problema di serializzazione/scrittura. Dettagli: " + ex.getMessage());
         }
     }
 
@@ -40,31 +39,29 @@ public class GestoreFile<T> implements InterfaceGestoreIO<T> {
      */
     @Override
     public List<T> caricaDati(String nomeFile) {
-        List<T> listaRisultato = new ArrayList<>();
+        List<T> risultato = new ArrayList<>();
 
-        try (FileInputStream streamInputFile = new FileInputStream(nomeFile);
-             ObjectInputStream streamOggettiIn = new ObjectInputStream(streamInputFile)) {
+        try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream(nomeFile))) {
 
-            Object oggettoGenericoLetto = streamOggettiIn.readObject();
+            Object oggettoLetto = ois.readObject();
 
-            if (oggettoGenericoLetto instanceof List) {
-                listaRisultato = (List<T>) oggettoGenericoLetto;
+            if (oggettoLetto instanceof List) {
+                risultato = (List<T>) oggettoLetto;
             } else {
-                System.err.println("AVVISO di Lettura: Il file '" + nomeFile + "' non contiene una lista di oggetti valida.");
+                System.err.println("Il file '" + nomeFile + "' non contiene una lista di oggetti valida.");
             }
 
-        } catch (FileNotFoundException assenzaFile) {
-            System.out.println("INFORMAZIONE: File di dati non trovato: '" + nomeFile + "'. Verrà utilizzata una lista vuota.");
+        } catch (FileNotFoundException ex) {
+            System.out.println("File di dati non trovato: '" + nomeFile + "'. Verrà utilizzata una lista vuota.");
 
-        } catch (IOException e) {
-            System.err.println("ERRORE CRITICO di I/O: Impossibile leggere il contenuto del file '" + nomeFile + "'.");
-            System.err.println("Verifica se il file è corrotto o i permessi di accesso. Dettagli: " + e.getMessage());
+        } catch (IOException ex) {
+            System.err.println("Impossibile leggere il contenuto del file '" + nomeFile + "'.\nVerifica se il file è corrotto o i permessi di accesso. Dettagli: " + ex.getMessage());
 
-        } catch (ClassNotFoundException e) {
-            System.err.println("ERRORE DI COMPATIBILITÀ: Il file '" + nomeFile + "' contiene oggetti di un tipo sconosciuto o non compatibile.");
-            System.err.println("Assicurati che le classi originali siano presenti. Dettagli: " + e.getMessage());
+        } catch (ClassNotFoundException ex) {
+            System.err.println("Il file '" + nomeFile + "' contiene oggetti di un tipo sconosciuto o non compatibile.");
+            System.err.println("Assicurati che le classi originali siano presenti. Dettagli: " + ex.getMessage());
         }
 
-        return listaRisultato;
+        return risultato;
     }
 }

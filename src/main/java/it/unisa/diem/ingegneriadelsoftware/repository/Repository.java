@@ -32,9 +32,9 @@ public class Repository<T extends InterfaceID> implements InterfaceRepository<T>
      * @param [in] file Il nome del file.
      * @param [in] gestore Il gestore per l'I/O.
      */
-    public Repository(String file, InterfaceGestoreIO<T> gestore) {
-        this.nomeFile = file;
-        this.gestoreIO = gestore;
+    public Repository(String nomeFile, InterfaceGestoreIO<T> gestoreIO) {
+        this.nomeFile = nomeFile;
+        this.gestoreIO = gestoreIO;
         this.lista = new ArrayList<>();
         caricaTutti(lista);
     }
@@ -75,16 +75,14 @@ public class Repository<T extends InterfaceID> implements InterfaceRepository<T>
         }
 
 
-        T esistente = cerca(elemento.getId());
+        T elementoEsistente = cerca(elemento.getId());
 
-        if (esistente != null) {
-            // Aggiorna: trova l'indice e sostituisce
-            int index = lista.indexOf(esistente);
+        if (elementoEsistente != null) {
+            int index = lista.indexOf(elementoEsistente);
             if (index != -1) {
                 lista.set(index, elemento);
             }
         } else {
-            // Inserisce nuovo elemento
             lista.add(elemento);
         }
         salvaSuFile();
