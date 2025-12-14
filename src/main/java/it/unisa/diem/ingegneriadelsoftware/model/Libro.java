@@ -71,14 +71,14 @@ public class Libro extends Dati {
     /**
      * @brief Decrementa il numero di copie disponibili quando un libro viene prestato.
      * @post Il numero di copie disponibili diminuisce di uno.
-     * @details Questo metodo deve essere invocato quando bisogna effettuare l'azione del prestito.
+     * @details Questo metodo deve essere invocato quando bisogna effettuare un prestito.
      */
 
     public void decrementaCopie() {
         if (copie > 0) {
             copie--;
         } else {
-            // controllo copie
+            //Controllo copie
             throw new IllegalStateException("Impossibile prestare: nessuna copia disponibile."); 
         }
     }
@@ -86,7 +86,7 @@ public class Libro extends Dati {
     /**
      * @brief Incrementa il numero di copie disponibili quando un libro viene restituito.
      * @post Il numero di copie disponibili aumenta di uno.
-     * @details Questo metodo deve essere invocato quando bisogna aggiungere una copia di un libro.
+     * @details Questo metodo deve essere invocato quando bisogna effettuaze una restituzione.
      */
     public void incrementaCopie() {
         copie++;
@@ -138,33 +138,33 @@ public class Libro extends Dati {
     }
 
     /** * @brief Imposta il titolo del libro.
-     * @param [in] t il nuovo titolo del libro. 
+     * @param [in] nuovoTitolo il nuovo titolo del libro. 
      */
-    public void setTitolo(String t) {
-        this.titolo = t;
+    public void setTitolo(String nuovoTitolo) {
+        this.titolo = nuovoTitolo;
     }
 
     /** * @brief Imposta la lista degli autori.
-     * @param [in] a la nuova lista di autori. 
+     * @param [in] nuovoAutori la nuova lista di autori. 
      */
-    public void setAutori(List<String> a) {
-        this.autori = a;
+    public void setAutori(List<String> nuovoAutori) {
+        this.autori = nuovoAutori;
     }
 
     /** * @brief Imposta l'anno di pubblicazione.
-     * @param [in] a il nuovo anno di pubblicazione. 
+     * @param [in] nuovoAnno il nuovo anno di pubblicazione. 
      */
-    public void setAnno(int a) {
-        this.anno = a;
+    public void setAnno(int nuovoAnno) {
+        this.anno = nuovoAnno;
     }
 
     /** * @brief Imposta il numero di copie disponibili.
-     * @param [in] c il nuovo numero di copie. 
-     * @pre L'argomento c deve essere un numero intero maggiore o uguale a zero.
-     * @post il campo copieDisponibili assume esattamente il valore di c.
+     * @param [in] nuovoCopie il nuovo numero di copie. 
+     * @pre L'argomento nuovoCopie deve essere un numero intero maggiore o uguale a zero.
+     * @post il campo copie assume esattamente il valore di nuovoCopie.
      */
-    public void setCopieDisponibili(int c) {
-        this.copie = c;
+    public void setCopieDisponibili(int nuovoCopie) {
+        this.copie = nuovoCopie;
     }
 
     /**
@@ -179,8 +179,8 @@ public class Libro extends Dati {
     @Override
 
     public String toString() {
-        return String.format("ISBN: %s | Titolo: %s | Autori: %s | Anno: %d | Copie: %d", // Aggiunto Anno
-                isbn, titolo, getAutoriString(), anno, copie); // Aggiunta la variabile 'anno'
+        return String.format("ISBN: %s | Titolo: %s | Autori: %s | Anno: %d | Copie: %d",
+                isbn, titolo, getAutoriString(), anno, copie);
     }
     /**
      * @brief Restituisce l'elenco degli autori associati al libro.
