@@ -1,6 +1,3 @@
-
-
-
 package it.unisa.diem.ingegneriadelsoftware.service;
 
 import java.util.List;
@@ -8,7 +5,6 @@ import java.util.ArrayList;
 import java.util.stream.Collectors;
 import it.unisa.diem.ingegneriadelsoftware.repository.InterfaceRepository; 
 import it.unisa.diem.ingegneriadelsoftware.model.Libro; 
-import it.unisa.diem.ingegneriadelsoftware.model.Prestito; // Import aggiunto per IF-1.1.2
 
 /**
  * @class LibroService

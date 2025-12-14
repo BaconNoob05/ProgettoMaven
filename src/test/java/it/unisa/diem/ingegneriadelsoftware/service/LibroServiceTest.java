@@ -6,6 +6,8 @@ import org.junit.jupiter.api.*;
 import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.*;
+import java.time.LocalDate; // Necessario per Prestito
+
 /**
  * @brief Classe di test per LibroService.
  * @class LibroServiceTest
@@ -21,6 +23,12 @@ public class LibroServiceTest {
      * @brief Stub del repository.
      */
     private RepositoryStub<Libro> repo;
+    
+    /**
+     * @brief Stub del servizio prestiti per simulare prestiti attivi.
+     */
+    private PrestitoServiceStub prestitoServiceStub; // AGGIUNTO
+
     
     /**
      * @brief Oggetto Libro per i test.
@@ -80,6 +88,10 @@ public class LibroServiceTest {
         repo.caricaTutti(datiIniziali);
 
         service = new LibroService(repo);
+        
+        // INIEZIONE DELLO STUB DI PRESTITO SERVICE PER IL CONTROLLO
+        prestitoServiceStub = new PrestitoServiceStub(); 
+        service.setPrestitoService(prestitoServiceStub); // AGGIUNTO
     }
     
     /**
@@ -228,7 +240,37 @@ public class LibroServiceTest {
         assertEquals(5, repo.getAll().size());
     }
     
+    /**
+     * @brief Testa l'eliminazione di un libro con prestiti attivi (FC-1.1.2).
+     */
+    @Test
+    void testElimina_PrestitiAttiviImpedisconoEliminazione() {
+
+        Utente u = new Utente("Test", "User", "ID01", "test.user@studenti.unisa.it");
+        LocalDate data = LocalDate.now().plusDays(10);
+
+        Prestito prestitoAttivo = new Prestito(u, libroSoftwareEng, data, LocalDate.now()); 
+        
+
+        prestitoServiceStub.list.add(prestitoAttivo); 
+
+
+        assertThrows(IllegalStateException.class, () -> {
+            service.elimina(libroSoftwareEng);
+        });
+
+        assertNotNull(repo.cerca(libroSoftwareEng.getId()));
+    }
     
-    
-    
+    /**
+     * @brief Testa l'eliminazione di un libro senza prestiti attivi.
+     */
+    @Test
+    void testElimina_NessunPrestitoAttivo_Successo() {
+
+        assertDoesNotThrow(() -> service.elimina(libroCriticaRagionPura));
+
+        assertNull(repo.cerca(libroCriticaRagionPura.getId()));
+        assertEquals(4, repo.getAll().size());
+    }
 }

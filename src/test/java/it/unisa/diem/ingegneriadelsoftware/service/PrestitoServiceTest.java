@@ -6,6 +6,7 @@ import java.time.LocalDate;
 import java.util.*;
 import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.*;
+
 /**
  * @brief Classe di test per PrestitoService.
  * @class PrestitoServiceTest
@@ -68,7 +69,7 @@ public class PrestitoServiceTest {
 
         l1 = new Libro("Il nuovo Java. Guida definitiva", autoriDeSio, 2023, "978-8868945620", 12);
         l2 = new Libro("A Christmas Carol", autoriDickens, 1843, "978-0141439247", 8); 
-
+        
         u1 = new Utente("Lorenzo", "Trovato", "0612709999", "l.trovato@studenti.unisa.it");
         u2 = new Utente("alessandro", "picariello", "0612709975", "a.picariello@studenti.unisa.it");
         
@@ -92,7 +93,7 @@ public class PrestitoServiceTest {
         assertEquals(u1.getId(), prestitoSalvato.getUtente().getId());
         assertEquals(l1.getId(), prestitoSalvato.getLibro().getId());
         assertNull(prestitoSalvato.getDataEffettiva());
-        assertEquals(LocalDate.now(), prestitoSalvato.getDataPrestito()); // VERIFICA DATA DI OGGI
+        assertEquals(LocalDate.now(), prestitoSalvato.getDataPrestito()); 
     }
     
     /**
@@ -139,8 +140,8 @@ public class PrestitoServiceTest {
         assertThrows(IllegalArgumentException.class, () -> {
              service.registraPrestito(u1, l1, dataPassata);
         });
-        assertEquals(0, repo.getAll().size());
         assertEquals(12, l1.getCopieDisponibili());
+        assertEquals(0, repo.getAll().size());
     }
 
     /**
@@ -157,7 +158,7 @@ public class PrestitoServiceTest {
         service.registraRestituzione(p, LocalDate.now());
 
         assertNotNull(p.getDataEffettiva());
-        assertEquals(12, l1.getCopieDisponibili()); 
+        assertEquals(12, l1.getCopieDisponibili()); // Copie incrementate
     }
 
     /**
@@ -253,5 +254,38 @@ public class PrestitoServiceTest {
     void testListaPrestitiAttivi_RepositoryVuoto() {
         List<Prestito> attivi = service.listaPrestitiAttivi();
         assertTrue(attivi.isEmpty());
+    }
+    
+    /**
+     * @brief Testa la registrazione di un prestito quando l'utente ha già il massimo di 3 prestiti attivi.
+     */
+    @Test
+    void testRegistraPrestito_LimiteSuperato() {
+        LocalDate dataFutura = LocalDate.now().plusDays(10);
+        LocalDate dataStorica = LocalDate.now().minusDays(5);
+        
+
+        Prestito p1 = new Prestito(u1, l1, dataFutura, dataStorica.minusDays(3));
+        Prestito p2 = new Prestito(u1, l2, dataFutura, dataStorica.minusDays(2));
+        Prestito p3 = new Prestito(u1, l1, dataFutura, dataStorica.minusDays(1)); 
+        
+
+        repo.inserisciOAggiorna(p1);
+        repo.inserisciOAggiorna(p2);
+        repo.inserisciOAggiorna(p3);
+        
+        l1.setCopieDisponibili(l1.getCopieDisponibili() - 2); 
+        l2.setCopieDisponibili(l2.getCopieDisponibili() - 1); 
+        
+
+        assertThrows(IllegalStateException.class, () -> {
+            service.registraPrestito(u1, l2, dataFutura);
+        });
+        
+
+        assertEquals(3, service.listaPrestitiAttivi().size());
+        
+
+        assertEquals(7, l2.getCopieDisponibili()); 
     }
 }

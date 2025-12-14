@@ -11,7 +11,7 @@ import java.util.List;
 import javafx.scene.layout.VBox;
 import javafx.scene.layout.HBox;
 import javafx.geometry.Pos; 
-import java.util.stream.Collectors; // Necessario per la conversione autori
+import java.util.stream.Collectors; 
 
 /**
  * @class LibroView
@@ -36,7 +36,7 @@ public class LibroView extends DatiBaseView<Libro> {
     private final TextField copieInput;
 
     /** @brief Campo di input per la lista degli autori (separati da virgole). */
-    private final TextField autoriInput; // AGGIUNTO
+    private final TextField autoriInput; 
     
     
     /**
@@ -54,7 +54,7 @@ public class LibroView extends DatiBaseView<Libro> {
         this.annoInput = new TextField();
         this.isbnInput = new TextField();
         this.copieInput = new TextField();
-        this.autoriInput = new TextField(); // AGGIUNTO
+        this.autoriInput = new TextField(); 
         
 
         GridPane innerDetailPane = creaPaneDettaglio();
@@ -122,7 +122,7 @@ public class LibroView extends DatiBaseView<Libro> {
             titoloInput.setText(libro.getTitolo());
             annoInput.setText(String.valueOf(libro.getAnno()));
             isbnInput.setText(libro.getId());
-            autoriInput.setText(libro.getAutoriString()); // AGGIUNTO
+            autoriInput.setText(libro.getAutoriString()); 
             
             copieInput.setText(String.valueOf(libro.getCopieDisponibili()));
 
@@ -134,7 +134,7 @@ public class LibroView extends DatiBaseView<Libro> {
             titoloInput.setText("");
             annoInput.setText("");
             isbnInput.setText("");
-            autoriInput.setText(""); // AGGIUNTO
+            autoriInput.setText(""); 
             
             copieInput.setText("");
             isbnInput.setEditable(true); 
@@ -167,7 +167,7 @@ public class LibroView extends DatiBaseView<Libro> {
         
         // Uniformità dei campi di testo
         titoloInput.setPrefWidth(200);
-        autoriInput.setPrefWidth(200); // AGGIUNTO
+        autoriInput.setPrefWidth(200); 
         annoInput.setPrefWidth(200);
         isbnInput.setPrefWidth(200);
         copieInput.setPrefWidth(200);
@@ -176,17 +176,17 @@ public class LibroView extends DatiBaseView<Libro> {
         detailPane.add(new Label("Titolo:"), 0, 1);
         detailPane.add(titoloInput, 1, 1);
         
-        detailPane.add(new Label("Autori:"), 0, 2); // AGGIUNTO ETICHETTA
-        detailPane.add(autoriInput, 1, 2); // AGGIUNTO CAMPO
+        detailPane.add(new Label("Autori:"), 0, 2); 
+        detailPane.add(autoriInput, 1, 2); 
         
-        detailPane.add(new Label("Anno:"), 0, 3); // Spostato
-        detailPane.add(annoInput, 1, 3); // Spostato
+        detailPane.add(new Label("Anno:"), 0, 3); 
+        detailPane.add(annoInput, 1, 3); 
         
-        detailPane.add(new Label("ISBN:"), 0, 4); // Spostato
-        detailPane.add(isbnInput, 1, 4); // Spostato
+        detailPane.add(new Label("ISBN:"), 0, 4); 
+        detailPane.add(isbnInput, 1, 4); 
 
-        detailPane.add(new Label("Copie disponibili:"), 0, 5); // Spostato
-        detailPane.add(copieInput, 1, 5); // Spostato
+        detailPane.add(new Label("Copie disponibili:"), 0, 5); 
+        detailPane.add(copieInput, 1, 5); 
         
         detailPane.add(getMessaggioBox(), 0, 8, 2, 1); 
         
@@ -231,7 +231,7 @@ public class LibroView extends DatiBaseView<Libro> {
             String annoText = annoInput.getText().trim();
             String isbn = isbnInput.getText().trim();
             String copieText = copieInput.getText().trim();
-            String autoriString = autoriInput.getText().trim(); // AGGIUNTO
+            String autoriString = autoriInput.getText().trim(); 
 
             // Validazione Campi Obbligatori (stringhe)
             if (titolo.isEmpty() || isbn.isEmpty() || annoText.isEmpty() || copieText.isEmpty() || autoriString.isEmpty()) {
@@ -241,18 +241,18 @@ public class LibroView extends DatiBaseView<Libro> {
 
             int anno = Integer.parseInt(annoText);
             int copie = Integer.parseInt(copieText);
-            List<String> autori = parseAutori(autoriString); // AGGIUNTO CONVERSIONE
+            List<String> autori = parseAutori(autoriString); 
 
             if (copie < 0) {
                  mostraMessaggio("Errore: Le copie disponibili non possono essere negative.");
                  return null;
             }
-            if (autori.isEmpty()) { // Doppia verifica che l'analisi non abbia prodotto una lista vuota
+            if (autori.isEmpty()) { 
                  mostraMessaggio("Errore: Specificare almeno un autore.");
                  return null;
             }
 
-            Libro nuovoLibro = new Libro(titolo, autori, anno, isbn, copie); // USA LISTA AUTORI
+            Libro nuovoLibro = new Libro(titolo, autori, anno, isbn, copie); 
 
             if (!nuovoLibro.isValido()) {
                 mostraMessaggio("Errore: Dati libro non validi (es. anno di pubblicazione futuro o ISBN/Autori non validi).");
@@ -295,7 +295,7 @@ public class LibroView extends DatiBaseView<Libro> {
             String annoText = annoInput.getText().trim();
             String nuovoIsbn = isbnInput.getText().trim(); 
             String copieText = copieInput.getText().trim();
-            String autoriString = autoriInput.getText().trim(); // AGGIUNTO
+            String autoriString = autoriInput.getText().trim(); 
             
             // Validazione Campi Obbligatori (stringhe)
              if (nuovoTitolo.isEmpty() || annoText.isEmpty() || nuovoIsbn.isEmpty() || copieText.isEmpty() || autoriString.isEmpty()) {
@@ -305,13 +305,13 @@ public class LibroView extends DatiBaseView<Libro> {
 
             int nuovoAnno = Integer.parseInt(annoText);
             int nuoveCopie = Integer.parseInt(copieText);
-            List<String> nuoviAutori = parseAutori(autoriString); // AGGIUNTO CONVERSIONE
+            List<String> nuoviAutori = parseAutori(autoriString); 
             
             if (nuoveCopie < 0) {
                  mostraMessaggio("Errore: Le copie disponibili non possono essere negative.");
                  return null;
             }
-             if (nuoviAutori.isEmpty()) { // Doppia verifica che l'analisi non abbia prodotto una lista vuota
+             if (nuoviAutori.isEmpty()) { 
                  mostraMessaggio("Errore: Specificare almeno un autore.");
                  return null;
             }

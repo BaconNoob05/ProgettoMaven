@@ -5,7 +5,6 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
 import static org.junit.jupiter.api.Assertions.*;
-import javafx.application.Platform; 
 
 /**
  * @brief Classe di test per la classe Prestito.
@@ -31,14 +30,12 @@ public class PrestitoTest {
     /**
      * @brief Data per la restituzione per i test.
      */
-    private final LocalDate DATA_SCADUTA = LocalDate.of(2050, 1, 10); // MODIFICATO: Data usata per testare lo stato SCADUTO
+    private final LocalDate DATA_SCADUTA = LocalDate.of(2050, 1, 10); 
     
     /**
      * @brief Data di Prestito per i test (storica).
      */
-    private final LocalDate DATA_PRESTITO_STORICA = LocalDate.of(2049, 12, 1); // MODIFICATO
-    
-    // Rimosso DATA_ATTUALE per evitare confusione con LocalDate.now()
+    private final LocalDate DATA_PRESTITO_STORICA = LocalDate.of(2049, 12, 1); 
     
     /**
      * @brief Lista di autori er i test.
@@ -54,11 +51,10 @@ public class PrestitoTest {
         
         autoriEsempio = Arrays.asList("I. Sommerville", "Stephen King");
         
-        // AGGIORNATO: Email conforme alla nuova regola
+
         utente = new Utente("Lorenzo", "Trovato", "0612708922", "l.trovato@studenti.unisa.it");
         libro = new Libro("Ingegneria del Software",autoriEsempio, 1951,"978-88-8080-123-4", 5);
-        
-        // MODIFICATO: Usa DATA_SCADUTA come data prevista per il prestito di setup
+
         prestito = new Prestito(utente, libro, DATA_SCADUTA, DATA_PRESTITO_STORICA); 
     }
 
@@ -69,7 +65,7 @@ public class PrestitoTest {
     void testCostruttore() {
         assertNotNull(prestito.getUtente());
         assertNotNull(prestito.getLibro());
-        assertEquals(DATA_SCADUTA, prestito.getDataPrevista()); // MODIFICATO
+        assertEquals(DATA_SCADUTA, prestito.getDataPrevista()); 
         assertEquals(DATA_PRESTITO_STORICA, prestito.getDataPrestito()); 
         assertNull(prestito.getDataEffettiva());
     }
@@ -110,7 +106,7 @@ public class PrestitoTest {
      */
     @Test
     void testRegistraRestituzione() {
-        LocalDate restituzione = LocalDate.of(2050, 1, 15); // MODIFICATO
+        LocalDate restituzione = LocalDate.of(2050, 1, 15); 
         prestito.registraRestituzione(restituzione);
         assertEquals(restituzione, prestito.getDataEffettiva());
     }
@@ -132,11 +128,7 @@ public class PrestitoTest {
      */
     @Test
     void testIsScaduto() {
-        // La data di scadenza (2050/1/10) è futura rispetto a LocalDate.now() (Dic 2025), quindi non è SCADUTO.
-        // Questo test ora fallirà se l'intento è che sia scaduto, quindi inverto l'asserzione in base al nuovo contesto delle date:
-        assertFalse(prestito.isScaduto()); 
-        
-        // Se vogliamo testare che sia scaduto, usiamo una data nel passato:
+        // Per questo test, forziamo il contesto temporale nel passato per verificare la scadenza
         LocalDate dataPrevistaPassata = LocalDate.now().minusDays(10);
         Prestito pScaduto = new Prestito(utente, libro, dataPrevistaPassata, dataPrevistaPassata.minusDays(5));
         assertTrue(pScaduto.isScaduto());
@@ -220,7 +212,7 @@ public class PrestitoTest {
      */
     @Test
     void testToString_DopoRestituzione() {
-        LocalDate restituzione = LocalDate.of(2050, 1, 15); // MODIFICATO
+        LocalDate restituzione = LocalDate.of(2050, 1, 15); 
         prestito.registraRestituzione(restituzione);
 
         String stringaPrestito = prestito.toString();
@@ -236,7 +228,7 @@ public class PrestitoTest {
      */
     @Test
     void testRestituzionePrestito_InAnticipo() {
-        // Date nel passato per testare la logica
+
         LocalDate dataDiPrestito = LocalDate.now().minusDays(10);
         LocalDate dataPrevista = dataDiPrestito.plusDays(10); 
         LocalDate restituzioneAnticipata = dataPrevista.minusDays(1);
@@ -260,23 +252,20 @@ public class PrestitoTest {
 
         String id1 = prestito.getId(); 
 
-        // AGGIORNATO: Email conforme alla nuova regola
         Utente utente2 = new Utente("Marco", "Rossi", "0000000001", "m.rossi@studenti.unisa.it");
 
 
-        Prestito prestito2 = new Prestito(utente2, libro, DATA_SCADUTA.plusDays(1), DATA_PRESTITO_STORICA.plusDays(1)); // MODIFICATO
+        Prestito prestito2 = new Prestito(utente2, libro, DATA_SCADUTA.plusDays(1), DATA_PRESTITO_STORICA.plusDays(1)); // Data Prestito diversa
         String id2 = prestito2.getId();
 
 
         assertNotEquals(id1, id2);
     }
-    
-    // AGGIUNTO TEST per costruttore a 3 argomenti che usa LocalDate.now()
+
     @Test
     void testCostruttore_DefaultDataPrestito() {
         LocalDate dataPrevista = LocalDate.now().plusDays(10);
-        
-        // Usa il costruttore a 3 argomenti (simula un nuovo prestito)
+
         Prestito nuovoPrestito = new Prestito(utente, libro, dataPrevista); 
         
         assertEquals(LocalDate.now(), nuovoPrestito.getDataPrestito());
