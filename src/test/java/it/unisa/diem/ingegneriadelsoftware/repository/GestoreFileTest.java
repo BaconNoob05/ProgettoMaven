@@ -5,13 +5,30 @@ import org.junit.jupiter.api.*;
 import java.io.File;
 import java.util.*;
 import static org.junit.jupiter.api.Assertions.*;
-
+/**
+ * @brief Classe di test per GestoreFile.
+ * @class GestoreFileTest
+ */
 public class GestoreFileTest {
 
+    /**
+     * @brief Istanza del gestore di file .
+     */
     private GestoreFile<DatiStub> gestore;
+    
+    /**
+     * @brief Lista di oggetti  usati per i test.
+     */
     private List<DatiStub> datiTest;
+    
+    /**
+     * @brief Lista dei file da cancellare.
+     */
     private List<String> filesDaCancellare;
 
+   /**
+     * @brief Metodo eseguito prima di ogni test.
+     */
     @BeforeEach
     void setUp() {
         
@@ -24,6 +41,9 @@ public class GestoreFileTest {
         filesDaCancellare = new ArrayList<>();
     }
 
+    /**
+     * @brief Cancella tutti i file durante il test.
+     */
     @AfterEach
     void tearDown() {
         
@@ -35,6 +55,9 @@ public class GestoreFileTest {
         }
     }
 
+    /**
+     * @brief Testa l'integrità dei dati caricati.
+     */
     @Test
     void testSalvaECaricaDati() {
         
@@ -49,6 +72,9 @@ public class GestoreFileTest {
         assertEquals(datiTest.get(0).toString(), risultato.get(0).toString());
     }
 
+    /**
+     * @brief Testa il salvataggio di una lista vuota.
+     */
     @Test
     void testSalvaListaVuota() {
         
@@ -62,6 +88,9 @@ public class GestoreFileTest {
         assertTrue(risultato.isEmpty());
     }
 
+    /**
+     * @brief Testa il salvataggio con una lista di valori nulli.
+     */
     @Test
     void testSalvaListaNull() {
         
@@ -75,6 +104,9 @@ public class GestoreFileTest {
         assertTrue(risultato.isEmpty());
     }
 
+    /**
+     * @brief Verifica che i dati caricati siano gli ultimi salvati.
+     */
     @Test
     void testSovrascritturaFile() {
         
@@ -92,6 +124,9 @@ public class GestoreFileTest {
         assertEquals(nuoviDati.get(0).toString(), caricati.get(0).toString());
     }
 
+    /**
+     * @brief Testa il caricamento dati.
+     */
     @Test
     void testCaricaDati() {
         
@@ -106,6 +141,9 @@ public class GestoreFileTest {
         assertEquals(datiTest.get(0).toString(), risultato.get(0).toString());
     }
 
+    /**
+     * @brief Testa il caricamento di un file che non esiste.
+     */
     @Test
     void testCaricaFileInesistente() {
         
