@@ -7,7 +7,7 @@ import java.util.List;
 /**
  * @class BaseController
  * @brief Classe base astratta per i controller generici.
- * @details Implementa la logica di comunicazione tra View e Service .
+ * @details Implementa la logica di comunicazione tra View e Service.
  * Gestisce un'entità generica di tipo T.
  *
  * @tparam T Il tipo dell'entità gestita dal controller.
@@ -45,7 +45,7 @@ public abstract class BaseController<T> implements InterfaceController {
     }
 
     /**
-     * @brief Aggiorna la view recuperando tutti gli elementi dal servizio.
+     * @brief Aggiorna la view recuperando tutti gli elementi dal service.
      * @see InterfaceController#aggiornaVista()
      * @see InterfaceService#getAll()
      */
@@ -80,7 +80,7 @@ public abstract class BaseController<T> implements InterfaceController {
     }
 
     /**
-     * @brief Recupera l'elemento attualmente selezionato nella vista generica.
+     * @brief Recupera l'elemento attualmente selezionato nella view generica.
      * @return L'istanza di tipo T selezionata, altrimenti il valore null in assenza di selezioni attive.
      * @see InterfaceView#getElementoSelezionato()
      */
