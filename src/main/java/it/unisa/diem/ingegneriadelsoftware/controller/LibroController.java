@@ -89,9 +89,7 @@ public class LibroController extends CrudController<Libro> {
         
         LibroView view = getSpecificView();
         
-        // 1. Listener per Inserimento (OK) e Modifica (OK)
         view.getOkButton().setOnAction(e -> {
-            // Se un elemento è selezionato, si assume Modifica. Altrimenti, Salva nuovo.
             if (view.getTableView().getSelectionModel().getSelectedItem() != null) {
                 modificaLibro();
             } else {
@@ -99,21 +97,17 @@ public class LibroController extends CrudController<Libro> {
             }
         });
         
-        // 2. Listener per Cancellazione (ora Elimina)
         view.getCancellaButton().setOnAction(e -> elimina());
         
-        // 3. Listener per la Ricerca (Aggiorna al cambiamento del testo)
         view.getCercaField().textProperty().addListener((observable, oldValue, newValue) -> {
             cerca();
         });
         
-        // 4. Listener per Annulla (Pulisce il form e la selezione)
         view.getAnnullaButton().setOnAction(e -> view.pulisciDettagli());
         
-        // 5. Listener per Annulla Cerca (Pulisce il campo di ricerca e aggiorna la vista)
         view.getAnnullaCercaButton().setOnAction(e -> {
             view.getCercaField().clear();
-            aggiornaVista(); // Torna alla lista completa e ordinata
+            aggiornaVista();
             view.mostraMessaggio("Ricerca annullata.");
         });
     }  

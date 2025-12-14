@@ -24,7 +24,7 @@ public class PrestitoController extends CrudController<Prestito> {
         super(view, service);
     }
     
-   /**
+    /**
      * @brief Interpreta la vista come un'istanza di PrestitoView.
      * @return La vista specifica per i prestiti altrimenti un valore nullo..
      */
@@ -32,7 +32,7 @@ public class PrestitoController extends CrudController<Prestito> {
         return (PrestitoView) view;
     }
 
-  /**
+    /**
      * @brief Trasforma il servizio generico nel servizio specifico PrestitoService.
      * @return L'istanza di PrestitoService altrimenti un valore nullo.
      */
@@ -106,7 +106,6 @@ public class PrestitoController extends CrudController<Prestito> {
      */
     @Override
     public void aggiornaVista(){
-        // Al caricamento, mostra la lista di default (TUTTI i prestiti ordinati)
         aggiornaLista();
     }
     
@@ -156,8 +155,6 @@ public class PrestitoController extends CrudController<Prestito> {
         eseguiOperazione(() -> {
             getSpecificService().registraRestituzione(prestitoSelezionato, dataRestituzione);
         }, "Restituzione registrata. Prestito chiuso.");
-        
-        // La chiamata ad aggiornaVista() è implicita in eseguiOperazione.
     }
 
     /**

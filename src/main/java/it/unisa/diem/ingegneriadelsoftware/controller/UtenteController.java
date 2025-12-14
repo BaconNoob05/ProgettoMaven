@@ -27,7 +27,7 @@ public class UtenteController extends CrudController<Utente> {
     }
 
     /**
-     * @brief Aggiorna la vista recuperando tutti gli elementi dal servizio e applicando l'ordinamento (FC-2.2.1, FC-2.2.2).
+     * @brief Aggiorna la vista recuperando tutti gli elementi dal servizio e applicando l'ordinamento.
      * @see InterfaceController#aggiornaVista()
      * @see InterfaceService#getAll()
      */
@@ -35,7 +35,6 @@ public class UtenteController extends CrudController<Utente> {
     public void aggiornaVista() {
         List<Utente> lista = service.getAll();
         
-        // FC-2.2.1, FC-2.2.2: Ordinamento primario per Cognome, secondario per Nome
         lista.sort(Comparator
                 .comparing(Utente::getCognome, String.CASE_INSENSITIVE_ORDER)
                 .thenComparing(Utente::getNome, String.CASE_INSENSITIVE_ORDER)
@@ -53,9 +52,7 @@ public class UtenteController extends CrudController<Utente> {
         
         UtenteView view = getSpecificView();
         
-        // 1. Listener per Inserimento (OK) e Modifica (OK)
         view.getOkButton().setOnAction(e -> {
-            // Se un elemento è selezionato, si assume Modifica. Altrimenti, Salva nuovo.
             if (view.getTableView().getSelectionModel().getSelectedItem() != null) {
                 modificaUtente();
             } else {
@@ -63,26 +60,21 @@ public class UtenteController extends CrudController<Utente> {
             }
         });
         
-        // 2. Listener per Cancellazione (ora Elimina)
         view.getCancellaButton().setOnAction(e -> elimina());
         
-        // 3. Listener per la Ricerca (Aggiorna al cambiamento del testo)
         view.getCercaField().textProperty().addListener((observable, oldValue, newValue) -> {
             cerca();
         });
         
-        // 4. Listener per Annulla (Pulisce il form e la selezione)
         view.getAnnullaButton().setOnAction(e -> view.pulisciDettagli());
 
-        // 5. Listener per Annulla Cerca (Pulisce il campo di ricerca e aggiorna la vista)
         view.getAnnullaCercaButton().setOnAction(e -> {
             view.getCercaField().clear();
-            aggiornaVista(); // Torna alla lista completa e ordinata
+            aggiornaVista();
             view.mostraMessaggio("Ricerca annullata.");
         });
     }
 
-    //DA RIVEDERE DOXYGEN
     /**
      * @brief  Interpreta la vista come un'istanza di UtenteView.
      * @return L'istanza di UtenteView associata al controller altrimenti un valore nullo.

@@ -58,23 +58,23 @@ public abstract class BaseController<T> implements InterfaceController {
     /**
      * @brief Esegue un'operazione generica gestendo eccezioni e messaggi utente.
      * @param operazione L'azione logica da eseguire .
-     * @param messaggioConferma Il messaggio da mostrare alla vista in caso di successo.
+     * @param messaggioDiConferma Il messaggio da mostrare alla vista in caso di successo.
      * @pre L'operazione non deve essere nulla.
      * @post Se l'operazione ha successo, la vista viene aggiornata e viene mostrato il messaggio.
      */
-    public void eseguiOperazione(Runnable operazione, String messaggioConferma){
+    public void eseguiOperazione(Runnable operazione, String messaggioDiConferma){
         try {
             operazione.run();
             
             aggiornaVista();
-            if (messaggioConferma != null && !messaggioConferma.isEmpty()) {
-                view.mostraMessaggio(messaggioConferma);
+            if (messaggioDiConferma != null && !messaggioDiConferma.isEmpty()) {
+                view.mostraMessaggio(messaggioDiConferma);
             }
-        } catch (IllegalArgumentException e) {
-            view.mostraMessaggio("Errore: " + e.getMessage());
-        } catch (Exception e) {
-            view.mostraMessaggio("Errore imprevisto: " + e.getMessage());
-            e.printStackTrace();
+        } catch (IllegalArgumentException ex) {
+            view.mostraMessaggio("Errore: " + ex.getMessage());
+        } catch (Exception ex) {
+            view.mostraMessaggio("Errore imprevisto: " + ex.getMessage());
+            ex.printStackTrace();
         }
     }
 
