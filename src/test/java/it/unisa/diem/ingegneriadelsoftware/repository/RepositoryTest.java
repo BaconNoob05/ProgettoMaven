@@ -1,8 +1,4 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package it.unisa.diem.ingegneriadelsoftware.repository;
 import it.unisa.diem.ingegneriadelsoftware.model.DatiStub;
 import java.io.File;
@@ -10,31 +6,55 @@ import java.util.Arrays;
 import java.util.List;
 import org.junit.jupiter.api.*;
 import static org.junit.jupiter.api.Assertions.*;
-
 /**
- *
- * @author Utente
+ * @brief Classe di test per Repository.
+ * @class RepositoryTest
  */
 
 public class RepositoryTest {
+    
+    /**
+     * @brief Istanza del Repository .
+     */
     private Repository<DatiStub> repository;
+    
+    /**
+     * @brief Stub  per simulare il salvataggio dati.
+     */
     private GestoreFileStub<DatiStub> gestore;
+    
+    /**
+     * @brief Nom del file.
+     */
     private final String nomeFile = "test.txt";
 
+    /**
+     * @brief Oggetto per i test.
+     */
     private DatiStub dato1;
+    
+    /**
+     * @brief Oggetto per i test .
+     */
     private DatiStub dato2;
 
+    /**
+     * @brief Metodo eseguito prima di ogni test.
+     */
     @BeforeEach
     void setUp() {
         gestore = new GestoreFileStub<>();
         
-        // Il repository proverà a caricare i dati all'avvio (troverà lista vuota dallo stub)
+  
         repository = new Repository<>(nomeFile, gestore);
 
         dato1 = new DatiStub("ID_1");
         dato2 = new DatiStub("ID_2");
     }
     
+    /**
+     * @brief Elimina un file.
+     */
     @AfterEach
     void tearDown() {
 
@@ -46,6 +66,9 @@ public class RepositoryTest {
 
     }
     
+    /**
+     * @brief Testa l'inserimento di un nuovo elemento nel repository.
+     */
     @Test
     void testInserisci_NuovoElemento() {
         repository.inserisciOAggiorna(dato1);
@@ -55,6 +78,9 @@ public class RepositoryTest {
         assertEquals(dato1, repository.cerca("ID_1"));
     }
 
+    /**
+     * @brief Testa l'aggiornamento di un elemento esistente.
+     */
     @Test
     void testInserisci_AggiornamentoElemento() {
         repository.inserisciOAggiorna(dato1);
@@ -67,12 +93,18 @@ public class RepositoryTest {
         assertTrue(risultati.contains(dato1_Aggiornato));
     }
 
+    /**
+     * @brief Testa l'inserimento di un elemento nullo.
+     */
     @Test
     void testInserisci_ElementoNull() {
         //Inseriamo un elemento nullo
         assertThrows(IllegalArgumentException.class, () -> {repository.inserisciOAggiorna(null);});
     }
 
+    /**
+     * @brief Testa l'inserimento di un elemento con ID nullo.
+     */
     @Test
     void testInserisci_ElementoConIdNull() {
         DatiStub datoConIdNull = new DatiStub(null);
@@ -80,6 +112,9 @@ public class RepositoryTest {
         assertThrows(IllegalArgumentException.class, () -> {repository.inserisciOAggiorna(datoConIdNull);});
     }
 
+    /**
+     * @brief Testa l'eliminazione di un elemento esistente.
+     */
     @Test
     void testElimina_ElementoEsistente() {
         repository.inserisciOAggiorna(dato1);
@@ -92,26 +127,35 @@ public class RepositoryTest {
         assertNotNull(repository.cerca("ID_2"));
     }
 
+    /**
+     * @brief Testa l'eliminazione di un elemento inesistente.
+     */
     @Test
     void testElimina_ElementoInesistente() {
         repository.inserisciOAggiorna(dato1);
         
-        //Eliminiamo un elemento con id inesistente
+
         repository.elimina("ID_CHE_NON_ESISTE");
         
         assertEquals(1, repository.getAll().size());
     }
 
+    /**
+     * @brief Testa l'eliminazione con ID nullo.
+     */
     @Test
     void testElimina_IdNull() {
         repository.inserisciOAggiorna(dato1);
         
-        //Eliminiamo un elemento con ID nullo
+  
         assertDoesNotThrow(() -> repository.elimina(null));
         
         assertEquals(1, repository.getAll().size());
     }
 
+    /**
+     * @brief Testa la ricerca di un elemento in base all'ID.
+     */
     @Test
     void testCerca_ElementoPresente() {
         repository.inserisciOAggiorna(dato1);
@@ -122,27 +166,39 @@ public class RepositoryTest {
         assertEquals("ID_1", risultato.getId());
     }
 
+    /**
+     * @brief Testa la ricerca di un elemento assente tramite ID.
+     */
     @Test
     void testCerca_ElementoAssente() {
         repository.inserisciOAggiorna(dato1);
         
-        //Cerchiamo un elemento con id che non esiste
+    
         DatiStub risultato = repository.cerca("ID_CHE_NON_ESISTE");
         
         assertNull(risultato);
     }
 
+    /**
+     * @brief Testa la ricerca con ID nullo.
+     */
     @Test
     void testCerca_IdNull() {
         DatiStub risultato = repository.cerca(null);
         assertNull(risultato);
     }
 
+    /**
+     * @brief Testa il recupero di tutti gli elementi quando la lista è vuota.
+     */
     @Test
     void testGetAll_ListaVuota() {
         assertTrue(repository.getAll().isEmpty());
     }
 
+    /**
+     * @brief Testa il recupero di tutti gli elementi quando la lista è stata riempita.
+     */
     @Test
     void testGetAll_ListaRiempita() {
         repository.inserisciOAggiorna(dato1);
@@ -154,9 +210,12 @@ public class RepositoryTest {
         assertTrue(lista.contains(dato2));
     }
 
+    /**
+     * @brief Testa getAll.
+     */
     @Test
     void testGetAll_Incapsulamento() {
-        //Verifichiamo che getAll restituisca una copia e non il riferimento diretto
+    
         repository.inserisciOAggiorna(dato1);
         
         List<DatiStub> copiaLista = repository.getAll();
@@ -165,6 +224,9 @@ public class RepositoryTest {
         assertEquals(1, repository.getAll().size());
     }
 
+    /**
+     * @brief Testa il salvataggio dei dati.
+     */
     @Test
     void testSalvaSuFile() {
         repository.inserisciOAggiorna(dato1);
@@ -178,6 +240,9 @@ public class RepositoryTest {
         assertTrue(dati.contains(dato1));
     }
 
+    /**
+     * @brief Testa il caricamento dei dati quando si  inizializzazione il repository.
+     */
     @Test
     void testCaricaTutti() {
         GestoreFileStub<DatiStub> gestorePreriempito = new GestoreFileStub<>();
