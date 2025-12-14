@@ -19,16 +19,16 @@ public class LibroController extends CrudController<Libro> {
 
     /**
      * @brief Costruttore.
-     * @param view La vista specifica per i libri.
-     * @param service Il servizio specifico per i libri.
+     * @param [in] view La view specifica per i libri.
+     * @param [in] service Il service specifico per i libri.
      */
     public LibroController(LibroView view, LibroService service){
         super(view,service);
     }
     
-   /**
-     * @brief Interpreta la vista come un'istanza di LibroView.
-     * @return La vista specifica del libro altrimenti restituisce un valore nullo.
+    /**
+     * @brief Interpreta la view come un'istanza di LibroView.
+     * @return La view specifica del libro altrimenti restituisce il valore null.
      */
     private LibroView getSpecificView() {
         return (LibroView) view;
@@ -63,7 +63,7 @@ public class LibroController extends CrudController<Libro> {
 
     /**
      * @brief Implementazione del salvataggio.
-     * @param nuovo Il libro da salvare.
+     * @param [in] nuovo Il libro da salvare.
      */
     @Override
     public void salva(Libro nuovo){
@@ -71,8 +71,8 @@ public class LibroController extends CrudController<Libro> {
     }
 
     /**
-     * @brief Implementazione  della modifica.
-     * @param elemento Il libro aggiornato.
+     * @brief Implementazione della modifica.
+     * @param [in] elemento Il libro aggiornato.
      */
     @Override
     public void modifica(Libro elemento){
@@ -81,7 +81,8 @@ public class LibroController extends CrudController<Libro> {
 
     
     /**
-     * @brief Inizializza il controller e collega i listener ai pulsanti della vista.
+     * @brief Inizializza il controller e collega i listener ai pulsanti della view.
+     * @see BaseController#init()
      */
     @Override
     public void init() {
