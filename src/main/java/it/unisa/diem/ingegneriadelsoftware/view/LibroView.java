@@ -1,6 +1,7 @@
 package it.unisa.diem.ingegneriadelsoftware.view;
 
 import it.unisa.diem.ingegneriadelsoftware.model.Libro;
+import java.util.ArrayList;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.scene.control.*;
@@ -10,6 +11,7 @@ import java.util.List;
 import javafx.scene.layout.VBox;
 import javafx.scene.layout.HBox;
 import javafx.geometry.Pos; 
+import java.util.stream.Collectors; // Necessario per la conversione autori
 
 /**
  * @class LibroView
@@ -33,6 +35,8 @@ public class LibroView extends DatiBaseView<Libro> {
     /** @brief Campo di input per il numero di copie disponibili. */
     private final TextField copieInput;
 
+    /** @brief Campo di input per la lista degli autori (separati da virgole). */
+    private final TextField autoriInput; // AGGIUNTO
     
     
     /**
@@ -50,6 +54,7 @@ public class LibroView extends DatiBaseView<Libro> {
         this.annoInput = new TextField();
         this.isbnInput = new TextField();
         this.copieInput = new TextField();
+        this.autoriInput = new TextField(); // AGGIUNTO
         
 
         GridPane innerDetailPane = creaPaneDettaglio();
@@ -117,6 +122,7 @@ public class LibroView extends DatiBaseView<Libro> {
             titoloInput.setText(libro.getTitolo());
             annoInput.setText(String.valueOf(libro.getAnno()));
             isbnInput.setText(libro.getId());
+            autoriInput.setText(libro.getAutoriString()); // AGGIUNTO
             
             copieInput.setText(String.valueOf(libro.getCopieDisponibili()));
 
@@ -128,6 +134,7 @@ public class LibroView extends DatiBaseView<Libro> {
             titoloInput.setText("");
             annoInput.setText("");
             isbnInput.setText("");
+            autoriInput.setText(""); // AGGIUNTO
             
             copieInput.setText("");
             isbnInput.setEditable(true); 
@@ -155,11 +162,12 @@ public class LibroView extends DatiBaseView<Libro> {
         detailPane.setMinWidth(250);
         
         Label dettagliLabel = new Label("Dettagli Libro");
-        dettagliLabel.setStyle("-fx-font-weight: bold;"); 
+        dettagliLabel.setStyle("-fx-font-weight: bold;"); // Etichetta in grassetto
         detailPane.add(dettagliLabel, 0, 0, 2, 1);
         
         // Uniformità dei campi di testo
         titoloInput.setPrefWidth(200);
+        autoriInput.setPrefWidth(200); // AGGIUNTO
         annoInput.setPrefWidth(200);
         isbnInput.setPrefWidth(200);
         copieInput.setPrefWidth(200);
@@ -168,16 +176,17 @@ public class LibroView extends DatiBaseView<Libro> {
         detailPane.add(new Label("Titolo:"), 0, 1);
         detailPane.add(titoloInput, 1, 1);
         
-        detailPane.add(new Label("Anno:"), 0, 2);
+        detailPane.add(new Label("Autori:"), 0, 2); // AGGIUNTO ETICHETTA
+        detailPane.add(autoriInput, 1, 2); // AGGIUNTO CAMPO
         
-        detailPane.add(annoInput, 1, 2);
+        detailPane.add(new Label("Anno:"), 0, 3); // Spostato
+        detailPane.add(annoInput, 1, 3); // Spostato
         
-        detailPane.add(new Label("ISBN:"), 0, 3);
-        detailPane.add(isbnInput, 1, 3);
+        detailPane.add(new Label("ISBN:"), 0, 4); // Spostato
+        detailPane.add(isbnInput, 1, 4); // Spostato
 
-        detailPane.add(new Label("Copie disponibili:"), 0, 4);
-        
-        detailPane.add(copieInput, 1, 4);
+        detailPane.add(new Label("Copie disponibili:"), 0, 5); // Spostato
+        detailPane.add(copieInput, 1, 5); // Spostato
         
         detailPane.add(getMessaggioBox(), 0, 8, 2, 1); 
         
@@ -194,33 +203,56 @@ public class LibroView extends DatiBaseView<Libro> {
         return detailPane;
     }
     
+    /**
+     * @brief Converte la stringa di autori (separati da virgola) in una lista di stringhe.
+     * @param [in] autoriString La stringa contenente gli autori.
+     * @return Una lista di autori con gli spazi tagliati.
+     */
+    private List<String> parseAutori(String autoriString) {
+        if (autoriString == null || autoriString.trim().isEmpty()) {
+            return new ArrayList<>();
+        }
+        return Arrays.stream(autoriString.split(","))
+                     .map(String::trim)
+                     .filter(s -> !s.isEmpty())
+                     .collect(Collectors.toList());
+    }
+
 
     /**
      * @brief Recupera i dati inseriti nel form per creare un nuovo libro.
      * @return Un nuovo oggetto Libro popolato con i dati del form, altrimenti restituisce un valore nullo.
      * @pre I campi devono contenere dati validi.
      */
+
     public Libro getLibroNuovo() {
         try {
             String titolo = titoloInput.getText().trim();
             String annoText = annoInput.getText().trim();
             String isbn = isbnInput.getText().trim();
             String copieText = copieInput.getText().trim();
+            String autoriString = autoriInput.getText().trim(); // AGGIUNTO
 
-            if (titolo.isEmpty() || isbn.isEmpty() || annoText.isEmpty() || copieText.isEmpty()) {
-                mostraMessaggio("Errore: Tutti i campi (Titolo, Anno, ISBN, Copie) sono obbligatori.");
+            // Validazione Campi Obbligatori (stringhe)
+            if (titolo.isEmpty() || isbn.isEmpty() || annoText.isEmpty() || copieText.isEmpty() || autoriString.isEmpty()) {
+                mostraMessaggio("Errore: Tutti i campi (Titolo, Autori, Anno, ISBN, Copie) sono obbligatori.");
                 return null;
             }
 
             int anno = Integer.parseInt(annoText);
             int copie = Integer.parseInt(copieText);
+            List<String> autori = parseAutori(autoriString); // AGGIUNTO CONVERSIONE
 
             if (copie < 0) {
                  mostraMessaggio("Errore: Le copie disponibili non possono essere negative.");
                  return null;
             }
-            
-            Libro nuovoLibro = new Libro(titolo, Arrays.asList("Autore Sconosciuto"), anno, isbn, copie);
+            if (autori.isEmpty()) { // Doppia verifica che l'analisi non abbia prodotto una lista vuota
+                 mostraMessaggio("Errore: Specificare almeno un autore.");
+                 return null;
+            }
+
+            Libro nuovoLibro = new Libro(titolo, autori, anno, isbn, copie); // USA LISTA AUTORI
 
             if (!nuovoLibro.isValido()) {
                 mostraMessaggio("Errore: Dati libro non validi (es. anno di pubblicazione futuro o ISBN/Autori non validi).");
@@ -234,6 +266,9 @@ public class LibroView extends DatiBaseView<Libro> {
             
             mostraMessaggio("Errore: Anno e Copie disponibili devono essere numeri interi validi.");
             return null;
+        } catch (Exception e) {
+             mostraMessaggio("Errore generico durante la creazione del libro: " + e.getMessage());
+             return null;
         }
     }
 
@@ -245,6 +280,7 @@ public class LibroView extends DatiBaseView<Libro> {
      * @post Viene restituito l'oggetto pronto per essere passato al controller.
      */
     
+
     public Libro getLibroModificato() {
         Libro libroDaModificare = getElementoSelezionato();
         
@@ -259,22 +295,29 @@ public class LibroView extends DatiBaseView<Libro> {
             String annoText = annoInput.getText().trim();
             String nuovoIsbn = isbnInput.getText().trim(); 
             String copieText = copieInput.getText().trim();
+            String autoriString = autoriInput.getText().trim(); // AGGIUNTO
             
-
-             if (nuovoTitolo.isEmpty() || annoText.isEmpty() || nuovoIsbn.isEmpty() || copieText.isEmpty()) {
-                mostraMessaggio("Errore: Tutti i campi (Titolo, Anno, ISBN, Copie) sono obbligatori.");
+            // Validazione Campi Obbligatori (stringhe)
+             if (nuovoTitolo.isEmpty() || annoText.isEmpty() || nuovoIsbn.isEmpty() || copieText.isEmpty() || autoriString.isEmpty()) {
+                mostraMessaggio("Errore: Tutti i campi (Titolo, Autori, Anno, ISBN, Copie) sono obbligatori.");
                 return null;
             }
 
             int nuovoAnno = Integer.parseInt(annoText);
             int nuoveCopie = Integer.parseInt(copieText);
+            List<String> nuoviAutori = parseAutori(autoriString); // AGGIUNTO CONVERSIONE
             
             if (nuoveCopie < 0) {
                  mostraMessaggio("Errore: Le copie disponibili non possono essere negative.");
                  return null;
             }
+             if (nuoviAutori.isEmpty()) { // Doppia verifica che l'analisi non abbia prodotto una lista vuota
+                 mostraMessaggio("Errore: Specificare almeno un autore.");
+                 return null;
+            }
 
-            Libro libroAggiornato = new Libro(nuovoTitolo, libroDaModificare.getAutori(), nuovoAnno, nuovoIsbn, nuoveCopie);
+            // Creo un oggetto temporaneo per la validazione e l'aggiornamento (poiché l'ISBN può essere cambiato)
+            Libro libroAggiornato = new Libro(nuovoTitolo, nuoviAutori, nuovoAnno, nuovoIsbn, nuoveCopie); 
             
 
             if (!libroAggiornato.isValido()) {
@@ -288,6 +331,9 @@ public class LibroView extends DatiBaseView<Libro> {
         } catch (NumberFormatException e) {
             mostraMessaggio("Errore: Anno e Copie disponibili devono essere numeri interi validi.");
             return null;
+        } catch (Exception e) {
+             mostraMessaggio("Errore generico durante la modifica del libro: " + e.getMessage());
+             return null;
         }
     }
 }
