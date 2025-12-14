@@ -16,8 +16,7 @@ public class Prestito extends Dati {
      */
     private static final long serialVersionUID = 1L;
 
-    /** 
-     * @brief Riferimento all'utente che ha effettuato il prestito. 
+    /** * @brief Riferimento all'utente che ha effettuato il prestito. 
     */
     private Utente utente;
     
@@ -31,19 +30,18 @@ public class Prestito extends Dati {
     */
     private LocalDate dataPrestito; 
     
-    /** 
-    * @brief 
+    /** * @brief 
     Data entro la quale il libro deve essere restituito. 
     */
     private LocalDate dataPrevista;
     
-    /** 
-    *@brief Data effettiva di restituzione
+    /** *@brief Data effettiva di restituzione
     */
     private LocalDate dataEffettiva;
+    
 
     /**
-     * @brief Costruttore per creare un nuovo prestito.
+     * @brief Costruttore per creare un nuovo prestito con data Prestito impostata a oggi.
      * @param [in] utente L'utente che effettua il prestito.
      * @param [in] libro Il libro oggetto del prestito.
      * @param [in] dataPrevista La data prevista per la restituzione.
@@ -51,16 +49,32 @@ public class Prestito extends Dati {
      * @post Viene creato un oggetto Prestito con dataEffettiva impostata a valore nullo e dataPrestito impostata a LocalDate.now().
      */
     public Prestito(Utente utente, Libro libro, LocalDate dataPrevista) {
+        this(utente, libro, dataPrevista, LocalDate.now());
+    }
+
+
+    /**
+     * @brief Costruttore completo per creare un nuovo prestito, permettendo di specificare la data di inizio.
+     * @param [in] utente L'utente che effettua il prestito.
+     * @param [in] libro Il libro oggetto del prestito.
+     * @param [in] dataPrevista La data prevista per la restituzione.
+     * @param [in] dataPrestito La data in cui il prestito è stato effettivamente registrato.
+     * @pre L'oggetto Utente e l'oggetto Libro e le date non devono avere un valore nullo.
+     * @post Viene creato un oggetto Prestito con dataEffettiva impostata a valore nullo.
+     */
+    public Prestito(Utente utente, Libro libro, LocalDate dataPrevista, LocalDate dataPrestito) {
         
         if (utente == null) {
             throw new IllegalArgumentException("L'utente non può essere nullo.");
         }
-        // Correzione per testCostruttore_LibroNullo
         if (libro == null) {
             throw new IllegalArgumentException("Il libro non può essere nullo.");
         }
         if (dataPrevista == null) {
             throw new IllegalArgumentException("La data prevista di restituzione non può essere nulla.");
+        }
+        if (dataPrestito == null) {
+            throw new IllegalArgumentException("La data di prestito non può essere nulla.");
         }
     
         this.utente = utente;
@@ -68,7 +82,7 @@ public class Prestito extends Dati {
         this.dataPrevista = dataPrevista;
         this.dataEffettiva = null;
 
-        this.dataPrestito = LocalDate.now(); 
+        this.dataPrestito = dataPrestito; 
     }
 
     /**
@@ -76,6 +90,7 @@ public class Prestito extends Dati {
      * @return Vero se il libro non è stato restituito e la data attuale è successiva alla data prevista, altrimenti restituisce falso.
      */
     public boolean isScaduto() {
+        // Nota: isAfter e isBefore confrontano con la data attuale (LocalDate.now() implicita)
         return dataEffettiva == null && LocalDate.now().isAfter(dataPrevista);
     }
 
@@ -142,24 +157,21 @@ public class Prestito extends Dati {
         return (utente != null) ? utente.getCognome() + " " + utente.getNome() : "N/D";
     }
 
-    /** 
-     *@brief Restituisce il titolo del libro prestato
+    /** *@brief Restituisce il titolo del libro prestato
      * @return Il titolo del libro prestato altrimenti restituisce un valore nullo. 
      */
     public String getTitoloLibro() {
         return (libro != null) ? libro.getTitolo() : "N/D";
     }
 
-    /** 
-     * @brief Restituisce la data prevista per la restituzione del libro
+    /** * @brief Restituisce la data prevista per la restituzione del libro
      * @return La data prevista per la restituzione altrimenti restituisce un valore nullo. 
      */
     public LocalDate getDataPrevista() {
         return dataPrevista;
     }
 
-    /** 
-     * @brief Restituisce la data effettiva di restituzione del libro
+    /** * @brief Restituisce la data effettiva di restituzione del libro
      * @return La data effettiva di restituzione altrimenti restituisce un valore nullo. */
     public LocalDate getDataEffettiva() {
         return dataEffettiva;

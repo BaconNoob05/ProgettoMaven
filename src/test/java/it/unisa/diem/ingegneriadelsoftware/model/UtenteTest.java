@@ -30,7 +30,7 @@ public class UtenteTest {
     /**
      * @brief Valore costante per email.
      */
-    private final String EMAIL="l.trovato@studenti.unisa.it";
+    private final String EMAIL="l.trovato@studenti.unisa.it"; // AGGIORNATO
     
    
      /**
@@ -90,9 +90,40 @@ public class UtenteTest {
      */
     @Test
     void testSetEmail(){
-        String nuovaEmail = "a.picariello42@studenti.unisa.it";
+        String nuovaEmail = "a.picariello42@studenti.unisa.it"; // AGGIORNATO
         utente.setEmail(nuovaEmail);
         assertEquals(nuovaEmail, utente.getEmail());
+    }
+
+    /**
+     * @brief Testa il setter per la matricola.
+     */
+    @Test
+    void testSetMatricola(){
+        String nuovaMatricola = "0000000001";
+        utente.setMatricola(nuovaMatricola);
+        assertEquals(nuovaMatricola, utente.getMatricola());
+        assertEquals(nuovaMatricola, utente.getId());
+    }
+
+    /**
+     * @brief Testa che il costruttore lanci un'IllegalArgumentException se l'email non è conforme.
+     */
+    @Test
+    void testCostruttore_EmailNonConformeLanciaEccezione(){
+        assertThrows(IllegalArgumentException.class, () -> {
+            new Utente(NOME, COGNOME, MATRICOLA, "email@sbagliata.it");
+        });
+    }
+
+    /**
+     * @brief Testa che il setter email lanci un'IllegalArgumentException se l'email non è conforme.
+     */
+    @Test
+    void testSetEmail_NonConformeLanciaEccezione(){
+        assertThrows(IllegalArgumentException.class, () -> {
+            utente.setEmail("email@sbagliata.it");
+        });
     }
     
     /**
@@ -124,17 +155,6 @@ public class UtenteTest {
         });
     }   
 
-    /*
-     * @brief Test per verificare la validità dell'utente con un'email con errori.
-     */
-    /*
-    @Test
-    void testIsValido_EmailNonCorretta(){
-        //aggiungo un utente con un email sbagliata (errore di sintassi)
-        Utente utenteEmailSbagliata=new Utente(NOME,COGNOME,MATRICOLA, "l.trovato1@sudenti.unisa.it");;
-        assertFalse(utenteEmailSbagliata.isValido());
-    } 
-    */
     
     /**
      * @brief Testa toString.

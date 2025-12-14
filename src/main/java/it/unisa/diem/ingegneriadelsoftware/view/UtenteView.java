@@ -66,18 +66,21 @@ public class UtenteView extends DatiBaseView<Utente> {
         
         TableColumn<Utente, String> nomeCol = new TableColumn<>("Nome");
         nomeCol.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getNome()));
-
+        nomeCol.setPrefWidth(120); // Imposta larghezza preferita
         
         TableColumn<Utente, String> cognomeCol = new TableColumn<>("Cognome");
         cognomeCol.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getCognome()));
+        cognomeCol.setPrefWidth(120); // Imposta larghezza preferita
 
         TableColumn<Utente, String> matricolaCol = new TableColumn<>("Matricola");
        
         matricolaCol.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getId()));
+        matricolaCol.setPrefWidth(150); // Imposta larghezza preferita
         
         
         TableColumn<Utente, String> emailCol = new TableColumn<>("Email");
         emailCol.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getEmail()));
+        emailCol.setPrefWidth(250); // Imposta larghezza preferita
 
         tableView.getColumns().addAll(nomeCol, cognomeCol, matricolaCol, emailCol);
         tableView.setPlaceholder(new Label("Nessun contenuto nella tabella"));
@@ -98,7 +101,8 @@ public class UtenteView extends DatiBaseView<Utente> {
             cognomeInput.setText(utente.getCognome());
             matricolaInput.setText(utente.getId());
             emailInput.setText(utente.getEmail());
-            matricolaInput.setEditable(false);
+            // MODIFICA: Rende la matricola modificabile
+            matricolaInput.setEditable(true); 
         } else {
             nomeInput.setText("");
             cognomeInput.setText("");
@@ -179,12 +183,17 @@ public class UtenteView extends DatiBaseView<Utente> {
             String matricola = matricolaInput.getText().trim();
             String email = emailInput.getText().trim();
             
-            // Il costruttore ora valida e lancia IllegalArgumentException se i campi obbligatori sono nulli/vuoti
+            // Validazione esplicita per i campi vuoti prima di passare al costruttore
+            if (nome.isEmpty() || cognome.isEmpty() || matricola.isEmpty() || email.isEmpty()) { 
+                mostraMessaggio("Errore: Tutti i campi (Nome, Cognome, Matricola, Email) sono obbligatori.");
+                return null;
+            }
+
+            // Il costruttore Utente ora valida e lancia IllegalArgumentException se i campi obbligatori sono nulli/vuoti o se l'email non è valida
             return new Utente(nome, cognome, matricola, email);
 
         } catch (IllegalArgumentException e) {
-            // MODIFICA: Messaggio di errore unificato per coerenza
-            mostraMessaggio("Errore: controllare i campi numerici o i dati obbligatori.");
+            mostraMessaggio("Errore: " + e.getMessage());
             return null;
         }
     }
@@ -207,20 +216,27 @@ public class UtenteView extends DatiBaseView<Utente> {
 
         try {
             
-            utenteDaModificare.setNome(nomeInput.getText().trim());
+            String nuovoNome = nomeInput.getText().trim();
+            String nuovoCognome = cognomeInput.getText().trim();
+            String nuovaMatricola = matricolaInput.getText().trim(); 
+            String nuovaEmail = emailInput.getText().trim();
             
-            utenteDaModificare.setCognome(cognomeInput.getText().trim());
-            
-            utenteDaModificare.setEmail(emailInput.getText().trim());
-            
-
-            if (utenteDaModificare.getNome().isEmpty() || utenteDaModificare.getCognome().isEmpty() || utenteDaModificare.getMatricola().isEmpty()) {
-                 throw new IllegalArgumentException("Nome, cognome e matricola non possono essere vuoti.");
+            // Validazione: tutti i campi devono essere compilati
+            if (nuovoNome.isEmpty() || nuovoCognome.isEmpty() || nuovaMatricola.isEmpty() || nuovaEmail.isEmpty()) {
+                 throw new IllegalArgumentException("Errore: Tutti i campi sono obbligatori.");
             }
+            
+            // Applico le modifiche (i setter contengono la validazione, incluso quello di matricola e email)
+            utenteDaModificare.setMatricola(nuovaMatricola);
+            utenteDaModificare.setNome(nuovoNome);
+            utenteDaModificare.setCognome(nuovoCognome);
+            utenteDaModificare.setEmail(nuovaEmail);
+            
+            // Se la validazione non ha lanciato eccezioni, l'oggetto è valido.
             
             return utenteDaModificare;
         } catch (IllegalArgumentException e) {
-             mostraMessaggio("Errore: controllare i campi numerici o i dati obbligatori.");
+             mostraMessaggio("Errore: " + e.getMessage());
              return null;
         }
     }

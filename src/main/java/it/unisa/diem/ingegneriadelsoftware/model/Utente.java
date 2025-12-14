@@ -15,6 +15,8 @@ public class Utente extends Dati {
      */
      private static final long serialVersionUID = 1L;
 
+    private static final String EMAIL_SUFFIX = "@studenti.unisa.it"; // AGGIUNTO
+
    /**
      * @brief Nome dell'utente.
      */
@@ -53,6 +55,11 @@ public class Utente extends Dati {
         this.nome = nome;
         this.cognome = cognome;
         this.matricola = matricola;
+        
+        // NUOVA VALIDAZIONE EMAIL
+        if (email == null || !email.endsWith(EMAIL_SUFFIX)) {
+             throw new IllegalArgumentException("L'email deve terminare con " + EMAIL_SUFFIX);
+        }
         this.email = email;
     }
 
@@ -61,7 +68,11 @@ public class Utente extends Dati {
      * @return Vero se i dati sono validi, altrimenti restituisce falso.
      */
     public boolean isValido() {
-        return nome != null && !nome.trim().isEmpty() && cognome != null && !cognome.trim().isEmpty() && matricola != null && !matricola.trim().isEmpty();
+        // AGGIUNTO CONTROLLO EMAIL
+        return nome != null && !nome.trim().isEmpty() && 
+               cognome != null && !cognome.trim().isEmpty() && 
+               matricola != null && !matricola.trim().isEmpty() &&
+               email != null && email.endsWith(EMAIL_SUFFIX);
     }
 
     /**
@@ -134,8 +145,27 @@ public class Utente extends Dati {
      * @post L' email è uguale ad e.
      */
     public void setEmail(String e) {
+        // AGGIUNTA VALIDAZIONE
+        if (e == null || !e.endsWith(EMAIL_SUFFIX)) {
+            throw new IllegalArgumentException("L'email deve terminare con " + EMAIL_SUFFIX);
+        }
         this.email = e;
     }
+    
+
+    /**
+     * @brief Imposta la matricola dell'utente.
+     * @param m La nuova matricola.
+     * @pre m non deve essere nullo o vuoto.
+     * @post La matricola è uguale a m.
+     */
+    public void setMatricola(String m) {
+        if (m == null || m.trim().isEmpty()) {
+            throw new IllegalArgumentException("La matricola non può essere vuota.");
+        }
+        this.matricola = m;
+    }
+
 
     /**
      * @brief Restituisce una rappresentazione in formato stringa dell'utente.

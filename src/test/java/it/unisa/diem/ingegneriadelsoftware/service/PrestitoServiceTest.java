@@ -68,9 +68,9 @@ public class PrestitoServiceTest {
 
         l1 = new Libro("Il nuovo Java. Guida definitiva", autoriDeSio, 2023, "978-8868945620", 12);
         l2 = new Libro("A Christmas Carol", autoriDickens, 1843, "978-0141439247", 8); 
-        
-        u1 = new Utente("Lorenzo", "Trovato", "0612709999", "sonoTrovato@uni.com");
-        u2 = new Utente("alessandro", "picariello", "0612709975", "picapics@uni.com");
+
+        u1 = new Utente("Lorenzo", "Trovato", "0612709999", "l.trovato@studenti.unisa.it");
+        u2 = new Utente("alessandro", "picariello", "0612709975", "a.picariello@studenti.unisa.it");
         
         repoLibri.inserisciOAggiorna(l1);
         repoLibri.inserisciOAggiorna(l2);
@@ -92,6 +92,7 @@ public class PrestitoServiceTest {
         assertEquals(u1.getId(), prestitoSalvato.getUtente().getId());
         assertEquals(l1.getId(), prestitoSalvato.getLibro().getId());
         assertNull(prestitoSalvato.getDataEffettiva());
+        assertEquals(LocalDate.now(), prestitoSalvato.getDataPrestito()); // VERIFICA DATA DI OGGI
     }
     
     /**
@@ -147,23 +148,27 @@ public class PrestitoServiceTest {
      */
     @Test
     void testRegistraRestituzione_Successo() {
-        Prestito p = new Prestito(u1, l1, LocalDate.now().plusDays(30));
+
+        LocalDate dataStorica = LocalDate.now().minusDays(5);
+        Prestito p = new Prestito(u1, l1, LocalDate.now().plusDays(30), dataStorica);
         repo.inserisciOAggiorna(p);
         l1.setCopieDisponibili(11); // Stato iniziale dopo il prestito
 
         service.registraRestituzione(p, LocalDate.now());
 
         assertNotNull(p.getDataEffettiva());
-        assertEquals(12, l1.getCopieDisponibili()); // Copie incrementate
+        assertEquals(12, l1.getCopieDisponibili()); 
     }
 
     /**
-     * @brief Testa la registrazione dellarestituzione per un prestito già chiuso.
+     * @brief Testa la registrazione della restituzione per un prestito già chiuso.
   
      */
     @Test
     void testRegistraRestituzione_PrestitoGiaChiuso() {
-        Prestito p = new Prestito(u1, l1, LocalDate.now().plusDays(30));
+
+        LocalDate dataStorica = LocalDate.now().minusDays(30);
+        Prestito p = new Prestito(u1, l1, LocalDate.now().plusDays(30), dataStorica);
         p.setDataEffettiva(LocalDate.now().minusDays(5));
         repo.inserisciOAggiorna(p);
         l1.setCopieDisponibili(12); 
@@ -190,7 +195,9 @@ public class PrestitoServiceTest {
      */
     @Test
     void testListaPrestitiAttivi_UnoAttivo() {
-        Prestito pAttivo = new Prestito(u1, l1, LocalDate.now().plusDays(30));
+
+        LocalDate dataStorica = LocalDate.now().minusDays(5);
+        Prestito pAttivo = new Prestito(u1, l1, LocalDate.now().plusDays(30), dataStorica);
         repo.inserisciOAggiorna(pAttivo);
 
         List<Prestito> attivi = service.listaPrestitiAttivi();
@@ -203,7 +210,9 @@ public class PrestitoServiceTest {
      */
     @Test
     void testListaPrestitiAttivi_NessunAttivo() {
-        Prestito pChiuso = new Prestito(u1, l1, LocalDate.now().plusDays(30));
+
+        LocalDate dataStorica = LocalDate.now().minusDays(5);
+        Prestito pChiuso = new Prestito(u1, l1, LocalDate.now().plusDays(30), dataStorica);
         pChiuso.setDataEffettiva(LocalDate.now());
         repo.inserisciOAggiorna(pChiuso);
 
@@ -216,14 +225,17 @@ public class PrestitoServiceTest {
      */
     @Test
     void testListaPrestitiAttivi_Misti() {
-        Prestito pAttivo1 = new Prestito(u1, l1, LocalDate.now().plusDays(30));
+
+        LocalDate dataStorica = LocalDate.now().minusDays(10);
+        Prestito pAttivo1 = new Prestito(u1, l1, LocalDate.now().plusDays(30), dataStorica);
         repo.inserisciOAggiorna(pAttivo1);
-        
-        Prestito pChiuso = new Prestito(u2, l2, LocalDate.now().plusDays(10));
+
+        Prestito pChiuso = new Prestito(u2, l2, LocalDate.now().plusDays(10), dataStorica.minusDays(5));
         pChiuso.setDataEffettiva(LocalDate.now().minusDays(1)); 
         repo.inserisciOAggiorna(pChiuso);
         
-        Prestito pAttivo2 = new Prestito(u2, l1, LocalDate.now().plusDays(5));
+
+        Prestito pAttivo2 = new Prestito(u2, l1, LocalDate.now().plusDays(5), dataStorica.minusDays(1));
         repo.inserisciOAggiorna(pAttivo2);
 
         List<Prestito> attivi = service.listaPrestitiAttivi();

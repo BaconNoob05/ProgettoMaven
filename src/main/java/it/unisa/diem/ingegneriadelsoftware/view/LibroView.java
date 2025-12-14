@@ -52,16 +52,14 @@ public class LibroView extends DatiBaseView<Libro> {
         this.copieInput = new TextField();
         
 
-        // MODIFICA: Crea un box esterno per incorniciare il dettaglio (frame)
         GridPane innerDetailPane = creaPaneDettaglio();
         VBox detailFrame = new VBox(innerDetailPane);
         detailFrame.setStyle("-fx-border-color: gray; -fx-border-width: 1; -fx-padding: 10; -fx-background-color: white; -fx-border-radius: 5;");
         
-        // MODIFICA: Ripristino altezza box dettaglio a 350px
+
         detailFrame.setPrefHeight(350); 
         detailFrame.setMaxHeight(350);
 
-        // Aggiunge il frame alla HBox (affiancato alla TableView)
         contentHBox.getChildren().add(detailFrame); 
         
 
@@ -121,7 +119,8 @@ public class LibroView extends DatiBaseView<Libro> {
             isbnInput.setText(libro.getId());
             
             copieInput.setText(String.valueOf(libro.getCopieDisponibili()));
-            isbnInput.setEditable(false); 
+
+            isbnInput.setEditable(true); 
             
         } else {
             
@@ -152,11 +151,11 @@ public class LibroView extends DatiBaseView<Libro> {
         detailPane.setHgap(10);
         detailPane.setVgap(10);
         
-        // Miglioramento: Imposta una larghezza minima per il pannello di dettaglio
+
         detailPane.setMinWidth(250);
         
         Label dettagliLabel = new Label("Dettagli Libro");
-        dettagliLabel.setStyle("-fx-font-weight: bold;"); // Etichetta in grassetto
+        dettagliLabel.setStyle("-fx-font-weight: bold;"); 
         detailPane.add(dettagliLabel, 0, 0, 2, 1);
         
         // Uniformità dei campi di testo
@@ -180,10 +179,9 @@ public class LibroView extends DatiBaseView<Libro> {
         
         detailPane.add(copieInput, 1, 4);
         
-        // MODIFICA: Usa la Message Box ereditata
         detailPane.add(getMessaggioBox(), 0, 8, 2, 1); 
         
-        // Centra i pulsanti Salva/Aggiorna e Annulla
+
         HBox actionBox = new HBox(10);
         actionBox.setAlignment(Pos.CENTER); 
         
@@ -205,17 +203,36 @@ public class LibroView extends DatiBaseView<Libro> {
     public Libro getLibroNuovo() {
         try {
             String titolo = titoloInput.getText().trim();
-            int anno = Integer.parseInt(annoInput.getText().trim());
-            
+            String annoText = annoInput.getText().trim();
             String isbn = isbnInput.getText().trim();
-            int copie = Integer.parseInt(copieInput.getText().trim());
+            String copieText = copieInput.getText().trim();
+
+            if (titolo.isEmpty() || isbn.isEmpty() || annoText.isEmpty() || copieText.isEmpty()) {
+                mostraMessaggio("Errore: Tutti i campi (Titolo, Anno, ISBN, Copie) sono obbligatori.");
+                return null;
+            }
+
+            int anno = Integer.parseInt(annoText);
+            int copie = Integer.parseInt(copieText);
+
+            if (copie < 0) {
+                 mostraMessaggio("Errore: Le copie disponibili non possono essere negative.");
+                 return null;
+            }
             
-            return new Libro(titolo, Arrays.asList("Autore Sconosciuto"), anno, isbn, copie);
+            Libro nuovoLibro = new Libro(titolo, Arrays.asList("Autore Sconosciuto"), anno, isbn, copie);
+
+            if (!nuovoLibro.isValido()) {
+                mostraMessaggio("Errore: Dati libro non validi (es. anno di pubblicazione futuro o ISBN/Autori non validi).");
+                return null;
+            }
+
+            return nuovoLibro;
 
        
-        } catch (IllegalArgumentException e) {
+        } catch (NumberFormatException e) {
             
-            mostraMessaggio("Errore: controllare i campi numerici o i dati obbligatori.");
+            mostraMessaggio("Errore: Anno e Copie disponibili devono essere numeri interi validi.");
             return null;
         }
     }
@@ -238,16 +255,38 @@ public class LibroView extends DatiBaseView<Libro> {
         }
 
         try {
-            libroDaModificare.setTitolo(titoloInput.getText().trim());
+            String nuovoTitolo = titoloInput.getText().trim();
+            String annoText = annoInput.getText().trim();
+            String nuovoIsbn = isbnInput.getText().trim(); 
+            String copieText = copieInput.getText().trim();
             
-            libroDaModificare.setAnno(Integer.parseInt(annoInput.getText().trim()));
-            libroDaModificare.setCopieDisponibili(Integer.parseInt(copieInput.getText().trim()));
+
+             if (nuovoTitolo.isEmpty() || annoText.isEmpty() || nuovoIsbn.isEmpty() || copieText.isEmpty()) {
+                mostraMessaggio("Errore: Tutti i campi (Titolo, Anno, ISBN, Copie) sono obbligatori.");
+                return null;
+            }
+
+            int nuovoAnno = Integer.parseInt(annoText);
+            int nuoveCopie = Integer.parseInt(copieText);
             
-            return libroDaModificare;
+            if (nuoveCopie < 0) {
+                 mostraMessaggio("Errore: Le copie disponibili non possono essere negative.");
+                 return null;
+            }
+
+            Libro libroAggiornato = new Libro(nuovoTitolo, libroDaModificare.getAutori(), nuovoAnno, nuovoIsbn, nuoveCopie);
+            
+
+            if (!libroAggiornato.isValido()) {
+                 mostraMessaggio("Errore: Dati libro non validi (es. anno di pubblicazione futuro o ISBN/Autori non validi).");
+                 return null;
+            }
+            
+
+            return libroAggiornato;
             
         } catch (NumberFormatException e) {
-            
-            mostraMessaggio("Errore: Anno e Copie disponibili devono essere numeri validi.");
+            mostraMessaggio("Errore: Anno e Copie disponibili devono essere numeri interi validi.");
             return null;
         }
     }

@@ -50,10 +50,10 @@ public class UtenteServiceTest {
     @BeforeEach
     public void setUp() {
 
-        utenteLorenzoTrovato = new Utente("Lorenzo", "Trovato", "0612709999", "sonoTrovato@uni.com"); 
-        utenteAlessandroPicariello = new Utente("alessandro", "picariello", "0612709975", "picapics@uni.com"); 
-        utenteMatteoIandiorio = new Utente("matteo", "iandiorio", "0612709968", "dior@uni.it"); 
-        utenteDanieleManzo = new Utente("daniele", "manzo", "0612709967", "ciaomanzo@uni.it"); 
+        utenteLorenzoTrovato = new Utente("Lorenzo", "Trovato", "0612709999", "l.trovato@studenti.unisa.it"); 
+        utenteAlessandroPicariello = new Utente("alessandro", "picariello", "0612709975", "a.picariello@studenti.unisa.it"); 
+        utenteMatteoIandiorio = new Utente("matteo", "iandiorio", "0612709968", "m.iandiorio@studenti.unisa.it"); 
+        utenteDanieleManzo = new Utente("daniele", "manzo", "0612709967", "d.manzo@studenti.unisa.it"); 
         
         utenteRepoStub = new RepositoryStub<>();
         List<Utente> initialData = Arrays.asList(
@@ -181,7 +181,8 @@ public class UtenteServiceTest {
     void testCercaPerCognome_AltroSingolo() {
         final String COGNOME_FILTRO = "Trovato";
         
-        Utente utenteSecondoTrovato = new Utente("Giulia", "Trovato", "0612701111", "g.t@uni.com"); 
+ 
+        Utente utenteSecondoTrovato = new Utente("Giulia", "Trovato", "0612701111", "g.trovato@studenti.unisa.it"); 
         utenteRepoStub.inserisciOAggiorna(utenteSecondoTrovato);
         
         List<Utente> risultati = utenteService.cercaPerCognome(COGNOME_FILTRO);

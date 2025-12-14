@@ -56,29 +56,26 @@ public class PrestitoView extends DatiBaseView<Prestito> {
         this.statoComboBox.setValue("In Prestito"); 
         this.registraPrestitoButton = new Button("Registra Prestito");
         this.restituisciLibroButton = new Button("Restituisci Libro");
-        this.annullaSpecifcButton = getAnnullaButton(); // Usa il pulsante ereditato
+        this.annullaSpecifcButton = getAnnullaButton(); 
         this.annullaSpecifcButton.setText("Annulla"); 
 
-        // Styling per i pulsanti (come nell'immagine prototipo)
         registraPrestitoButton.setStyle("-fx-background-color: #4CAF50; -fx-text-fill: white; -fx-font-weight: bold;");
         restituisciLibroButton.setStyle("-fx-background-color: #2196F3; -fx-text-fill: white; -fx-font-weight: bold;");
         this.annullaSpecifcButton.setStyle("-fx-background-color: #f44336; -fx-text-fill: white;");
 
 
-        // MODIFICA: Crea un box esterno per incorniciare il dettaglio (frame)
         GridPane innerDetailPane = creaPaneDettaglio();
         VBox detailFrame = new VBox(innerDetailPane);
         detailFrame.setStyle("-fx-border-color: gray; -fx-border-width: 1; -fx-padding: 10; -fx-background-color: white; -fx-border-radius: 5;");
         
-        // MODIFICA: Ripristino altezza box dettaglio a 350px
+
         detailFrame.setPrefHeight(350); 
         detailFrame.setMaxHeight(350);
 
-        // Aggiunge il frame alla HBox (affiancato alla TableView)
+
         contentHBox.getChildren().add(detailFrame); 
 
-        
-        // UI-3.0: Evidenziare prestiti scaduti in rosso
+
         tableView.setRowFactory(tv -> new TableRow<Prestito>() {
             @Override
             protected void updateItem(Prestito item, boolean empty) {
@@ -86,18 +83,20 @@ public class PrestitoView extends DatiBaseView<Prestito> {
                 if (item == null || empty) {
                     setStyle("");
                 } else if (item.isScaduto()) {
-                    // Evidenzia i prestiti SCADUTI in rosso chiaro
+                    // SCADUTO: Rosso chiaro
                     setStyle("-fx-background-color: #ffcccc;"); 
+                } else if (item.getDataEffettiva() != null) {
+                    // RESTITUITO: Verde chiaro
+                    setStyle("-fx-background-color: #ccffcc;"); 
                 } else {
+
                     setStyle("");
                 }
             }
         });
         
-        
-        // Disabilita i pulsanti base non usati
         super.getOkButton().setDisable(true);
-        // cercaField e cancellaButton sono ora abilitati di default in DatiBaseView
+
 
        
         pulisciDettagli();
@@ -193,7 +192,7 @@ public class PrestitoView extends DatiBaseView<Prestito> {
                 restituisciLibroButton.setDisable(false);
             }
             
-            registraPrestitoButton.setDisable(true); // Non si può registrare un nuovo prestito se si sta inserendo uno nuovo
+            registraPrestitoButton.setDisable(true); 
             mostraMessaggio("Prestito selezionato: " + prestito.getId());
 
         } else {
@@ -215,15 +214,12 @@ public class PrestitoView extends DatiBaseView<Prestito> {
         detailPane.setHgap(10);
         detailPane.setVgap(10);
         
-        // Miglioramento: Imposta una larghezza minima per il pannello di dettaglio
         detailPane.setMinWidth(300);
         
         Label dettagliLabel = new Label("Dettagli Prestito");
         dettagliLabel.setStyle("-fx-font-weight: bold;");
         detailPane.add(dettagliLabel, 0, 0, 2, 1);
-        
 
-        // Uniformità e larghezza per i ComboBox/DatePicker
         libroComboBox.setPrefWidth(200);
         utenteComboBox.setPrefWidth(200);
         dataPrestitoPicker.setPrefWidth(200);
@@ -248,12 +244,12 @@ public class PrestitoView extends DatiBaseView<Prestito> {
         
 
         HBox pulsantiAzione = new HBox(10);
-        pulsantiAzione.setAlignment(Pos.CENTER); // Centra i pulsanti
+        pulsantiAzione.setAlignment(Pos.CENTER); 
         
 
         registraPrestitoButton.setPrefWidth(120);
         restituisciLibroButton.setPrefWidth(120);
-        getAnnullaButton().setPrefWidth(80); // Usa il pulsante ereditato
+        getAnnullaButton().setPrefWidth(80); 
         
 
         pulsantiAzione.getChildren().addAll(registraPrestitoButton, restituisciLibroButton, getAnnullaButton());
@@ -278,7 +274,7 @@ public class PrestitoView extends DatiBaseView<Prestito> {
         utenteComboBox.getSelectionModel().clearSelection();
         
         dataPrestitoPicker.setValue(LocalDate.now());
-        dataRestituzionePicker.setValue(null);     // data prevista da selezionare
+        dataRestituzionePicker.setValue(null);    
         statoComboBox.setValue("In Prestito");
         
 
@@ -286,7 +282,7 @@ public class PrestitoView extends DatiBaseView<Prestito> {
         libroComboBox.setDisable(false);
         utenteComboBox.setDisable(false);
         
-        dataPrestitoPicker.setDisable(true); // data di prestito è sempre oggi e non è modificabile
+        dataPrestitoPicker.setDisable(true); 
         dataRestituzionePicker.setDisable(false);
         
         registraPrestitoButton.setDisable(false);
@@ -304,8 +300,7 @@ public class PrestitoView extends DatiBaseView<Prestito> {
     public Prestito getPrestitoNuovo() {
         Libro libroSelezionato = libroComboBox.getValue();
         Utente utenteSelezionato = utenteComboBox.getValue();
-        
-        // Per un nuovo prestito, la DataRestituzionePicker è la data prevista
+
         LocalDate dataPrevista = dataRestituzionePicker.getValue(); 
 
         if (libroSelezionato == null || utenteSelezionato == null || dataPrevista == null) {

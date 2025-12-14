@@ -69,47 +69,45 @@ public class PrestitoController extends CrudController<Prestito> {
         
         PrestitoView view = getSpecificView();
 
-        // 1. Listener per Registra Prestito
         view.getRegistraPrestitoButton().setOnAction(e -> registraPrestito());
         
-        // 2. Listener per Registra Restituzione
-        view.getRestituisciLibroButton().setOnAction(e -> registraRestituzione());
-        
-        // 3. Listener per Annulla (Resetta il form a stato di nuovo prestito)
+
+        view.getRestituisciLibroButton().setOnAction(e -> registraRestituzione());     
+
         view.getAnnullaButton().setOnAction(e -> view.pulisciDettagli());
         
-        // 4. Listener per la Ricerca (abilita la ricerca e ritorna ai prestiti attivi se vuoto)
+
         view.getCercaField().textProperty().addListener((observable, oldValue, newValue) -> {
             if (newValue == null || newValue.isEmpty()) {
-                aggiornaPrestiti(); // Ritorna alla visualizzazione predefinita (attivi ordinati)
+                aggiornaLista(); 
             } else {
-                cerca(); // Usa CrudController.cerca() per cercare tra TUTTI i prestiti
+                cerca(); 
             }
         });
         
-        // 5. Listener per Cancellazione (ora Elimina)
+
         view.getCancellaButton().setOnAction(e -> elimina());
         
-        // 6. Listener per Annulla Cerca (Pulisce il campo di ricerca e aggiorna la vista)
+
         view.getAnnullaCercaButton().setOnAction(e -> {
             view.getCercaField().clear();
-            aggiornaPrestiti(); // Torna alla lista predefinita (attivi ordinati)
-            view.mostraMessaggio("Ricerca annullata. Visualizzazione prestiti attivi.");
+            aggiornaLista(); 
+            view.mostraMessaggio("Ricerca annullata. Visualizzazione di tutti i prestiti.");
         });
         
-        // Il pulsante OK è disabilitato in PrestitoView e non ha listener.
+        
     }
 
 
     /**
-     * @brief Aggiorna la vista recuperando tutti i prestiti attivi.
+     * @brief Aggiorna la vista recuperando TUTTI i prestiti e applicando l'ordinamento richiesto.
      * @see InterfaceController#aggiornaVista()
-     * @see PrestitoService#listaPrestitiAttivi()
+     * @see PrestitoService#getAll()
      */
     @Override
     public void aggiornaVista(){
-        // Al caricamento, mostra la lista di default (prestiti attivi ordinati)
-        aggiornaPrestiti();
+        // Al caricamento, mostra la lista di default (TUTTI i prestiti ordinati)
+        aggiornaLista();
     }
     
     /**
@@ -163,30 +161,42 @@ public class PrestitoController extends CrudController<Prestito> {
     }
 
     /**
-     * @brief Aggiorna la vista dei prestiti attivi, applicando l'ordinamento richiesto (FC-3.1.1).
-     * @see PrestitoService#listaPrestitiAttivi()
+     * @brief Aggiorna la vista recuperando TUTTI i prestiti e applicando l'ordinamento.
+     * @details Ordina i prestiti per: 1. Scaduti (prima), 2. Non restituiti (in base alla data prevista più vicina), 3. Restituiti (alla fine, ordinati per data effettiva decrescente).
+     * @see PrestitoService#getAll()
      */
-    public void aggiornaPrestiti(){
-        List<Prestito> attivi = getSpecificService().listaPrestitiAttivi();
+    public void aggiornaLista(){
+        List<Prestito> tutti = service.getAll();
         
 
-        attivi.sort((p1, p2) -> {
+        tutti.sort((p1, p2) -> {
+            boolean p1Restituito = p1.getDataEffettiva() != null;
+            boolean p2Restituito = p2.getDataEffettiva() != null;
             boolean p1Scaduto = p1.isScaduto();
             boolean p2Scaduto = p2.isScaduto();
 
-            // Se P1 è scaduto e P2 no, P1 va prima (-1)
-            if (p1Scaduto && !p2Scaduto) {
-                return -1; 
-            }
-            // Se P2 è scaduto e P1 no, P2 va prima (1)
-            if (!p1Scaduto && p2Scaduto) {
-                return 1; 
-            }
+
+            if (p1Scaduto && !p2Scaduto) return -1;
+            if (!p1Scaduto && p2Scaduto) return 1;
+
+
+            if (p1Restituito && !p2Restituito) return 1;
+            if (!p1Restituito && p2Restituito) return -1;
             
-            // Se entrambi scaduti o entrambi attivi, ordina per data prevista (più vicina prima)
-            return p1.getDataPrevista().compareTo(p2.getDataPrevista());
+
+            if (!p1Restituito && !p2Restituito) {
+                return p1.getDataPrevista().compareTo(p2.getDataPrevista());
+            }
+
+
+            if (p1Restituito && p2Restituito) {
+
+                return p2.getDataEffettiva().compareTo(p1.getDataEffettiva());
+            }
+
+            return 0;
         });
         
-        view.mostraLista(attivi);
+        view.mostraLista(tutti);
     }
 }
