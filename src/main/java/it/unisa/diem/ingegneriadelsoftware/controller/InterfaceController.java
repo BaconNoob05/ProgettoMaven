@@ -7,16 +7,16 @@ package it.unisa.diem.ingegneriadelsoftware.controller;
 public interface InterfaceController {
 
     /**
-     * @brief Inizializza il controller e configura la vista associata.
-     * @pre Il controller e la vista devono essere stati istanziati.
-     * @post Il controller è pronto per gestire l'interazione utente.
+     * @brief Inizializza il controller e configura la view associata.
+     * @pre Il controller e la view devono essere stati istanziati.
+     * @post Il controller è pronto per gestire l'interazione con il gestore.
      */
     void init();
 
     /**
-     * @brief Aggiorna i dati mostrati nella vista.
-     * @pre Il servizio deve essere accessibile.
-     * @post La vista riflette lo stato attuale dei dati.
+     * @brief Aggiorna i dati mostrati nella view.
+     * @pre Il service deve essere accessibile.
+     * @post La view riflette lo stato attuale dei dati.
      */
     void aggiornaVista();
 }
