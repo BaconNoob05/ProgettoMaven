@@ -1,3 +1,4 @@
+
 package it.unisa.diem.ingegneriadelsoftware.controller;
 
 import it.unisa.diem.ingegneriadelsoftware.model.Libro;
@@ -8,13 +9,30 @@ import org.junit.jupiter.api.*;
 import static org.junit.jupiter.api.Assertions.*;
 
 import java.util.*;
-
+/**
+ * @brief Classe di test per LibroController.
+ * @class LibroControllerTest
+ */
 public class LibroControllerTest {
     
+    /**
+     * @brief L'istanza del controller.
+     */
     private LibroController controller;
+    
+    /**
+     * @brief La stub della view  per simulare il comportamento con l'utente.
+     */
     private LibroViewStub view;
+    
+    /**
+     * @brief La stub del service per simulare l'accesso ai dati.
+     */
     private LibroServiceStub service;
 
+    /**
+     * @brief Configura l'ambiente di test prima di iniziare i test.
+     */
     @BeforeEach
     void setUp() {
         view = new LibroViewStub(); 
@@ -22,6 +40,9 @@ public class LibroControllerTest {
         controller = new LibroController(view, service); 
     }
 
+    /**
+     * @brief Testa il salvataggio di un libro valido.
+     */
     @Test
     void testSalvaLibro() {
         List<String> autoriLibro = Arrays.asList("Malcolm Gladwell");
@@ -42,6 +63,9 @@ public class LibroControllerTest {
         assertEquals(1, view.listaRicevuta.size());
     }
 
+    /**
+     * @brief Testa il salvataggio di un libro con input non valido.
+     */
     @Test
     void testSalvaLibro_InputNonValido() {
         view.setInputNuovo(null); 
@@ -50,6 +74,9 @@ public class LibroControllerTest {
         assertTrue(service.lista.isEmpty());
     }
     
+    /**
+     * @brief Testa la modifica di un libro esistente.
+     */
     @Test
     void testModificaLibro() {
         List<String> autoriLibro = Arrays.asList("Leonardo Sciascia");
@@ -67,6 +94,9 @@ public class LibroControllerTest {
         assertNotNull(view.listaRicevuta);
     }
 
+    /**
+     * @brief Testa la modifica senza aver selezionato un libro.
+     */
     @Test
     void testModificaLibro_NessunaSelezione() {
         view.setSelezionato(null);
@@ -78,6 +108,9 @@ public class LibroControllerTest {
         assertNotNull(view.ultimoMessaggio); 
     }
     
+    /**
+     * @brief Testa l'eliminazione di un libro selezionato.
+     */
     @Test
     void testElimina() {
         List<String> autoriLibro = Arrays.asList("Giuseppe Parini");
@@ -92,6 +125,9 @@ public class LibroControllerTest {
         assertTrue(view.listaRicevuta.isEmpty());
     }
 
+    /**
+     * @brief Testa l' eliminazione senza aver selezionato un libro.
+     */
     @Test
     void testElimina_NessunaSelezione() {
         List<String> autoriLibro = Arrays.asList("Giacomo Leopardi");
@@ -102,11 +138,14 @@ public class LibroControllerTest {
 
         controller.elimina();
 
-      
+        
         assertEquals(1, service.lista.size());
         assertNotNull(view.ultimoMessaggio);
     }
 
+    /**
+     * @brief Testa la ricerca con un filtro per Titolo e Autore.
+     */
     @Test
     void testCerca_FiltroCorrispondente() {
         List<String> autoriLibro1 = Arrays.asList("Daniel Goleman");
@@ -133,6 +172,9 @@ public class LibroControllerTest {
         assertEquals("Myricae", view.listaRicevuta.get(0).getTitolo());
     }
 
+    /**
+     * @brief Testa la  ricerca con un filtro vuoto.
+     */
     @Test
     void testCerca_FiltroVuoto() {
         List<String> autoriLibro1 = Arrays.asList("Nassim Nicholas Taleb");
@@ -147,6 +189,9 @@ public class LibroControllerTest {
         assertEquals(2, view.listaRicevuta.size());
     }
 
+    /**
+     * @brief Testa l' aggiornamento della vista quando sono presenti dati nel service.
+     */
     @Test
     void testAggiornaVista_DatiPresenti() {
         List<String> autoriLibro1 = Arrays.asList("Karl Marx");
