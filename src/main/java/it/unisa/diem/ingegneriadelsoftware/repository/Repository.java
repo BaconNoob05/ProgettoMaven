@@ -29,8 +29,8 @@ public class Repository<T extends InterfaceID> implements InterfaceRepository<T>
     /**
      * @brief Costruttore del repository.
      * Carica i dati dal file specificato.
-     * @param [in] file Il nome del file.
-     * @param [in] gestore Il gestore per l'I/O.
+     * @param [in] nomeFile Il nome del file.
+     * @param [in] gestoreIO Il gestore per l'I/O.
      */
     public Repository(String nomeFile, InterfaceGestoreIO<T> gestoreIO) {
         this.nomeFile = nomeFile;
@@ -49,6 +49,7 @@ public class Repository<T extends InterfaceID> implements InterfaceRepository<T>
 
     /**
      * @brief Carica tutti gli elementi dal file alla memoria locale del repository.
+     * @param [in] lista 
      * @details Popola la lista interna leggendo i dati tramite il gestore di I/O.
      */
     @Override 
@@ -60,11 +61,12 @@ public class Repository<T extends InterfaceID> implements InterfaceRepository<T>
     }
 
     /**
-     * @brief Inserisce un nuovo elemento o aggiorna uno esistente.
+     * @brief Inserisce un nuovo elemento o ne aggiorna uno esistente.
      * Se esiste già un elemento con lo stesso ID, questo viene sovrascritto.
      * Altrimenti, il nuovo elemento viene aggiunto alla lista.
      * @param [in] elemento L'oggetto da inserire o aggiornare.
-     * @pre L'elemento non deve essere nullo e deve avere un ID valido.
+     * @throws IllegalArgumentException Se l'elemento è null o ha un ID che assume un valore null, viene lanciata un'eccezione.
+     * @pre L'elemento non deve essere null e deve avere un ID valido.
      * @post La lista contiene l'elemento aggiornato.
      */
     @Override
@@ -91,7 +93,7 @@ public class Repository<T extends InterfaceID> implements InterfaceRepository<T>
     /**
      * @brief Elimina un elemento dato il suo ID.
      * @param [in] id L'identificativo dell'elemento da rimuovere.
-     * @post Non esiste più alcun elemento nella lista con quell'ID.
+     * @post L'elemento viene rimosso dalla lista.
      */
     @Override
     public void elimina(String id) {
