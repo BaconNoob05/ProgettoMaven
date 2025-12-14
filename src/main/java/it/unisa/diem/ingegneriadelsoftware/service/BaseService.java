@@ -25,8 +25,8 @@ public abstract class BaseService<T extends InterfaceID> implements InterfaceSer
      * @param [in] repo Il repository specifico da associare al servizio.
      */
     public BaseService(InterfaceRepository<T> repo) { 
-            this.repository = repo;
-        }
+        this.repository = repo;
+    }
 
     /**
      * @brief Salva o aggiorna un elemento.
@@ -107,7 +107,7 @@ public abstract class BaseService<T extends InterfaceID> implements InterfaceSer
     public List<T> getAll() { 
         return repository.getAll();
     }
-
+    
     /**
      * @brief Ordina la lista degli elementi.
      * @param [in] comparatore Il criterio di ordinamento.
@@ -116,6 +116,6 @@ public abstract class BaseService<T extends InterfaceID> implements InterfaceSer
      */
     @Override
     public void ordina(Comparator<T> comparatore) { 
-            
+        
     }
 }

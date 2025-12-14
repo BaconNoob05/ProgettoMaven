@@ -145,7 +145,6 @@ public class Utente extends Dati {
         this.email = e;
     }
     
-    // NUOVO SETTER PER LA MATRICOLA
     /**
      * @brief Imposta la matricola dell'utente.
      * @param m La nuova matricola.

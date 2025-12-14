@@ -43,17 +43,14 @@ public class LibroService extends BaseService<Libro> {
     public void elimina(Libro elemento) {
         if (elemento != null && elemento.getId() != null) {
             
-            // IF-1.1.2: Cancellazione Libro. Può essere effettuata solo se non sono presenti prestiti attivi.
             if (prestitoService != null) {
-                // Si assume che PrestitoService.listaPrestitiAttivi() sia implementato
-                boolean hasActiveLoans = prestitoService.listaPrestitiAttivi().stream()
+                boolean haPrestitiAttivi = prestitoService.listaPrestitiAttivi().stream()
                         .anyMatch(p -> p.getLibro().getId().equals(elemento.getId()));
                 
-                if (hasActiveLoans) {
+                if (haPrestitiAttivi) {
                     throw new IllegalStateException("Impossibile eliminare il libro: sono presenti prestiti attivi associati.");
                 }
             }
-            
             repository.elimina(elemento.getId());
         }
     }
@@ -113,11 +110,10 @@ public class LibroService extends BaseService<Libro> {
         
         String filtroLowerCase = filtro.toLowerCase();
 
-        // Ricerca per Titolo, Autore o ISBN (IF-1.2.1, IF-1.2.2, IF-1.2.3)
         return getAll().stream()
                .filter(l -> l.getTitolo().toLowerCase().contains(filtroLowerCase) || 
                             l.getAutoriString().toLowerCase().contains(filtroLowerCase) ||
-                            l.getId().toLowerCase().equals(filtroLowerCase)) // ISBN (ID) deve essere esatta
+                            l.getId().toLowerCase().equals(filtroLowerCase))
                .collect(Collectors.toList());
     }
 }
