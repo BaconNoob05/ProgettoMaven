@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package it.unisa.diem.ingegneriadelsoftware.controller;
 
 import it.unisa.diem.ingegneriadelsoftware.model.Utente;
@@ -11,12 +6,30 @@ import it.unisa.diem.ingegneriadelsoftware.view.UtenteViewStub;
 
 import org.junit.jupiter.api.*;
 import static org.junit.jupiter.api.Assertions.*;
-
+/**
+ * @brief Classe di test per UtenteController.
+ * @class UtenteControllerTest
+ */
 public class UtenteControllerTest {
+    
+    /**
+     * @brief L'istanza del controller .
+     */
     private UtenteController controller;
+    
+    /**
+     * @brief La stub della view per simulare il comportamento con l'utente e l'output.
+     */
     private UtenteViewStub view;
+    
+    /**
+     * @brief La stub del service per simulare l'accesso ai dati .
+     */
     private UtenteServiceStub service;
 
+      /**
+     * @brief Metodo eseguito prima di ogni test.
+     */
     @BeforeEach
     void setUp() {
         
@@ -26,6 +39,9 @@ public class UtenteControllerTest {
         controller = new UtenteController(view, service);
     }
 
+    /**
+     * @brief Testa l'aggiornamento della vista in caso di salvataggio di Utente.
+     */
     @Test
     void testSalvaUtente() {
         Utente nuovoUtente = new Utente("Daniele", "Manzo", "0612709967", "danielemanzo@uni.it");
@@ -41,6 +57,9 @@ public class UtenteControllerTest {
         assertEquals("0612709967", view.listaRicevuta.get(0).getId());
     }
 
+    /**
+     * @brief Testa il salvataggio Utente con valori non validi.
+     */
     @Test
     void testSalvaUtente_InputNonValido() {
         view.setInputNuovo(null); 
@@ -52,6 +71,9 @@ public class UtenteControllerTest {
     }
     
     
+    /**
+     * @brief Testa il metodo salva() .
+     */
     @Test
     void testSalva() {
         
@@ -64,6 +86,9 @@ public class UtenteControllerTest {
         assertEquals(utente, service.lista.get(0));
     }
 
+    /**
+     * @brief Testal'aggiornamento della vista in caso di modifica Utente.
+     */
     @Test
     void testModificaUtente() {
         
@@ -84,6 +109,9 @@ public class UtenteControllerTest {
         assertEquals("trovatolorenzo@uni.it", view.listaRicevuta.get(0).getEmail());
     }
 
+    /**
+     * @brief Testa la modifica Utente senza aver selezionato un elemento.
+     */
     @Test
     void testModificaUtente_NessunaSelezione() {
         
@@ -96,6 +124,9 @@ public class UtenteControllerTest {
         assertNotNull(view.ultimoMessaggio);
     }
     
+    /**
+     * @brief Testa la modifica Utente con valore modificato nullo.
+     */
     @Test
     void testModificaUtente_InputNull() {
         
@@ -110,6 +141,9 @@ public class UtenteControllerTest {
         assertEquals("vincenzoraimo@uni.it", service.lista.get(0).getEmail());
     }
 
+    /**
+     * @brief Testa il metodo modifica() .
+     */
     @Test
     void testModifica() {
         
@@ -123,6 +157,9 @@ public class UtenteControllerTest {
         assertEquals("picarielloalessandro@uni.it", service.lista.get(0).getEmail());
     }
     
+    /**
+     * @brief Testa l'eliminazione di un Utente selezionato.
+     */
     @Test
     void testElimina() {
         
@@ -137,6 +174,9 @@ public class UtenteControllerTest {
         assertTrue(view.listaRicevuta.isEmpty());
     }
 
+    /**
+     * @brief Testa il tentativo di eliminazione senza selezione.
+     */
     @Test
     void testElimina_NessunaSelezione() {
         Utente u = new Utente("Nicolò", "Lisena", "061709333", "nicololisena@uni.it");
@@ -150,6 +190,9 @@ public class UtenteControllerTest {
         assertNotNull(view.ultimoMessaggio);
     }
 
+    /**
+     * @brief Testa la funzione di ricerca con un filtro per cognome.
+     */
     @Test
     void testCerca_FiltroCorrispondente() {
         service.lista.add(new Utente("Vincenzo", "Raimo", "0612709555", "vincenzoraimo@uni.it"));
@@ -164,29 +207,38 @@ public class UtenteControllerTest {
         assertEquals("0612709555", view.listaRicevuta.get(0).getId());
     }
 
+    /**
+     * @brief Testa la funzione di ricerca con un filtro vuoto.
+     */
     @Test
     void testCerca_FiltroVuoto() {
         service.lista.add(new Utente("Daniele", "Manzo", "0612709876", "danielemanzo@uni.it"));
         service.lista.add(new Utente("Enrica", "Avitabile", "0612701234", "enricaavitabile@uni.it"));
 
-        view.setTestoCerca(""); // Campo vuoto
+        view.setTestoCerca("");
 
         controller.cerca();
 
         assertEquals(2, view.listaRicevuta.size());
     }
 
+    /**
+     * @brief Testa la funzione di ricerca senza risultati .
+     */
     @Test
     void testCerca_NessunaCorrispondenza() {
         service.lista.add(new Utente("Angelo", "Palladino", "0612709567", "angelopalladino@uni.it"));
 
-        view.setTestoCerca("Manzo"); // Non esiste
+        view.setTestoCerca("Manzo"); 
 
         controller.cerca();
 
         assertTrue(view.listaRicevuta.isEmpty());
     }
     
+    /**
+     * @brief Testa l'aggiornamento della vista quando sono presenti dati nel service.
+     */
     @Test
     void testAggiornaVista_DatiPresenti() {
         Utente utente1 = new Utente("Alessandro", "Picariello", "0612707542", "alepica@uni.it");
@@ -206,6 +258,9 @@ public class UtenteControllerTest {
         assertEquals("0612702574", view.listaRicevuta.get(1).getId());
     }
 
+    /**
+     * @brief Testa l'aggiornamento della vista quando non ci sono dati nel service.
+     */
     @Test
     void testAggiornaVista_NessunDato() {
         service.lista.clear();
