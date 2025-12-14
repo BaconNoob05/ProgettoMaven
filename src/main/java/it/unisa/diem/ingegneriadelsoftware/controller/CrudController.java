@@ -15,8 +15,8 @@ public abstract class CrudController<T extends InterfaceID> extends BaseControll
 
     /**
      * @brief Costruttore.
-     * @param view La vista generica.
-     * @param service Il servizio generico.
+     * @param [in] view La view generica.
+     * @param [in] service Il service generico.
      */
     public CrudController(InterfaceView<T> view, InterfaceService<T> service){
         super(view,service);
@@ -25,21 +25,21 @@ public abstract class CrudController<T extends InterfaceID> extends BaseControll
     /**
      * @brief Metodo astratto per la logica di salvataggio di un nuovo elemento.
      * @details Le sottoclassi devono implementare questo metodo per gestire l'inserimento.
-     * @param nuovo L'oggetto T da salvare.
+     * @param [in] nuovo L'oggetto T da salvare.
      */
     public abstract void salva(T nuovo);
 
     /**
      * @brief Metodo astratto per la logica di modifica di un elemento esistente.
      * @details Le sottoclassi devono implementare questo metodo per gestire l'aggiornamento.
-     * @param elemento L'oggetto T con i dati aggiornati.
+     * @param [in] elemento L'oggetto T con i dati aggiornati.
      */
     public abstract void modifica(T elemento);
 
     /**
      * @brief Gestisce l'eliminazione dell'elemento selezionato.
-     * @pre Un elemento valido deve essere selezionato nella vista.
-     * @post L'elemento viene rimosso dal repository tramite il servizio e la vista aggiornata.
+     * @pre Un elemento valido deve essere selezionato nella view.
+     * @post L'elemento viene rimosso dal repository tramite il service e la view aggiornata.
      * @see InterfaceService#elimina(Object)
      */
     public void elimina(){
@@ -54,9 +54,9 @@ public abstract class CrudController<T extends InterfaceID> extends BaseControll
     }
 
     /**
-     * @brief Esegue la ricerca degli elementi basata sul filtro della vista.
+     * @brief Esegue la ricerca degli elementi basata sul filtro della view.
      * @post La vista visualizza solo gli elementi che corrispondono al criterio di ricerca.
-     * @see InterfaceView#getStringaCerca()
+     * @see InterfaceView#getCampoCerca()
      * @see InterfaceService#cercaGenerico(String)
      */
     public void cerca(){
