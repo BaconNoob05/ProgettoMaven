@@ -1,26 +1,50 @@
 package it.unisa.diem.ingegneriadelsoftware.model;
 import org.junit.jupiter.api.*;
 import static org.junit.jupiter.api.Assertions.*;
-
-
-
-
-
-
+/**
+ * @brief Classe di test per la classe Utente.
+ * @class UtenteTest
+ */
 public class UtenteTest {
     
+    /**
+     * @brief Istanza di Utente.
+     */
     private Utente utente;
+    
+    /**
+     * @brief Valore costante per nome.
+     */
     private final String NOME="Lorenzo";
+    
+    /**
+     * @brief Valore costante per cognome.
+     */
     private final String COGNOME="Trovato";
+    
+    /**
+     * @brief Valore costante per matricola.
+     */
     private final String MATRICOLA="0612708922";
+    
+    /**
+     * @brief Valore costante per email.
+     */
     private final String EMAIL="l.trovato@studenti.unisa.it";
     
+   
+     /**
+     * @brief Metodo eseguito prima di ogni test.
+     */
     @BeforeEach
     void setUp(){
-        // Il costruttore deve essere chiamato con dati validi per l'inizializzazione
+     
         utente=new Utente(NOME,COGNOME,MATRICOLA,EMAIL); 
     }
     
+    /**
+     * @brief Testa sia il costruttore sia i getter per vedere se funzionino correttamente,
+     */
     @Test
     void testCostruttoreEGetter(){
         
@@ -33,11 +57,17 @@ public class UtenteTest {
     }
     
     
+    /**
+     * @brief Testa getId .
+     */
     @Test
     void testGetID(){
         assertEquals(MATRICOLA, utente.getId());
     }
     
+    /**
+     * @brief Testa il setter per il nome.
+     */
     @Test
     void testSetNome(){
         String nuovoNome="Alessandro";
@@ -45,6 +75,9 @@ public class UtenteTest {
         assertEquals(nuovoNome, utente.getNome());
     }
     
+    /**
+     * @brief Testa il setter per il cognome.
+     */
     @Test
     void testSetCognome(){
         String nuovoCognome="Picariello";
@@ -52,6 +85,9 @@ public class UtenteTest {
         assertEquals(nuovoCognome, utente.getCognome());
     }
     
+    /**
+     * @brief Testa il setter per l'email.
+     */
     @Test
     void testSetEmail(){
         String nuovaEmail = "a.picariello42@studenti.unisa.it";
@@ -59,13 +95,18 @@ public class UtenteTest {
         assertEquals(nuovaEmail, utente.getEmail());
     }
     
+    /**
+     * @brief Testa isValido .
+     */
     @Test
     void testIsValido(){
         //aggiungo un utente valido
         assertTrue(utente.isValido());
     }
     
-    // MODIFICA: Test aggiornato per verificare che il costruttore lanci l'eccezione (IllegalArgumentException)
+    /**
+     * @brief Testa che il costruttore lanci un' IllegalArgumentException  se il nome è nulla.
+     */
     @Test
     void testCostruttore_UtenteSenzaNomeLanciaEccezione(){
         assertThrows(IllegalArgumentException.class, () -> {
@@ -73,14 +114,19 @@ public class UtenteTest {
         });
     }   
     
-    // MODIFICA: Test aggiornato per verificare che il costruttore lanci l'eccezione (IllegalArgumentException)
+    /**
+     * @brief Testa che il costruttore lanci un' IllegalArgumentException se la matricola è nulla.
+     */
     @Test
     void testCostruttore_UtenteSenzaMatricolaLanciaEccezione(){
         assertThrows(IllegalArgumentException.class, () -> {
             new Utente(NOME,COGNOME,null,EMAIL);
         });
-    }  
+    }   
 
+    /*
+     * @brief Test per verificare la validità dell'utente con un'email con errori.
+     */
     /*
     @Test
     void testIsValido_EmailNonCorretta(){
@@ -90,13 +136,14 @@ public class UtenteTest {
     } 
     */
     
+    /**
+     * @brief Testa toString.
+     */
     @Test
     void testToString(){
-         //Verifica che la stringa non sia null
         String stringaUtente = utente.toString();
         assertNotNull(stringaUtente);
-        
-        // Verifica che la stringa contenga i dati chiave
+       
         assertTrue(stringaUtente.contains(NOME));
         assertTrue(stringaUtente.contains(COGNOME));
         assertTrue(stringaUtente.contains(MATRICOLA));
@@ -104,7 +151,5 @@ public class UtenteTest {
         
         
     }
-    
-    
     
 }
