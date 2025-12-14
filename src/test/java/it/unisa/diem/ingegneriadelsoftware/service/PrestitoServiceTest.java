@@ -6,19 +6,55 @@ import java.time.LocalDate;
 import java.util.*;
 import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.*;
-
+/**
+ * @brief Classe di test per PrestitoService.
+ * @class PrestitoServiceTest
+ */
 public class PrestitoServiceTest {
     
+    /**
+     * @brief Istanza del servizio Prestito .
+     */
     private PrestitoService service;
+    
+    /**
+     * @brief Stub del Repository di prestito.
+     */
     private RepositoryStub<Prestito> repo;
+    
+    /**
+     * @brief Istanza di Libro.
+     */
     private LibroService libroService;
+    
+    /**
+     * @brief Stub del Repository  di libri.
+     */
     private RepositoryStub<Libro> repoLibri;
     
+    /**
+     * @brief Libro per test.
+     */
     private Libro l1;
+    
+    /**
+     * @brief Libro per test.
+     */
     private Libro l2;
+    
+    /**
+     * @brief Utente per test.
+     */
     private Utente u1;
+    
+    /**
+     * @brief Utente per test.
+     */
     private Utente u2;
         
+   /**
+     * @brief Metodo eseguito prima di ogni test.
+     */
     @BeforeEach
     void setup() {
         
@@ -40,6 +76,9 @@ public class PrestitoServiceTest {
         repoLibri.inserisciOAggiorna(l2);
     }
 
+    /**
+     * @brief Testa la registrazione di un prestito con dati validi.
+     */
     @Test
     void testRegistraPrestito_Successo() {
         LocalDate dataPrevista = LocalDate.now().plusDays(30);
@@ -55,6 +94,9 @@ public class PrestitoServiceTest {
         assertNull(prestitoSalvato.getDataEffettiva());
     }
     
+    /**
+     * @brief Testa la registrazione di un prestito per un libro con poche copie.
+     */
     @Test
     void testRegistraPrestito_LibroConPocheCopie() {
         service.registraPrestito(u2, l2, LocalDate.now().plusDays(30)); 
@@ -63,6 +105,9 @@ public class PrestitoServiceTest {
         assertEquals(7, l2.getCopieDisponibili());
     }
     
+    /**
+     * @brief Testa la registrazione di un prestito con Utente nullo.
+     */
     @Test
     void testRegistraPrestito_UtenteNullo() {
         assertThrows(IllegalArgumentException.class, () -> {
@@ -72,6 +117,9 @@ public class PrestitoServiceTest {
         assertEquals(0, repo.getAll().size());
     }
     
+    /**
+     * @brief Testa la registrazione di un prestito con Libro nullo.
+     */
     @Test
     void testRegistraPrestito_LibroNullo() {
         assertThrows(IllegalArgumentException.class, () -> {
@@ -80,6 +128,9 @@ public class PrestitoServiceTest {
         assertEquals(0, repo.getAll().size());
     }
     
+    /**
+     * @brief Testa la registrazione di un prestito con data passata.
+     */
     @Test
     void testRegistraPrestito_DataPrevistaPassata() {
         LocalDate dataPassata = LocalDate.now().minusDays(1);
@@ -91,24 +142,31 @@ public class PrestitoServiceTest {
         assertEquals(12, l1.getCopieDisponibili());
     }
 
+    /**
+     * @brief Testa la registrazione della restituzione di un prestito attivo.
+     */
     @Test
     void testRegistraRestituzione_Successo() {
         Prestito p = new Prestito(u1, l1, LocalDate.now().plusDays(30));
         repo.inserisciOAggiorna(p);
-        l1.setCopieDisponibili(11);
+        l1.setCopieDisponibili(11); // Stato iniziale dopo il prestito
 
         service.registraRestituzione(p, LocalDate.now());
 
         assertNotNull(p.getDataEffettiva());
-        assertEquals(12, l1.getCopieDisponibili());
+        assertEquals(12, l1.getCopieDisponibili()); // Copie incrementate
     }
 
+    /**
+     * @brief Testa la registrazione dellarestituzione per un prestito già chiuso.
+  
+     */
     @Test
     void testRegistraRestituzione_PrestitoGiaChiuso() {
         Prestito p = new Prestito(u1, l1, LocalDate.now().plusDays(30));
         p.setDataEffettiva(LocalDate.now().minusDays(5));
         repo.inserisciOAggiorna(p);
-        l1.setCopieDisponibili(12);
+        l1.setCopieDisponibili(12); 
 
         assertThrows(IllegalStateException.class, () -> {
             service.registraRestituzione(p, LocalDate.now());
@@ -117,6 +175,9 @@ public class PrestitoServiceTest {
         assertEquals(12, l1.getCopieDisponibili());
     }
     
+    /**
+     * @brief Testa la registrazione della restituzione con Prestito nullo.
+     */
     @Test
     void testRegistraRestituzione_PrestitoNullo() {
         assertThrows(IllegalArgumentException.class, () -> {
@@ -124,6 +185,9 @@ public class PrestitoServiceTest {
         });
     }
 
+    /**
+     * @brief Testa listaPrestitiAttivi.
+     */
     @Test
     void testListaPrestitiAttivi_UnoAttivo() {
         Prestito pAttivo = new Prestito(u1, l1, LocalDate.now().plusDays(30));
@@ -134,6 +198,9 @@ public class PrestitoServiceTest {
         assertTrue(attivi.contains(pAttivo));
     }
 
+    /**
+     * @brief Testa listaPrestitiAttivi.
+     */
     @Test
     void testListaPrestitiAttivi_NessunAttivo() {
         Prestito pChiuso = new Prestito(u1, l1, LocalDate.now().plusDays(30));
@@ -144,6 +211,9 @@ public class PrestitoServiceTest {
         assertTrue(attivi.isEmpty());
     }
     
+    /**
+     * @brief listaPrestitiAttivi.
+     */
     @Test
     void testListaPrestitiAttivi_Misti() {
         Prestito pAttivo1 = new Prestito(u1, l1, LocalDate.now().plusDays(30));
@@ -164,6 +234,9 @@ public class PrestitoServiceTest {
         assertFalse(attivi.contains(pChiuso));
     }
     
+    /**
+     * @brief Testa  listaPrestitiAttivi.
+     */
     @Test
     void testListaPrestitiAttivi_RepositoryVuoto() {
         List<Prestito> attivi = service.listaPrestitiAttivi();
