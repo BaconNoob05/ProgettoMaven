@@ -83,10 +83,8 @@ public class PrestitoView extends DatiBaseView<Prestito> {
                 if (item == null || empty) {
                     setStyle("");
                 } else if (item.isScaduto()) {
-                    // SCADUTO: Rosso chiaro
                     setStyle("-fx-background-color: #ffcccc;"); 
                 } else if (item.getDataEffettiva() != null) {
-                    // RESTITUITO: Verde chiaro
                     setStyle("-fx-background-color: #ccffcc;"); 
                 } else {
 

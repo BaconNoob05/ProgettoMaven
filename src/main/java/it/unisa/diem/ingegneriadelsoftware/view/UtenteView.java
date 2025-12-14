@@ -42,16 +42,13 @@ public class UtenteView extends DatiBaseView<Utente> {
     this.matricolaInput = new TextField(); 
     this.emailInput = new TextField();
     
-    // MODIFICA: Crea un box esterno per incorniciare il dettaglio (frame)
     GridPane innerDetailPane = creaPaneDettaglio();
     VBox detailFrame = new VBox(innerDetailPane);
     detailFrame.setStyle("-fx-border-color: gray; -fx-border-width: 1; -fx-padding: 10; -fx-background-color: white; -fx-border-radius: 5;");
     
-    // MODIFICA: Ripristino altezza box dettaglio a 350px
     detailFrame.setPrefHeight(350); 
     detailFrame.setMaxHeight(350);
 
-    // Aggiunge il frame alla HBox (affiancato alla TableView)
     contentHBox.getChildren().add(detailFrame);
     }
 
@@ -66,22 +63,22 @@ public class UtenteView extends DatiBaseView<Utente> {
         
         TableColumn<Utente, String> nomeCol = new TableColumn<>("Nome");
         nomeCol.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getNome()));
-        nomeCol.setPrefWidth(120); // Imposta larghezza preferita
+        nomeCol.setPrefWidth(120);
         
         TableColumn<Utente, String> cognomeCol = new TableColumn<>("Cognome");
         cognomeCol.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getCognome()));
-        cognomeCol.setPrefWidth(120); // Imposta larghezza preferita
+        cognomeCol.setPrefWidth(120);
 
         TableColumn<Utente, String> matricolaCol = new TableColumn<>("Matricola");
        
         matricolaCol.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getId()));
-        matricolaCol.setPrefWidth(150); // Imposta larghezza preferita
+        matricolaCol.setPrefWidth(150);
         
         
         TableColumn<Utente, String> emailCol = new TableColumn<>("Email");
         emailCol.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getEmail()));
-        emailCol.setPrefWidth(250); // Imposta larghezza preferita
-
+        emailCol.setPrefWidth(250);
+        
         tableView.getColumns().addAll(nomeCol, cognomeCol, matricolaCol, emailCol);
         tableView.setPlaceholder(new Label("Nessun contenuto nella tabella"));
     }
@@ -101,7 +98,6 @@ public class UtenteView extends DatiBaseView<Utente> {
             cognomeInput.setText(utente.getCognome());
             matricolaInput.setText(utente.getId());
             emailInput.setText(utente.getEmail());
-            // MODIFICA: Rende la matricola modificabile
             matricolaInput.setEditable(true); 
         } else {
             nomeInput.setText("");
@@ -125,14 +121,12 @@ public class UtenteView extends DatiBaseView<Utente> {
         detailPane.setHgap(10);
         detailPane.setVgap(10);
         
-        // Miglioramento: Imposta una larghezza minima per il pannello di dettaglio
         detailPane.setMinWidth(250);
         
         Label dettagliLabel = new Label("Dettagli Utente");
         dettagliLabel.setStyle("-fx-font-weight: bold;");
         detailPane.add(dettagliLabel, 0, 0, 2, 1);
         
-        // Uniformità dei campi di testo
         nomeInput.setPrefWidth(200);
         cognomeInput.setPrefWidth(200);
         matricolaInput.setPrefWidth(200);
@@ -183,13 +177,11 @@ public class UtenteView extends DatiBaseView<Utente> {
             String matricola = matricolaInput.getText().trim();
             String email = emailInput.getText().trim();
             
-            // Validazione esplicita per i campi vuoti prima di passare al costruttore
             if (nome.isEmpty() || cognome.isEmpty() || matricola.isEmpty() || email.isEmpty()) { 
                 mostraMessaggio("Errore: Tutti i campi (Nome, Cognome, Matricola, Email) sono obbligatori.");
                 return null;
             }
 
-            // Il costruttore Utente ora valida e lancia IllegalArgumentException se i campi obbligatori sono nulli/vuoti o se l'email non è valida
             return new Utente(nome, cognome, matricola, email);
 
         } catch (IllegalArgumentException e) {
@@ -221,23 +213,19 @@ public class UtenteView extends DatiBaseView<Utente> {
             String nuovaMatricola = matricolaInput.getText().trim(); 
             String nuovaEmail = emailInput.getText().trim();
             
-            // Validazione: tutti i campi devono essere compilati
             if (nuovoNome.isEmpty() || nuovoCognome.isEmpty() || nuovaMatricola.isEmpty() || nuovaEmail.isEmpty()) {
                  throw new IllegalArgumentException("Errore: Tutti i campi sono obbligatori.");
             }
-            
-            // Applico le modifiche (i setter contengono la validazione, incluso quello di matricola e email)
+
             utenteDaModificare.setMatricola(nuovaMatricola);
             utenteDaModificare.setNome(nuovoNome);
             utenteDaModificare.setCognome(nuovoCognome);
             utenteDaModificare.setEmail(nuovaEmail);
             
-            // Se la validazione non ha lanciato eccezioni, l'oggetto è valido.
-            
             return utenteDaModificare;
         } catch (IllegalArgumentException e) {
-             mostraMessaggio("Errore: " + e.getMessage());
-             return null;
+            mostraMessaggio("Errore: " + e.getMessage());
+            return null;
         }
     }
 }

@@ -162,10 +162,9 @@ public class LibroView extends DatiBaseView<Libro> {
         detailPane.setMinWidth(250);
         
         Label dettagliLabel = new Label("Dettagli Libro");
-        dettagliLabel.setStyle("-fx-font-weight: bold;"); // Etichetta in grassetto
+        dettagliLabel.setStyle("-fx-font-weight: bold;");
         detailPane.add(dettagliLabel, 0, 0, 2, 1);
         
-        // Uniformità dei campi di testo
         titoloInput.setPrefWidth(200);
         autoriInput.setPrefWidth(200); 
         annoInput.setPrefWidth(200);
@@ -233,7 +232,6 @@ public class LibroView extends DatiBaseView<Libro> {
             String copieText = copieInput.getText().trim();
             String autoriString = autoriInput.getText().trim(); 
 
-            // Validazione Campi Obbligatori (stringhe)
             if (titolo.isEmpty() || isbn.isEmpty() || annoText.isEmpty() || copieText.isEmpty() || autoriString.isEmpty()) {
                 mostraMessaggio("Errore: Tutti i campi (Titolo, Autori, Anno, ISBN, Copie) sono obbligatori.");
                 return null;
@@ -297,7 +295,6 @@ public class LibroView extends DatiBaseView<Libro> {
             String copieText = copieInput.getText().trim();
             String autoriString = autoriInput.getText().trim(); 
             
-            // Validazione Campi Obbligatori (stringhe)
              if (nuovoTitolo.isEmpty() || annoText.isEmpty() || nuovoIsbn.isEmpty() || copieText.isEmpty() || autoriString.isEmpty()) {
                 mostraMessaggio("Errore: Tutti i campi (Titolo, Autori, Anno, ISBN, Copie) sono obbligatori.");
                 return null;
@@ -316,7 +313,6 @@ public class LibroView extends DatiBaseView<Libro> {
                  return null;
             }
 
-            // Creo un oggetto temporaneo per la validazione e l'aggiornamento (poiché l'ISBN può essere cambiato)
             Libro libroAggiornato = new Libro(nuovoTitolo, nuoviAutori, nuovoAnno, nuovoIsbn, nuoveCopie); 
             
 
