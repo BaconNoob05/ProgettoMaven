@@ -41,7 +41,7 @@ public class LibroControllerTest {
     }
 
     /**
-     * @brief Testa il salvataggio di un libro valido.
+     * @brief Metodo eseguito prima di ogni test.
      */
     @Test
     void testSalvaLibro() {
