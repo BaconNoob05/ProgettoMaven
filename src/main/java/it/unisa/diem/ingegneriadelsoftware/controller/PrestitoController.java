@@ -17,24 +17,24 @@ public class PrestitoController extends CrudController<Prestito> {
 
     /**
      * @brief Costruttore.
-     * @param view La vista specifica prestiti.
-     * @param service Il servizio specifico prestiti.
+     * @param [in] view La view specifica per i prestiti.
+     * @param [in] service Il service specifico per i prestiti.
      */
     public PrestitoController(PrestitoView view, PrestitoService service){
         super(view, service);
     }
     
     /**
-     * @brief Interpreta la vista come un'istanza di PrestitoView.
-     * @return La vista specifica per i prestiti altrimenti un valore nullo..
+     * @brief Interpreta la view come un'istanza di PrestitoView.
+     * @return La view specifica per i prestiti altrimenti il valore null.
      */
     private PrestitoView getSpecificView() {
         return (PrestitoView) view;
     }
 
     /**
-     * @brief Trasforma il servizio generico nel servizio specifico PrestitoService.
-     * @return L'istanza di PrestitoService altrimenti un valore nullo.
+     * @brief Trasforma il service generico nel service specifico PrestitoService.
+     * @return L'istanza di PrestitoService altrimenti il valore null.
      */
     private PrestitoService getSpecificService() {
         return (PrestitoService) service;
@@ -42,8 +42,8 @@ public class PrestitoController extends CrudController<Prestito> {
     
     /**
      * @brief Implementazione base del salvataggio richiesta da CrudController.
-     * @details Nel flusso standard, si usa registraPrestito, ma questa è necessaria per la compilazione.
-     * @param nuovo Il prestito da salvare.
+     * @details Nel flusso standard si fa uso di registraPrestito, ma questa è necessaria per la compilazione.
+     * @param [in] nuovo Il prestito da salvare.
      */
     @Override
     public void salva(Prestito nuovo) {
@@ -52,8 +52,8 @@ public class PrestitoController extends CrudController<Prestito> {
 
     /**
      * @brief Implementazione base della modifica richiesta da CrudController.
-     * @details Nel flusso standard, si usa registraRestituzione, ma questa è necessaria per la compilazione.
-     * @param elemento Il prestito aggiornato.
+     * @details Nel flusso standard si impiega registraRestituzione, ma questa è necessaria per la compilazione.
+     * @param [in] elemento Il prestito aggiornato.
      */
     @Override
     public void modifica(Prestito elemento) {
@@ -62,6 +62,7 @@ public class PrestitoController extends CrudController<Prestito> {
 
     /**
      * @brief Inizializza il controller e collega i listener ai pulsanti specifici e ai campi base.
+     * @see BaseController#init()
      */
     @Override
     public void init() {
@@ -100,7 +101,7 @@ public class PrestitoController extends CrudController<Prestito> {
 
 
     /**
-     * @brief Aggiorna la vista recuperando TUTTI i prestiti e applicando l'ordinamento richiesto.
+     * @brief Aggiorna la view recuperando tutti i prestiti e applicando l'ordinamento richiesto.
      * @see InterfaceController#aggiornaVista()
      * @see PrestitoService#getAll()
      */
@@ -111,8 +112,8 @@ public class PrestitoController extends CrudController<Prestito> {
     
     /**
      * @brief Gestisce la logica di registrazione di un nuovo prestito.
-     * @param [in] datiInseriti L'oggetto Prestito temporaneo con Utente, Libro e Data Prevista.
-     * @pre La vista deve fornire un Utente valido e un Libro con copie disponibili.
+     * @details Recupera l'utente, il libro e la data di restituzione prevista dalla view, tramite getPrestito()
+     * @pre La view deve fornire un Utente valido e un Libro con copie disponibili.
      * @post Le copie del libro vengono decrementate.
      * @see PrestitoView#getPrestitoNuovo()
      * @see PrestitoService#registraPrestito(Utente, Libro, java.time.LocalDate)
@@ -133,6 +134,7 @@ public class PrestitoController extends CrudController<Prestito> {
 
     /**
      * @brief Gestisce la logica di restituzione di un libro.
+     * @details Recupera il prestito selezionato e la data di restituzione effettiva dalla view
      * @pre Un prestito attivo deve essere selezionato nella lista.
      * @post Il prestito risulta concluso e le copie del libro vengono incrementate.
      * @see PrestitoView#getDataRestituzione()
@@ -158,8 +160,11 @@ public class PrestitoController extends CrudController<Prestito> {
     }
 
     /**
-     * @brief Aggiorna la vista recuperando TUTTI i prestiti e applicando l'ordinamento.
-     * @details Ordina i prestiti per: 1. Scaduti (prima), 2. Non restituiti (in base alla data prevista più vicina), 3. Restituiti (alla fine, ordinati per data effettiva decrescente).
+     * @brief Aggiorna la vista recuperando tutti i prestiti e applicando l'ordinamento.
+     * @details Effettua l'ordinamento dei prestiti secondo il seguente criterio:
+     * 1. Scaduti  
+     * 2. Non restituiti, in base alla data prevista più prossima 
+     * 3. Restituiti, ordinati per data di restituzione effettiva decrescente.
      * @see PrestitoService#getAll()
      */
     public void aggiornaLista(){
