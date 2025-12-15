@@ -275,14 +275,7 @@ public class LibroServiceTest {
         assertTrue(service.cercaPerAutore(" ").isEmpty());
     }
     
-    /**
-     * @brief Test per verificare che il repository stub non abbia problemi.
-     */
-    @Test
-    void testDebugRepository() {
-        assertEquals(5, repo.getAll().size());
-    }
-    
+   
     /**
      * @brief Testa l'eliminazione di un libro con prestiti attivi (FC-1.1.2).
      */
