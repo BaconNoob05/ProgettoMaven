@@ -8,7 +8,7 @@ public interface InterfaceID {
 
     /**
      * @brief Restituisce l'identificativo univoco dell'entità.
-     * @return Una stringa che rappresenta l'identificativo univoco dell'oggetto altrimenti restituisce un valore nullo.
+     * @return Una stringa che rappresenta l'identificativo univoco dell'oggetto, altrimenti restituisce il valore null.
      */
     String getId();
     
