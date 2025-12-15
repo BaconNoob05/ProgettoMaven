@@ -5,7 +5,7 @@ import it.unisa.diem.ingegneriadelsoftware.service.UtenteService;
 import it.unisa.diem.ingegneriadelsoftware.model.Utente;
 import java.util.Comparator; 
 import java.util.List; 
-import javafx.scene.control.Button; // Necessario per il tipo Button
+import javafx.scene.control.Button;
 
 
 /**
@@ -54,31 +54,26 @@ public class UtenteController extends CrudController<Utente> {
         
         UtenteView view = getSpecificView();
         
-        // Listener OK Button con conferma (doppio click)
         view.getOkButton().setOnAction(e -> {
             Button pulsante = view.getOkButton();
             String azione;
             Runnable operazione;
 
             if (view.getTableView().getSelectionModel().getSelectedItem() != null) {
-                // Aggiornamento
                 Utente modificato = view.getUtenteModificato();
-                if (modificato == null) { view.resetConferma(); return; } // Reset e uscita se i dati sono invalidi
+                if (modificato == null) { view.resetConferma(); return; }
                 azione = "aggiornare l'utente selezionato";
                 operazione = () -> modifica(modificato);
             } else {
-                // Salvataggio
                 Utente nuovo = view.getUtenteNuovo();
-                if (nuovo == null) { view.resetConferma(); return; } // Reset e uscita se i dati sono invalidi
+                if (nuovo == null) { view.resetConferma(); return; }
                 azione = "salvare il nuovo utente";
                 operazione = () -> salva(nuovo);
             }
             
-            // Richiedi conferma e, se confermato, esegui l'operazione
             view.richiediConferma(pulsante, operazione, "Clicca di nuovo per " + azione);
         });
         
-        // Listener Cancella Button con conferma (doppio click)
         view.getCancellaButton().setOnAction(e -> {
             Button pulsante = view.getCancellaButton();
 
@@ -90,12 +85,11 @@ public class UtenteController extends CrudController<Utente> {
             view.richiediConferma(pulsante, this::elimina, "Clicca di nuovo per confermare l'eliminazione.");
         });
         
-        // L'annulla resetta il flag tramite pulisciDettagli() in DatiBaseView
         view.getAnnullaButton().setOnAction(e -> view.pulisciDettagli());
         
         view.getCercaField().textProperty().addListener((observable, oldValue, newValue) -> {
             cerca();
-            view.resetConferma(); // Resetta lo stato di conferma se si cambia filtro
+            view.resetConferma();
         });
         
 
