@@ -14,7 +14,6 @@ import it.unisa.diem.ingegneriadelsoftware.model.Utente;
  */
 public class UtenteService extends BaseService<Utente> {
     
-    // Nuovo campo: Riferimento al service dei prestiti
     private PrestitoService prestitoService;
 
     /**
@@ -56,22 +55,18 @@ public class UtenteService extends BaseService<Utente> {
     /**
      * @brief Cerca gli utenti che corrispondono a un determinato cognome.
      * @param [in] cognome Il cognome da cercare.
-     * @return Una lista di oggetti Utente che rispettano il criterio di ricerca, altrimenti restituisce una lista vuota.
+     * @return Una lista di oggetti Utente che corrispondono al cognome specificato, altrimenti restituisce una lista vuota.
      * @post Nessuna modifica viene apportata ai dati.
      * @see BaseService#cercaGenerico(String)
      */
     public List<Utente> cercaPerCognome(String cognome) {
-
         if (cognome == null) {
             throw new IllegalArgumentException("Il cognome di ricerca non può essere nullo.");
         }
-        
         if (cognome.trim().isEmpty()) {
             return new ArrayList<>();
         }
-
         String filtro = cognome.toLowerCase();
-
         return getAll().stream()
             .filter(u -> u.getCognome().toLowerCase().contains(filtro))
             .collect(Collectors.toList());
@@ -89,9 +84,7 @@ public class UtenteService extends BaseService<Utente> {
         if (filtro == null || filtro.trim().isEmpty()) {
             return getAll();
         }
-        
         String filtroLowerCase = filtro.toLowerCase();
-        
         return getAll().stream()
                .filter(u -> u.getCognome().toLowerCase().contains(filtroLowerCase) || 
                             u.getMatricola().toLowerCase().contains(filtroLowerCase))

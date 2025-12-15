@@ -22,7 +22,7 @@ public interface InterfaceView<T> {
     
     
     /**
-     * @brief Recupera l'elemento attualmente selezionato dall'amministratore
+     * @brief Recupera l'elemento attualmente selezionato dall'amministratore.
      * @return L'oggetto selezionato, altrimenti restituisce il valore null.
      * @pre La view deve essere inizializzata.
      * @post Lo stato della selezione non cambia.

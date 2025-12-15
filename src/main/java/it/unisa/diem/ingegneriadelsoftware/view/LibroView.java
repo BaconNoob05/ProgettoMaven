@@ -20,7 +20,6 @@ import java.util.stream.Collectors;
  * @see BaseView
  */
 public class LibroView extends DatiBaseView<Libro> {
-
     
     /** 
      * @brief Campo di input per il titolo del libro. 
@@ -53,7 +52,6 @@ public class LibroView extends DatiBaseView<Libro> {
      * @post I campi di input sono istanziati e la vista è pronta per l'inizializzazione.
      */
     public LibroView() {
-        
         super("Libro"); 
         
         this.titoloInput = new TextField();
@@ -61,13 +59,10 @@ public class LibroView extends DatiBaseView<Libro> {
         this.isbnInput = new TextField();
         this.copieInput = new TextField();
         this.autoriInput = new TextField(); 
-        
 
         GridPane innerDetailPane = creaPaneDettaglio();
         VBox detailFrame = new VBox(innerDetailPane);
         detailFrame.setStyle("-fx-border-color: gray; -fx-border-width: 1; -fx-padding: 10; -fx-background-color: white; -fx-border-radius: 5;");
-        
-
         detailFrame.setPrefHeight(350); 
         detailFrame.setMaxHeight(350);
 
@@ -90,19 +85,15 @@ public class LibroView extends DatiBaseView<Libro> {
         titoloCol.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getTitolo()));
         
         TableColumn<Libro, String> autoriCol = new TableColumn<>("Autori");
-    
         autoriCol.setCellValueFactory(cellData -> new SimpleStringProperty(String.join(", ", cellData.getValue().getAutori())));
 
         TableColumn<Libro, Integer> annoCol = new TableColumn<>("Anno");
         annoCol.setCellValueFactory(cellData -> new SimpleIntegerProperty(cellData.getValue().getAnno()).asObject());
 
         TableColumn<Libro, String> isbnCol = new TableColumn<>("ISBN");
-  
         isbnCol.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getId()));
         
-        
         TableColumn<Libro, Integer> copieCol = new TableColumn<>("Copie disponibili");
-        
         copieCol.setCellValueFactory(cellData -> new SimpleIntegerProperty(cellData.getValue().getCopieDisponibili()).asObject());
 
         tableView.getColumns().addAll(titoloCol, autoriCol, annoCol, isbnCol, copieCol);
@@ -119,27 +110,18 @@ public class LibroView extends DatiBaseView<Libro> {
      */
     @Override
     protected void impostaValoriDefault(Libro libro) {
-
-        
         if (libro != null) {
-            
             titoloInput.setText(libro.getTitolo());
             annoInput.setText(String.valueOf(libro.getAnno()));
             isbnInput.setText(libro.getId());
             autoriInput.setText(libro.getAutoriString()); 
-            
             copieInput.setText(String.valueOf(libro.getCopieDisponibili()));
-
             isbnInput.setEditable(true); 
-            
         } else {
-            
-            
             titoloInput.setText("");
             annoInput.setText("");
             isbnInput.setText("");
             autoriInput.setText(""); 
-            
             copieInput.setText("");
             isbnInput.setEditable(true); 
             
@@ -154,14 +136,10 @@ public class LibroView extends DatiBaseView<Libro> {
      */
     @Override
     protected GridPane creaPaneDettaglio() {
-
-        
         GridPane detailPane = new GridPane();
         
         detailPane.setHgap(10);
         detailPane.setVgap(10);
-        
-
         detailPane.setMinWidth(250);
         
         Label dettagliLabel = new Label("Dettagli Libro");
@@ -173,7 +151,6 @@ public class LibroView extends DatiBaseView<Libro> {
         annoInput.setPrefWidth(200);
         isbnInput.setPrefWidth(200);
         copieInput.setPrefWidth(200);
-        
         
         detailPane.add(new Label("Titolo:"), 0, 1);
         detailPane.add(titoloInput, 1, 1);
@@ -191,7 +168,6 @@ public class LibroView extends DatiBaseView<Libro> {
         detailPane.add(copieInput, 1, 5); 
         
         detailPane.add(getMessaggioBox(), 0, 8, 2, 1); 
-        
 
         HBox actionBox = new HBox(10);
         actionBox.setAlignment(Pos.CENTER); 
@@ -260,10 +236,8 @@ public class LibroView extends DatiBaseView<Libro> {
             }
 
             return nuovoLibro;
-
-       
-        } catch (NumberFormatException e) {
             
+        } catch (NumberFormatException e) {
             mostraMessaggio("Errore: Anno e Copie disponibili devono essere numeri interi validi.");
             return null;
         } catch (Exception e) {
@@ -284,7 +258,6 @@ public class LibroView extends DatiBaseView<Libro> {
         Libro libroDaModificare = getElementoSelezionato();
         
         if (libroDaModificare == null) {
-            
             mostraMessaggio("Selezionare un libro prima di procedere con la modifica.");
             return null;
         }
@@ -296,7 +269,7 @@ public class LibroView extends DatiBaseView<Libro> {
             String copieText = copieInput.getText().trim();
             String autoriString = autoriInput.getText().trim(); 
             
-             if (nuovoTitolo.isEmpty() || annoText.isEmpty() || nuovoIsbn.isEmpty() || copieText.isEmpty() || autoriString.isEmpty()) {
+            if (nuovoTitolo.isEmpty() || annoText.isEmpty() || nuovoIsbn.isEmpty() || copieText.isEmpty() || autoriString.isEmpty()) {
                 mostraMessaggio("Errore: Tutti i campi (Titolo, Autori, Anno, ISBN, Copie) sono obbligatori.");
                 return null;
             }
@@ -306,20 +279,20 @@ public class LibroView extends DatiBaseView<Libro> {
             List<String> nuoviAutori = parseAutori(autoriString); 
             
             if (nuoveCopie < 0) {
-                 mostraMessaggio("Errore: Le copie disponibili non possono essere negative.");
-                 return null;
+                mostraMessaggio("Errore: Le copie disponibili non possono essere negative.");
+                return null;
             }
-             if (nuoviAutori.isEmpty()) { 
-                 mostraMessaggio("Errore: Specificare almeno un autore.");
-                 return null;
+            if (nuoviAutori.isEmpty()) { 
+                mostraMessaggio("Errore: Specificare almeno un autore.");
+                return null;
             }
 
             Libro libroAggiornato = new Libro(nuovoTitolo, nuoviAutori, nuovoAnno, nuovoIsbn, nuoveCopie); 
             
 
             if (!libroAggiornato.isValido()) {
-                 mostraMessaggio("Errore: Dati libro non validi (es. anno di pubblicazione futuro o ISBN/Autori non validi).");
-                 return null;
+                mostraMessaggio("Errore: Dati libro non validi (es. anno di pubblicazione futuro o ISBN/Autori non validi).");
+                return null;
             }
             
             return libroAggiornato;

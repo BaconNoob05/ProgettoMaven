@@ -12,9 +12,9 @@ import it.unisa.diem.ingegneriadelsoftware.model.Libro;
  * Estende la logica generica di BaseService specializzandola per l'entità Libro.
  */
 public class LibroService extends BaseService<Libro> {
-
+    
     private PrestitoService prestitoService;
-
+    
     /**
      * @brief Costruttore.
      * @param [in] repository Il repository dei libri.
@@ -42,11 +42,9 @@ public class LibroService extends BaseService<Libro> {
     @Override
     public void elimina(Libro elemento) {
         if (elemento != null && elemento.getId() != null) {
-            
             if (prestitoService != null) {
                 boolean haPrestitiAttivi = prestitoService.listaPrestitiAttivi().stream()
                         .anyMatch(p -> p.getLibro().getId().equals(elemento.getId()));
-                
                 if (haPrestitiAttivi) {
                     throw new IllegalStateException("Impossibile eliminare il libro: sono presenti prestiti attivi associati.");
                 }
@@ -59,7 +57,7 @@ public class LibroService extends BaseService<Libro> {
     /**
      * @brief Cerca i libri che corrispondono a un determinato titolo.
      * @param [in] titolo Il titolo da cercare.
-     * @return Una lista di oggetti Libro che corrispondono al criterio di ricerca, altrimenti restituisce una lista vuota.
+     * @return Una lista di oggetti Libro che corrispondono al titolo specificato, altrimenti restituisce una lista vuota.
      * @pre Il parametro titolo non deve essere null.
      * @post Lo stato del repository rimane invariato.
      * @see BaseService#cercaGenerico(String)
@@ -87,9 +85,7 @@ public class LibroService extends BaseService<Libro> {
    public List<Libro> cercaPerAutore(String autore) {
        if (autore == null || autore.trim().isEmpty())
            return new ArrayList<>();
-
        String filtro = autore.toLowerCase();
-
        return getAll().stream()
            .filter(l -> l.getAutoriString().toLowerCase().contains(filtro))
            .collect(Collectors.toList());
@@ -107,9 +103,7 @@ public class LibroService extends BaseService<Libro> {
         if (filtro == null || filtro.trim().isEmpty()) {
             return getAll();
         }
-        
         String filtroLowerCase = filtro.toLowerCase();
-
         return getAll().stream()
                .filter(l -> l.getTitolo().toLowerCase().contains(filtroLowerCase) || 
                             l.getAutoriString().toLowerCase().contains(filtroLowerCase) ||

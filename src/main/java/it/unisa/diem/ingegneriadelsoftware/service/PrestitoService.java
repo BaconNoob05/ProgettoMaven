@@ -70,8 +70,7 @@ public class PrestitoService extends BaseService<Prestito> {
         Prestito nuovoPrestito = new Prestito(utente, libro, dataPrevista);
         libro.decrementaCopie();
         libroService.modifica(libro);
-        this.salva(nuovoPrestito);  
-       
+        this.salva(nuovoPrestito);
     }
  
     /**
@@ -89,21 +88,18 @@ public class PrestitoService extends BaseService<Prestito> {
         if (prestito == null) {
             throw new IllegalArgumentException("Prestito nullo");
         }
-
         if (prestito.getDataEffettiva() != null) {
             throw new IllegalStateException("Prestito già chiuso");
         }
-         
         prestito.registraRestituzione(dataEffettiva);
         this.modifica(prestito);
-
         Libro libro = prestito.getLibro();
         if (libro != null) 
         {
             libro.incrementaCopie();
             libroService.modifica(libro);
         }
-        }
+    }
 
     /**
      * @brief Restituisce la lista dei prestiti ancora attivi.

@@ -33,7 +33,7 @@ public abstract class BaseView<T> implements InterfaceView<T> {
      * @brief Costruttore di base che funge da sorgente dati per i componenti UI di JavaFX.
      */
     public BaseView() {
-        //La lista ObservableList è l'effettiva sorgente dati per la TableView
+        //La lista ObservableList è l'effettiva sorgente dati per la TableView.
         this.dataList = FXCollections.observableArrayList(); 
     }
     
@@ -43,9 +43,7 @@ public abstract class BaseView<T> implements InterfaceView<T> {
      */
     @Override
     public void mostraMessaggio(String messaggio) {
-    
         System.out.println("Messaggio: " + messaggio);
-    
     }
     
     /**
@@ -58,18 +56,13 @@ public abstract class BaseView<T> implements InterfaceView<T> {
      */
     @Override
     public void mostraLista(List<T> lista) {
-    
         if (lista == null) {
             throw new IllegalArgumentException("La lista da mostrare non può essere null.");
         }
-       
-        this.elementi = lista; 
-        
+        this.elementi = lista;
         this.dataList.clear();
         this.dataList.addAll(lista);
-        
-        System.out.println(" Lista aggiornata: " + lista.size() + " elementi.");
-    
+        System.out.println("Lista aggiornata: " + lista.size() + " elementi.");
     }
 
     /**
