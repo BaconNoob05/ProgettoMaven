@@ -30,15 +30,14 @@ public class UtenteTest {
     /**
      * @brief Valore costante per email.
      */
-    private final String EMAIL="l.trovato@studenti.unisa.it"; // AGGIORNATO
+    private final String EMAIL="l.trovato@studenti.unisa.it";
     
    
-     /**
+    /**
      * @brief Metodo eseguito prima di ogni test.
      */
     @BeforeEach
     void setUp(){
-     
         utente=new Utente(NOME,COGNOME,MATRICOLA,EMAIL); 
     }
     
@@ -58,7 +57,7 @@ public class UtenteTest {
     
     
     /**
-     * @brief Testa getId .
+     * @brief Testa il getter per l'id.
      */
     @Test
     void testGetID(){
@@ -90,7 +89,7 @@ public class UtenteTest {
      */
     @Test
     void testSetEmail(){
-        String nuovaEmail = "a.picariello42@studenti.unisa.it"; // AGGIORNATO
+        String nuovaEmail = "a.picariello42@studenti.unisa.it";
         utente.setEmail(nuovaEmail);
         assertEquals(nuovaEmail, utente.getEmail());
     }
@@ -131,7 +130,6 @@ public class UtenteTest {
      */
     @Test
     void testIsValido(){
-        //aggiungo un utente valido
         assertTrue(utente.isValido());
     }
     
@@ -168,8 +166,6 @@ public class UtenteTest {
         assertTrue(stringaUtente.contains(COGNOME));
         assertTrue(stringaUtente.contains(MATRICOLA));
         assertTrue(stringaUtente.contains(EMAIL));
-        
-        
     }
     
 }

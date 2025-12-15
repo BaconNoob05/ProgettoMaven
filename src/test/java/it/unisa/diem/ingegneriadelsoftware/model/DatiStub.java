@@ -8,17 +8,21 @@ import java.io.Serializable;
  * @brief Creare un oggetto finto che simula il comportamento di Dati.
  */
 public class DatiStub implements InterfaceID, Serializable{
+    
     /**
      * @brief Identificativo dell'oggetto Stub.
      */
     private String id;
+    
     /**
      * @brief Costruttore della classe DatiStub.
+     * @param [in] id L'id dell'elemento Stub.
      */
     public DatiStub(String id){
         this.id=id;
     }
-   /**
+    
+    /**
      * @brief Restituisce l'identificativo dell'oggetto Stub.
      * @see InterfaceID#getId()
      */
@@ -26,6 +30,7 @@ public class DatiStub implements InterfaceID, Serializable{
     public String getId() {
         return id;
     }
+    
     /**
      * @brief Restituisce una rappresentazione con una stringa dell'oggetto Stub.
      */
@@ -33,8 +38,10 @@ public class DatiStub implements InterfaceID, Serializable{
     public String toString() {
         return "Test{" + "id='" + id + '\'' + '}';
     }
+    
     /**
      * @brief Confronta l'oggetto Stub con un altro oggetto.
+     * @param [in] o L'oggetto da confrontare,
      */
     @Override
     public boolean equals(Object o) {

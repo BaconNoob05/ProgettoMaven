@@ -38,7 +38,7 @@ public class PrestitoTest {
     private final LocalDate DATA_PRESTITO_STORICA = LocalDate.of(2049, 12, 1); 
     
     /**
-     * @brief Lista di autori er i test.
+     * @brief Lista di autori per i test.
      */
     private List<String> autoriEsempio;
 
@@ -47,14 +47,10 @@ public class PrestitoTest {
      */
     @BeforeEach
     void setup() {
-        
-        
         autoriEsempio = Arrays.asList("I. Sommerville", "Stephen King");
         
-
         utente = new Utente("Lorenzo", "Trovato", "0612708922", "l.trovato@studenti.unisa.it");
-        libro = new Libro("Ingegneria del Software",autoriEsempio, 1951,"978-88-8080-123-4", 5);
-
+        libro = new Libro("Ingegneria del Software", autoriEsempio, 1951, "978-88-8080-123-4", 5);
         prestito = new Prestito(utente, libro, DATA_SCADUTA, DATA_PRESTITO_STORICA); 
     }
 
@@ -102,7 +98,7 @@ public class PrestitoTest {
     }
 
     /**
-     * @brief Testa l' aggiornamento della data di restituzione.
+     * @brief Testa l'aggiornamento della data di restituzione.
      */
     @Test
     void testRegistraRestituzione() {
@@ -113,7 +109,7 @@ public class PrestitoTest {
     
 
     /**
-     * @brief Testa che  registraRestituzione.
+     * @brief Testa che registraRestituzione.
      */
     @Test
     void testRegistraRestituzione_DataNulla() {
@@ -128,18 +124,18 @@ public class PrestitoTest {
      */
     @Test
     void testIsScaduto() {
-        // Per questo test, forziamo il contesto temporale nel passato per verificare la scadenza
+        //Forziamo il contesto temporale nel passato per verificare la scadenza
         LocalDate dataPrevistaPassata = LocalDate.now().minusDays(10);
         Prestito pScaduto = new Prestito(utente, libro, dataPrevistaPassata, dataPrevistaPassata.minusDays(5));
         assertTrue(pScaduto.isScaduto());
     }
 
     /**
-     * @brief Testa isScaduto . (Testa la scadenza al giorno stesso)
+     * @brief Testa isScaduto. (Testa la scadenza al giorno stesso)
      */
     @Test
     void testIsScaduto_GiornoDiScadenza() {
-        // Simula la data prevista come OGGI. isAfter(OGGI) è FALSE.
+        //Simula la data prevista come oggi.
         LocalDate oggi = LocalDate.now();
         Prestito p = new Prestito(utente, libro, oggi, oggi.minusDays(5));
         assertFalse(p.isScaduto()); 
@@ -150,7 +146,7 @@ public class PrestitoTest {
      */
     @Test
     void testIsScaduto_NonScaduto() {
-        // Simula la data prevista come FUTURA. isAfter(FUTURO) è FALSE.
+        //Simula la data prevista come futura.
         LocalDate futura = LocalDate.now().plusDays(3);
         Prestito p = new Prestito(utente, libro, futura, LocalDate.now().minusDays(5));
         assertFalse(p.isScaduto()); 
@@ -161,7 +157,7 @@ public class PrestitoTest {
      */
     @Test
     void testIsScaduto_DopoRestituzione() {
-        // Usiamo date passate per assicurarci che sia logicamente scaduto prima della restituzione
+        //Usiamo date passate per assicurarci che sia logicamente scaduto prima della restituzione
         LocalDate dataPrestito = LocalDate.now().minusMonths(2);
         LocalDate dataPrevista = LocalDate.now().minusDays(10);
         
@@ -177,13 +173,10 @@ public class PrestitoTest {
      */
     @Test
     void testGetId() {
-        
         String id = prestito.getId();
         assertNotNull(id);
         assertTrue(id.contains("0612708922"));
         assertTrue(id.contains("978-88-8080-123-4"));
-
-        // L'ID deve contenere la DATA_PRESTITO_STORICA
         assertTrue(id.contains(DATA_PRESTITO_STORICA.toString())); 
     }
 
@@ -249,15 +242,12 @@ public class PrestitoTest {
      */
     @Test
     void testGetId_Unico() {
-
         String id1 = prestito.getId(); 
 
         Utente utente2 = new Utente("Marco", "Rossi", "0000000001", "m.rossi@studenti.unisa.it");
 
-
-        Prestito prestito2 = new Prestito(utente2, libro, DATA_SCADUTA.plusDays(1), DATA_PRESTITO_STORICA.plusDays(1)); // Data Prestito diversa
+        Prestito prestito2 = new Prestito(utente2, libro, DATA_SCADUTA.plusDays(1), DATA_PRESTITO_STORICA.plusDays(1));
         String id2 = prestito2.getId();
-
 
         assertNotEquals(id1, id2);
     }

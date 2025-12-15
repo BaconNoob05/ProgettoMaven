@@ -10,32 +10,38 @@ import static org.junit.jupiter.api.Assertions.*;
  * @brief Classe di test per verificare il comportamento di Libro.
  */
 public class LibroTest {
-     /**
+    
+    /**
      * @brief Istanza del libro utilizzata per i test.
      */
     private Libro libro;
+    
     /**
      * @brief Valore costante per il titolo.
      */
     private final String TITOLO = "Ingegneria del Software";
+    
     /**
      * @brief Lista di autori.
      */
     private List<String> autoriEsempio;
+    
     /**
      * @brief Valore costante per l'anno di pubblicazione.
      */
     private final int ANNO=1951;
+    
     /**
      * @brief Valore costante per l'ISBN.
      */
     private final String ISBN_TEST = "978-88-8080-123-4";
+    
     /**
      * @brief Valore costante per il numero di copie.
      */
     private final int COPIE=5;
 
-     /**
+    /**
      * @brief Metodo eseguito prima di ogni test.
      */
     @BeforeEach
@@ -45,8 +51,7 @@ public class LibroTest {
         libro = new Libro(TITOLO, autoriEsempio, ANNO, ISBN_TEST, COPIE);
     }
 
-
-     /**
+    /**
      * @brief Verifica che il costruttore inizializzi correttamente tutti i campi.
      */
     @Test
@@ -56,7 +61,8 @@ public class LibroTest {
         assertEquals(ISBN_TEST, libro.getIsbn());
         assertEquals(COPIE, libro.getCopieDisponibili());
     }
-     /**
+    
+    /**
      * @brief Verifica che l'ID restituito sia l'ISBN.
      
      */
@@ -65,7 +71,8 @@ public class LibroTest {
 
         assertEquals(ISBN_TEST, libro.getId());
     }
-     /**
+    
+    /**
      * @brief Verifica che la stringa degli autori sia corretta.
      */
     @Test
@@ -73,7 +80,6 @@ public class LibroTest {
         String autoriAttesi = "I. Sommerville";
         assertTrue(libro.getAutoriString().contains(autoriAttesi));
     }
-
 
     /**
      * @brief Testa che setTitolo funzioni correttamente.
@@ -84,7 +90,8 @@ public class LibroTest {
         libro.setTitolo(nuovoTitolo);
         assertEquals(nuovoTitolo, libro.getTitolo());
     }
-     /**
+    
+    /**
      * @brief Testa che settAnno funzioni correttamente. 
      */
     @Test
@@ -93,6 +100,7 @@ public class LibroTest {
         libro.setAnno(nuovoAnno);
         assertEquals(nuovoAnno, libro.getAnno());
     }
+    
     /**
      * @brief Testa l'aggiornamento del numero di copie disponibili.
      */
@@ -101,6 +109,7 @@ public class LibroTest {
         libro.setCopieDisponibili(15);
         assertEquals(15, libro.getCopieDisponibili());
     }
+    
     /**
      * @brief Testa che il numero di copie sia zero.
     */
@@ -114,8 +123,8 @@ public class LibroTest {
      * @brief Testa che il numero di copie diminuisce.
      */
     @Test
-    void testDecrementaCopie_Successo() {
-        int copieIniziali = libro.getCopieDisponibili();        //5
+    void testDecrementaCopie() {
+        int copieIniziali = libro.getCopieDisponibili();
         libro.decrementaCopie();
         assertEquals(copieIniziali - 1, libro.getCopieDisponibili());
     }
@@ -125,9 +134,9 @@ public class LibroTest {
      */
     @Test
     void testDecrementaCopie_LimiteZero() {
-        // Porta le copie a zero
+        //Porta le copie a zero
         Libro libroZeroCopie = new Libro(TITOLO, autoriEsempio, ANNO, ISBN_TEST, 1);
-        libroZeroCopie.decrementaCopie(); // Copie = 0
+        libroZeroCopie.decrementaCopie();
 
 
         assertThrows(IllegalStateException.class, () -> {
@@ -140,19 +149,19 @@ public class LibroTest {
      */
     @Test
     void testIncrementaCopie() {
-        int copieIniziali = libro.getCopieDisponibili(); // 5
+        int copieIniziali = libro.getCopieDisponibili();
         libro.incrementaCopie();
         assertEquals(copieIniziali + 1, libro.getCopieDisponibili());
     }
 
-
-   /**
+    /**
      * @brief Verifica che l'oggetto Libro sia valido.
      */
     @Test
     void testIsValido() {
         assertTrue(libro.isValido());
     }
+    
     /**
      * @brief Testa la validazione con titolo nullo.
      */
@@ -161,6 +170,7 @@ public class LibroTest {
         Libro nonValido = new Libro(null, autoriEsempio, ANNO, ISBN_TEST, COPIE);
         assertFalse(nonValido.isValido());
     }
+    
     /**
      * @brief Testa la validazione con lista autori vuota.
      */
@@ -169,24 +179,26 @@ public class LibroTest {
         Libro nonValido = new Libro(TITOLO, Collections.emptyList(), ANNO, ISBN_TEST, COPIE);
         assertFalse(nonValido.isValido());
     }
+    
     /**
      * @brief Testa la validazione con anno di pubblicazione non corretto.
      */
     @Test
     void testIsValido_AnnoNonCorretto() {
-        // Ad esempio un anno troppo nel futuro 
+        //Ad esempio un anno troppo nel futuro 
         Libro nonValido = new Libro(TITOLO, autoriEsempio, 2050, ISBN_TEST, COPIE);
         assertFalse(nonValido.isValido());
     }
     /**
      * @brief Testa la validazione con un numero negativo di copie.
      */
+    
     @Test
     void testIsValido_CopieNegative() {
-        // Anche se il costruttore dovrebbe impedirlo (o isValido dovrebbe fallire)
         Libro LibroNonValido = new Libro(TITOLO, autoriEsempio, ANNO, ISBN_TEST, -1);
         assertFalse(LibroNonValido.isValido());
     }
+    
     /**
      * @brief Testa la validazione con ISBN nullo.
      */
@@ -196,7 +208,7 @@ public class LibroTest {
         assertFalse(nonValido.isValido());
     }
 
-     /**
+    /**
      * @brief Verifica che il metodo toString() funzioni correttamente.
      */
     @Test
@@ -205,7 +217,6 @@ public class LibroTest {
         
         assertNotNull(stringaLibro);
         
-        // Verifica la presenza dei dati nel formato stringa
         assertTrue(stringaLibro.contains(TITOLO));
         assertTrue(stringaLibro.contains(Integer.toString(ANNO)));
         assertTrue(stringaLibro.contains(Integer.toString(COPIE)));
