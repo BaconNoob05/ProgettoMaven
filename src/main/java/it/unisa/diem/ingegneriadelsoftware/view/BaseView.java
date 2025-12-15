@@ -7,10 +7,10 @@ import javafx.collections.ObservableList;
 
 /**
  * @class BaseView
- * @brief Classe base astratta per le viste dell'applicazione.
+ * @brief Classe base astratta per le view dell'applicazione.
  * @details Implementa le funzionalità comuni definite in InterfaceView e mantiene
  * il riferimento locale ai dati visualizzati.
- * @tparam T Il tipo di dato gestito dalla vista.
+ * @tparam T Il tipo di dato gestito dalla view.
  */
 public abstract class BaseView<T> implements InterfaceView<T> {
 
@@ -52,7 +52,8 @@ public abstract class BaseView<T> implements InterfaceView<T> {
      * @brief Aggiorna la lista degli elementi visualizzati.
      * @param [in] lista La nuova lista di dati da visualizzare.
      * @pre La lista non deve essere null.
-     * @post L'attributo elementi è aggiornato .
+     * @post L'attributo elementi viene aggiornato.
+     * @throws IllegalArgumentException Se la lista passata come parametro è null, viene lanciata un'eccezione.
      * @see InterfaceView#mostraLista(List)
      */
     @Override
@@ -61,8 +62,7 @@ public abstract class BaseView<T> implements InterfaceView<T> {
         if (lista == null) {
             throw new IllegalArgumentException("La lista da mostrare non può essere null.");
         }
-        
-        
+       
         this.elementi = lista; 
         
         this.dataList.clear();
@@ -74,7 +74,7 @@ public abstract class BaseView<T> implements InterfaceView<T> {
 
     /**
      * @brief Restituisce l'elemento selezionato.
-     * @return L'elemento selezionato, altrimenti restituisce un valore nullo.
+     * @return L'elemento selezionato, altrimenti restituisce il valore null.
      * @pre La lista elementi deve essere popolata.
      * @see InterfaceView#getElementoSelezionato()
      */
@@ -88,7 +88,7 @@ public abstract class BaseView<T> implements InterfaceView<T> {
 
     /**
      * @brief Ottiene la stringa di ricerca corrente.
-     * @return Il testo da cercare, altrimenti restituisce un valore nullo.
+     * @return Il testo da cercare, altrimenti restituisce il valore null.
      * @see InterfaceView#getCampoCerca()
      */
     @Override
