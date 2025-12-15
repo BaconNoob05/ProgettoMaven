@@ -6,6 +6,8 @@ import it.unisa.diem.ingegneriadelsoftware.model.Prestito;
 import it.unisa.diem.ingegneriadelsoftware.view.InterfaceView;
 import java.time.LocalDate;
 import java.util.List;
+import javafx.scene.control.Button; // Necessario per il tipo Button
+
 
 /**
  * @class PrestitoController
@@ -70,13 +72,52 @@ public class PrestitoController extends CrudController<Prestito> {
         
         PrestitoView view = getSpecificView();
 
-        view.getRegistraPrestitoButton().setOnAction(e -> registraPrestito());
+        // Listener per REGISTRA PRESTITO con conferma (doppio click)
+        view.getRegistraPrestitoButton().setOnAction(e -> {
+            Button pulsante = view.getRegistraPrestitoButton();
+            Prestito datiInseriti = view.getPrestitoNuovo();
+            
+            // Se i dati non sono validi, la view ha già mostrato un errore, resettiamo lo stato di conferma
+            if (datiInseriti == null) { 
+                view.resetConferma();
+                return;
+            }
+            
+            view.richiediConferma(pulsante, this::registraPrestito, "Clicca di nuovo per confermare il prestito.");
+        });
         
+        // Listener per RESTITUISCI LIBRO con conferma (doppio click)
+        view.getRestituisciLibroButton().setOnAction(e -> {
+            Button pulsante = view.getRestituisciLibroButton();
+            
+            if (view.getElementoSelezionato() == null || view.getElementoSelezionato().getDataEffettiva() != null) {
+                view.mostraMessaggio("Errore: Seleziona un prestito attivo per la restituzione.");
+                view.resetConferma();
+                return;
+            }
+            if (view.getDataRestituzione() == null) {
+                view.mostraMessaggio("Errore: Inserisci una data di restituzione valida.");
+                view.resetConferma();
+                return;
+            }
 
-        view.getRestituisciLibroButton().setOnAction(e -> registraRestituzione());     
+            view.richiediConferma(pulsante, this::registraRestituzione, "Clicca di nuovo per confermare la restituzione.");
+        });     
 
-        view.getAnnullaButton().setOnAction(e -> view.pulisciDettagli());
+        // Listener per ELIMINA con conferma (doppio click)
+        view.getCancellaButton().setOnAction(e -> {
+            Button pulsante = view.getCancellaButton();
+            
+            if (view.getElementoSelezionato() == null) {
+                view.mostraMessaggio("Seleziona un prestito da eliminare.");
+                return;
+            }
+            
+            // L'eliminazione viene eseguita solo per i prestiti chiusi o non ancora attivi (logica standard Crud)
+            view.richiediConferma(pulsante, this::elimina, "Clicca di nuovo per confermare l'eliminazione del prestito.");
+        });
         
+        // L'annulla è gestito in DatiBaseView
 
         view.getCercaField().textProperty().addListener((observable, oldValue, newValue) -> {
             if (newValue == null || newValue.isEmpty()) {
@@ -84,19 +125,16 @@ public class PrestitoController extends CrudController<Prestito> {
             } else {
                 cerca(); 
             }
+            view.resetConferma(); // Resetta lo stato di conferma se si cambia filtro
         });
-        
-
-        view.getCancellaButton().setOnAction(e -> elimina());
         
 
         view.getAnnullaCercaButton().setOnAction(e -> {
             view.getCercaField().clear();
             aggiornaLista(); 
             view.mostraMessaggio("Ricerca annullata. Visualizzazione di tutti i prestiti.");
+            view.resetConferma();
         });
-        
-        
     }
 
 
@@ -121,7 +159,9 @@ public class PrestitoController extends CrudController<Prestito> {
     public void registraPrestito(){
         Prestito datiInseriti = getSpecificView().getPrestitoNuovo();
         
-        if (datiInseriti == null) return;
+        // Nota: questa verifica viene fatta due volte (qui e nel listener), ma è necessaria
+        // per il flusso di esecuzione di eseguiOperazione in caso di successo.
+        if (datiInseriti == null) return; 
 
         eseguiOperazione(() -> {
             getSpecificService().registraPrestito(
@@ -144,16 +184,8 @@ public class PrestitoController extends CrudController<Prestito> {
         Prestito prestitoSelezionato = getSpecificView().getElementoSelezionato();
         LocalDate dataRestituzione = getSpecificView().getDataRestituzione();
 
-        if (prestitoSelezionato == null) {
-            view.mostraMessaggio("Errore: Seleziona un prestito attivo dalla lista.");
-            return;
-        }
-
-        if (dataRestituzione == null) {
-            view.mostraMessaggio("Errore: Inserisci una data di restituzione valida.");
-            return;
-        }
-
+        if (prestitoSelezionato == null || dataRestituzione == null) return;
+        
         eseguiOperazione(() -> {
             getSpecificService().registraRestituzione(prestitoSelezionato, dataRestituzione);
         }, "Restituzione registrata. Prestito chiuso.");

@@ -18,56 +18,50 @@ import javafx.geometry.Insets;
  */
 public abstract class DatiBaseView<T extends InterfaceID> extends BaseView<T> {
 
-    /** 
-     * @brief Contenitore principale del layout che racchiude tutti gli elementi grafici della view. 
+    /** * @brief Contenitore principale del layout che racchiude tutti gli elementi grafici della view. 
      */
     private final VBox root;
 
-    /** 
-     * @brief Campo di testo per la ricerca degli elementi. 
+    /** * @brief Campo di testo per la ricerca degli elementi. 
      */
     protected final TextField cercaField;
 
-    /** 
-     * @brief Bottone per avviare la cancellazione dell'elemento. 
+    /** * @brief Bottone per avviare la cancellazione dell'elemento. 
      */
     protected final Button cancellaButton;
 
-    /** 
-     * @brief Bottone di conferma per l'inserimento o la modifica. 
+    /** * @brief Bottone di conferma per l'inserimento o la modifica. 
      */
     protected final Button okButton;
 
-    /** 
-     * @brief Bottone per annullare l'operazione corrente e pulire i campi di dettaglio. 
+    /** * @brief Bottone per annullare l'operazione corrente e pulire i campi di dettaglio. 
      */
     protected final Button annullaButton; 
 
-    /** 
-     * @brief Bottone per annullare la ricerca corrente e mostrare tutti gli elementi. 
+    /** * @brief Bottone per annullare la ricerca corrente e mostrare tutti gli elementi. 
      */
     protected final Button annullaCercaButton; 
 
-    /** 
-     * @brief Label contenente il testo del messaggio. 
+    /** * @brief Label contenente il testo del messaggio. 
      */
     protected final Label messaggioLabel;
 
-    /** 
-     * @brief Contenitore stilizzato per la visualizzazione dei messaggi di stato, errore o conferma. 
+    /** * @brief Contenitore stilizzato per la visualizzazione dei messaggi di stato, errore o conferma. 
      */
     protected final HBox messaggioBox; 
     
     
-    /** 
-     * @brief Tableview serve per la visualizzazione della tabella degli elementi. 
+    /** * @brief Tableview serve per la visualizzazione della tabella degli elementi. 
      */
     protected final TableView<T> tableView;
     
-    /** 
-     * @brief Contenitore HBox per affiancare la tabella al pannello di dettaglio. 
+    /** * @brief Contenitore HBox per affiancare la tabella al pannello di dettaglio. 
      */
     protected final HBox contentHBox;
+
+    /** * @brief Riferimento al pulsante che è in attesa di conferma (primo click effettuato). 
+     */
+    private Button buttonInAttesa = null; 
 
     /**
      * @brief Costruttore base della classe.
@@ -115,8 +109,6 @@ public abstract class DatiBaseView<T extends InterfaceID> extends BaseView<T> {
         
         root.getChildren().addAll(creaTopControls(entità), contentHBox);
         VBox.setVgrow(contentHBox, Priority.ALWAYS);
-
-        
     }
 
     /**
@@ -183,6 +175,58 @@ public abstract class DatiBaseView<T extends InterfaceID> extends BaseView<T> {
                 okButton.setText("Aggiorna");
             }
         });
+        
+        // Listener per resettare lo stato di conferma quando si annulla
+        annullaButton.setOnAction(e -> pulisciDettagli());
+
+        // Aggiungo il listener per resettare lo stato di conferma su interazione con la tabella
+        tableView.getSelectionModel().selectedItemProperty().addListener((obs, oldSelection, newSelection) -> {
+            impostaValoriDefault(newSelection);
+            resetConferma();
+        });
+        
+        // Aggiungo listener per annullare conferma quando si cambia il testo di ricerca
+        cercaField.textProperty().addListener((obs, oldVal, newVal) -> resetConferma());
+    }
+
+    /**
+     * @brief Metodo per gestire il meccanismo del doppio click/conferma in base al pulsante.
+     * @param [in] pulsante Il pulsante premuto.
+     * @param [in] operazione L'azione da eseguire al secondo click.
+     * @param [in] messaggioConferma Il messaggio da mostrare al primo click.
+     * @return Vero se l'operazione è stata eseguita (doppio click), falso se è stato richiesto solo il primo click.
+     */
+    public boolean richiediConferma(Button pulsante, Runnable operazione, String messaggioConferma) {
+        if (pulsante == buttonInAttesa) {
+            // E' il secondo click sullo stesso pulsante: esegui l'operazione
+            buttonInAttesa = null; // Resetta lo stato
+            // Esegue l'operazione di business
+            operazione.run();
+            return true;
+        } else {
+            // Primo click su questo pulsante (o click su un pulsante diverso da quello in attesa)
+            
+            // 1. Resetta lo stato precedente (annulla la conferma di qualsiasi altro pulsante)
+            if (buttonInAttesa != null) {
+                // Se c'era un altro pulsante in attesa, pulisce il messaggio di quel pulsante
+                mostraMessaggio("Conferma precedente annullata.");
+            }
+            
+            // 2. Imposta il nuovo stato di attesa
+            buttonInAttesa = pulsante;
+            
+            // 3. Richiede la conferma
+            mostraMessaggio(messaggioConferma);
+            return false;
+        }
+    }
+
+    /**
+     * @brief Resetta lo stato di conferma.
+     * @post buttonInAttesa è null.
+     */
+    public void resetConferma() {
+        buttonInAttesa = null;
     }
 
     /**
@@ -230,54 +274,46 @@ public abstract class DatiBaseView<T extends InterfaceID> extends BaseView<T> {
     public void pulisciDettagli() {
         tableView.getSelectionModel().clearSelection();
         impostaValoriDefault(null);
+        resetConferma(); // Resetta anche lo stato di conferma
         mostraMessaggio("Pronto per un nuovo inserimento.");
     }
 
     
-    /** 
-     * @return Il bottone "Elimina". 
+    /** * @return Il bottone "Elimina". 
      */
     public Button getCancellaButton() { return cancellaButton; }
     
     
-    /** 
-     * @return Il bottone "Salva/Aggiorna". 
+    /** * @return Il bottone "Salva/Aggiorna". 
      */
     public Button getOkButton() { return okButton; }
     
-    /** 
-     * @return Il bottone per annullare i campi di dettaglio. 
+    /** * @return Il bottone per annullare i campi di dettaglio. 
      */
     public Button getAnnullaButton() { return annullaButton; }
     
-    /** 
-     * @return Il bottone per annullare la ricerca. 
+    /** * @return Il bottone per annullare la ricerca. 
      */
     public Button getAnnullaCercaButton() { return annullaCercaButton; }
     
-    /** 
-     * @return Il campo di testo per la ricerca. 
+    /** * @return Il campo di testo per la ricerca. 
      */
     public TextField getCercaField() { return cercaField; }
     
     
-    /** 
-     * @return La TableView principale. 
+    /** * @return La TableView principale. 
      */
     public TableView<T> getTableView() { return tableView; }
     
-    /** 
-     * @return Il contenitore della label per il messaggio. 
+    /** * @return Il contenitore della label per il messaggio. 
      */
     public HBox getMessaggioBox() { return messaggioBox; }
     
-    /** 
-     * @return La root principale. 
+    /** * @return La root principale. 
      */
     public Parent getRoot() { return root; }
     
-    /** 
-     * @return Il contenitore HBox per affiancare la tabella al pannello di dettaglio. 
+    /** * @return Il contenitore HBox per affiancare la tabella al pannello di dettaglio. 
      */
     public HBox getContentHBox() { return contentHBox; }
 }

@@ -5,6 +5,7 @@ import it.unisa.diem.ingegneriadelsoftware.service.UtenteService;
 import it.unisa.diem.ingegneriadelsoftware.model.Utente;
 import java.util.Comparator; 
 import java.util.List; 
+import javafx.scene.control.Button; // Necessario per il tipo Button
 
 
 /**
@@ -53,26 +54,56 @@ public class UtenteController extends CrudController<Utente> {
         
         UtenteView view = getSpecificView();
         
+        // Listener OK Button con conferma (doppio click)
         view.getOkButton().setOnAction(e -> {
+            Button pulsante = view.getOkButton();
+            String azione;
+            Runnable operazione;
+
             if (view.getTableView().getSelectionModel().getSelectedItem() != null) {
-                modificaUtente();
+                // Aggiornamento
+                Utente modificato = view.getUtenteModificato();
+                if (modificato == null) { view.resetConferma(); return; } // Reset e uscita se i dati sono invalidi
+                azione = "aggiornare l'utente selezionato";
+                operazione = () -> modifica(modificato);
             } else {
-                salvaUtente();
+                // Salvataggio
+                Utente nuovo = view.getUtenteNuovo();
+                if (nuovo == null) { view.resetConferma(); return; } // Reset e uscita se i dati sono invalidi
+                azione = "salvare il nuovo utente";
+                operazione = () -> salva(nuovo);
             }
+            
+            // Richiedi conferma e, se confermato, esegui l'operazione
+            view.richiediConferma(pulsante, operazione, "Clicca di nuovo per " + azione);
         });
         
-        view.getCancellaButton().setOnAction(e -> elimina());
+        // Listener Cancella Button con conferma (doppio click)
+        view.getCancellaButton().setOnAction(e -> {
+            Button pulsante = view.getCancellaButton();
+
+            if (view.getElementoSelezionato() == null) {
+                view.mostraMessaggio("Seleziona un utente da eliminare.");
+                return;
+            }
+            
+            view.richiediConferma(pulsante, this::elimina, "Clicca di nuovo per confermare l'eliminazione.");
+        });
+        
+        // L'annulla resetta il flag tramite pulisciDettagli() in DatiBaseView
+        view.getAnnullaButton().setOnAction(e -> view.pulisciDettagli());
         
         view.getCercaField().textProperty().addListener((observable, oldValue, newValue) -> {
             cerca();
+            view.resetConferma(); // Resetta lo stato di conferma se si cambia filtro
         });
         
-        view.getAnnullaButton().setOnAction(e -> view.pulisciDettagli());
 
         view.getAnnullaCercaButton().setOnAction(e -> {
             view.getCercaField().clear();
             aggiornaVista();
             view.mostraMessaggio("Ricerca annullata.");
+            view.resetConferma();
         });
     }
 
