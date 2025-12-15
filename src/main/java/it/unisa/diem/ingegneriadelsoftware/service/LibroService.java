@@ -24,8 +24,8 @@ public class LibroService extends BaseService<Libro> {
     }
     
     /**
-     * @brief Imposta il servizio prestiti per i controlli incrociati (usato in Main.java).
-     * @param [in] prestitoService Il servizio prestiti.
+     * @brief Imposta il service dei prestiti per i controlli incrociati (usato in Main.java).
+     * @param [in] prestitoService Il service dei prestiti.
      */
     public void setPrestitoService(PrestitoService prestitoService) {
         this.prestitoService = prestitoService;
@@ -36,6 +36,7 @@ public class LibroService extends BaseService<Libro> {
      * @param [in] elemento L'oggetto da eliminare.
      * @pre L'elemento non deve essere null.
      * @post L'elemento viene rimosso dal repository.
+     * @throws IllegalStateException Se il libro ha prestiti attivi in corso, non può essere eliminato. Viene lanciata un'eccezione
      * @see InterfaceRepository#elimina(String)
      */
     @Override
@@ -59,7 +60,7 @@ public class LibroService extends BaseService<Libro> {
      * @brief Cerca i libri che corrispondono a un determinato titolo.
      * @param [in] titolo Il titolo da cercare.
      * @return Una lista di oggetti Libro che corrispondono al criterio di ricerca, altrimenti restituisce una lista vuota.
-     * @pre Il parametro 'titolo' non deve essere nullo.
+     * @pre Il parametro titolo non deve essere null.
      * @post Lo stato del repository rimane invariato.
      * @see BaseService#cercaGenerico(String)
      */
@@ -79,7 +80,7 @@ public class LibroService extends BaseService<Libro> {
      * @brief Cerca i libri scritti da un determinato autore.
      * @param [in] autore Il nome dell'autore da cercare.
      * @return Una lista di oggetti Libro associati all'autore specificato, altrimenti restituisce una lista vuota.
-     * @pre Il parametro 'autore' deve essere una stringa valida.
+     * @pre Il parametro autore deve essere una stringa valida.
      * @post Nessuna modifica ai dati.
      * @see Libro#getAutoriString()
      */
@@ -97,7 +98,7 @@ public class LibroService extends BaseService<Libro> {
 
     /**
      * @brief Esegue una ricerca generica filtrando per titolo o autore.
-     * @param [in] filtro La stringa di ricerca inserita dall'utente.
+     * @param [in] filtro La stringa di ricerca inserita dall'amministratore.
      * @return La lista dei libri che contengono la stringa inserita all'interno del titolo o della lista degli autori.
      * @note La ricerca è case-insensitive.
      */
