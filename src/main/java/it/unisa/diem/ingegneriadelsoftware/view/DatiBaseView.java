@@ -12,41 +12,68 @@ import javafx.geometry.Insets;
 
 /**
  * @class DatiBaseView
- * @brief Classe base astratta per le View che gestiscono i Dati Libri e i Dati Utenti.
+ * @brief Classe base astratta per le View che gestiscono i dati dei libri e i dati degli utenti.
  * @tparam T Il tipo di dato gestito che deve implementare InterfaceID.
  * @see BaseView
  */
 public abstract class DatiBaseView<T extends InterfaceID> extends BaseView<T> {
 
-
+    /** 
+     * @brief Contenitore principale del layout che racchiude tutti gli elementi grafici della view. 
+     */
     private final VBox root;
-    /** @brief Campo di testo per la ricerca degli elementi. */
+
+    /** 
+     * @brief Campo di testo per la ricerca degli elementi. 
+     */
     protected final TextField cercaField;
-    /** @brief Bottone per avviare la cancellazione dell'elemento . */
+
+    /** 
+     * @brief Bottone per avviare la cancellazione dell'elemento. 
+     */
     protected final Button cancellaButton;
-    /** @brief Bottone di conferma per l' inserimento o la modifica. */
+
+    /** 
+     * @brief Bottone di conferma per l'inserimento o la modifica. 
+     */
     protected final Button okButton;
-    /** @brief Bottone per annullare l'operazione corrente e pulire i campi di dettaglio. */
+
+    /** 
+     * @brief Bottone per annullare l'operazione corrente e pulire i campi di dettaglio. 
+     */
     protected final Button annullaButton; 
-    /** @brief Bottone per annullare la ricerca corrente e mostrare tutti gli elementi. */
+
+    /** 
+     * @brief Bottone per annullare la ricerca corrente e mostrare tutti gli elementi. 
+     */
     protected final Button annullaCercaButton; 
-    /** @brief Label contenente il testo del messaggio. */
+
+    /** 
+     * @brief Label contenente il testo del messaggio. 
+     */
     protected final Label messaggioLabel;
-    /** @brief Contenitore stilizzato per la visualizzazione dei messaggi di stato, errore o conferma. */
+
+    /** 
+     * @brief Contenitore stilizzato per la visualizzazione dei messaggi di stato, errore o conferma. 
+     */
     protected final HBox messaggioBox; 
     
     
-    /** @brief Tableview serve per la visualizzazione della tabella degli elementi. */
+    /** 
+     * @brief Tableview serve per la visualizzazione della tabella degli elementi. 
+     */
     protected final TableView<T> tableView;
     
-    /** @brief Contenitore HBox per affiancare la tabella al pannello di dettaglio. */
+    /** 
+     * @brief Contenitore HBox per affiancare la tabella al pannello di dettaglio. 
+     */
     protected final HBox contentHBox;
 
     /**
-     * @brief Costruttore base della classe .
+     * @brief Costruttore base della classe.
      * @details Inizializza tutti i componenti e configura la TableView chiamando i metodi astratti tramite la definizione delle colonne.
-     * @param [in] entità Nome dell'entità gestita .
-     * @post I componenti sono istanziati e la struttura base della vista è assemblata.
+     * @param [in] entità Nome dell'entità gestita.
+     * @post I componenti sono istanziati e la struttura base della view è assemblata.
      */
     public DatiBaseView(String entità) {
         
@@ -111,8 +138,8 @@ public abstract class DatiBaseView<T extends InterfaceID> extends BaseView<T> {
 
     
     /**
-     * @brief Metodo astratto per creare il pannello di dettaglio (form) per inserimento/modifica.
-     * @return Il GridPane contenente l'interfaccia per la manipolazione dei dati altrimenti un valore nullo.
+     * @brief Metodo astratto per creare il pannello di dettaglio, ossia il form, per l'inserimento o la modifica.
+     * @return Il GridPane contenente l'interfaccia per la manipolazione dei dati, altrimenti restituisce il valore null.
      * @post Il pannello di dettaglio viene creato e restituito.
      */
     protected abstract GridPane creaPaneDettaglio();
@@ -144,7 +171,7 @@ public abstract class DatiBaseView<T extends InterfaceID> extends BaseView<T> {
     }
     
     /**
-     * @brief Configura i listener principali della vista.
+     * @brief Configura i listener principali della view.
      */
     protected void impostaListener() {
         
@@ -160,7 +187,7 @@ public abstract class DatiBaseView<T extends InterfaceID> extends BaseView<T> {
 
     /**
      * @brief Restituisce l'elemento selezionato nella TableView.
-     * @return L'oggetto T selezionato, altrimenti restituisce un valore nullo.
+     * @return L'oggetto T selezionato, altrimenti restituisce il valore null.
      * @see BaseView#getElementoSelezionato()
      */
     @Override
@@ -179,7 +206,7 @@ public abstract class DatiBaseView<T extends InterfaceID> extends BaseView<T> {
     }
 
     /**
-     * @brief Mostra un messaggio di stato, errore o conferma all'utente.
+     * @brief Mostra un messaggio di stato, di errore o di conferma all'utente.
      * @param [in] messaggio Il testo da visualizzare.
      * @see BaseView#mostraMessaggio(String)
      */
@@ -197,7 +224,7 @@ public abstract class DatiBaseView<T extends InterfaceID> extends BaseView<T> {
     }
     
     /**
-     * @brief Resetta il form di dettaglio, svuotando i campi e deselezionando la riga in tabella.
+     * @brief Resetta il form di dettaglio, svuotando i campi e deselezionando la riga nella tabella.
      * @post Il form è pronto per un nuovo inserimento.
      */
     public void pulisciDettagli() {
@@ -207,32 +234,50 @@ public abstract class DatiBaseView<T extends InterfaceID> extends BaseView<T> {
     }
 
     
-    /** @return Il bottone "Cancella" (ora "Elimina"). */
+    /** 
+     * @return Il bottone "Elimina". 
+     */
     public Button getCancellaButton() { return cancellaButton; }
     
     
-    /** @return Il bottone "Salva/Aggiorna" (ex OK). */
+    /** 
+     * @return Il bottone "Salva/Aggiorna". 
+     */
     public Button getOkButton() { return okButton; }
     
-    /** @return Il bottone per annullare i campi di dettaglio. */
+    /** 
+     * @return Il bottone per annullare i campi di dettaglio. 
+     */
     public Button getAnnullaButton() { return annullaButton; }
     
-    /** @return Il bottone per annullare la ricerca. */
+    /** 
+     * @return Il bottone per annullare la ricerca. 
+     */
     public Button getAnnullaCercaButton() { return annullaCercaButton; }
     
-    /** @return Il campo di testo per la ricerca. */
+    /** 
+     * @return Il campo di testo per la ricerca. 
+     */
     public TextField getCercaField() { return cercaField; }
     
     
-    /** @return La TableView principale. */
+    /** 
+     * @return La TableView principale. 
+     */
     public TableView<T> getTableView() { return tableView; }
     
-    /** @return Il contenitore della label per il messaggio. */
+    /** 
+     * @return Il contenitore della label per il messaggio. 
+     */
     public HBox getMessaggioBox() { return messaggioBox; }
     
-    /** @return La root principale. */
+    /** 
+     * @return La root principale. 
+     */
     public Parent getRoot() { return root; }
     
-    /** @return Il contenitore HBox per affiancare la tabella al pannello di dettaglio. */
+    /** 
+     * @return Il contenitore HBox per affiancare la tabella al pannello di dettaglio. 
+     */
     public HBox getContentHBox() { return contentHBox; }
 }
