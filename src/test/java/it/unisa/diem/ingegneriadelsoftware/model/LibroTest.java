@@ -1,4 +1,3 @@
-
 package it.unisa.diem.ingegneriadelsoftware.model;
 import java.util.*;
 import org.junit.jupiter.api.*;
@@ -54,7 +53,7 @@ public class LibroTest {
     /**
      * @brief Verifica che il costruttore inizializzi correttamente tutti i campi.
      */
-    @Test
+    @Test /*caso di test 1 */
     void testCostruttoreEGetter() {
         assertEquals(TITOLO, libro.getTitolo());
         assertEquals(ANNO, libro.getAnno());
@@ -64,9 +63,8 @@ public class LibroTest {
     
     /**
      * @brief Verifica che l'ID restituito sia l'ISBN.
-     
      */
-    @Test
+    @Test /*caso di test 2 */
     void testGetId() {
 
         assertEquals(ISBN_TEST, libro.getId());
@@ -75,7 +73,7 @@ public class LibroTest {
     /**
      * @brief Verifica che la stringa degli autori sia corretta.
      */
-    @Test
+    @Test /*caso di test 3 */
     void testGetAutoriString() {
         String autoriAttesi = "I. Sommerville";
         assertTrue(libro.getAutoriString().contains(autoriAttesi));
@@ -84,7 +82,7 @@ public class LibroTest {
     /**
      * @brief Testa che setTitolo funzioni correttamente.
      */
-    @Test
+    @Test /*caso di test 4 */
     void testSetTitolo() {
         String nuovoTitolo = "Ciclo di Dune";
         libro.setTitolo(nuovoTitolo);
@@ -94,7 +92,7 @@ public class LibroTest {
     /**
      * @brief Testa che settAnno funzioni correttamente. 
      */
-    @Test
+    @Test /*caso di test 5 */
     void testSetAnno() {
         int nuovoAnno = 2023;
         libro.setAnno(nuovoAnno);
@@ -104,7 +102,7 @@ public class LibroTest {
     /**
      * @brief Testa l'aggiornamento del numero di copie disponibili.
      */
-    @Test
+    @Test /*caso di test 6 */
     void testSetCopieDisponibili() {
         libro.setCopieDisponibili(15);
         assertEquals(15, libro.getCopieDisponibili());
@@ -112,8 +110,8 @@ public class LibroTest {
     
     /**
      * @brief Testa che il numero di copie sia zero.
-    */
-    @Test
+     */
+    @Test /*caso di test 7 */
     void testSetCopieDisponibili_Nessuna() {
         libro.setCopieDisponibili(0);
         assertEquals(0, libro.getCopieDisponibili());
@@ -122,7 +120,7 @@ public class LibroTest {
     /**
      * @brief Testa che il numero di copie diminuisce.
      */
-    @Test
+    @Test /*caso di test 8 */
     void testDecrementaCopie() {
         int copieIniziali = libro.getCopieDisponibili();
         libro.decrementaCopie();
@@ -132,7 +130,7 @@ public class LibroTest {
     /**
      * @brief Testa che venga lanciata `IllegalStateException` quando si tenta di decrementare il numero di copie quando quest'ultimo sia zero.
      */
-    @Test
+    @Test /*caso di test 9 */
     void testDecrementaCopie_LimiteZero() {
         //Porta le copie a zero
         Libro libroZeroCopie = new Libro(TITOLO, autoriEsempio, ANNO, ISBN_TEST, 1);
@@ -147,7 +145,7 @@ public class LibroTest {
     /**
      * @brief Testa che il numero di copie aumenta.
      */
-    @Test
+    @Test /*caso di test 10 */
     void testIncrementaCopie() {
         int copieIniziali = libro.getCopieDisponibili();
         libro.incrementaCopie();
@@ -157,7 +155,7 @@ public class LibroTest {
     /**
      * @brief Verifica che l'oggetto Libro sia valido.
      */
-    @Test
+    @Test /*caso di test 11 */
     void testIsValido() {
         assertTrue(libro.isValido());
     }
@@ -165,7 +163,7 @@ public class LibroTest {
     /**
      * @brief Testa la validazione con titolo nullo.
      */
-    @Test
+    @Test /*caso di test 12 */
     void testIsValido_TitoloMancante() {
         Libro nonValido = new Libro(null, autoriEsempio, ANNO, ISBN_TEST, COPIE);
         assertFalse(nonValido.isValido());
@@ -174,7 +172,7 @@ public class LibroTest {
     /**
      * @brief Testa la validazione con lista autori vuota.
      */
-    @Test
+    @Test /*caso di test 13 */
     void testIsValido_AutoriMancanti() {
         Libro nonValido = new Libro(TITOLO, Collections.emptyList(), ANNO, ISBN_TEST, COPIE);
         assertFalse(nonValido.isValido());
@@ -183,7 +181,7 @@ public class LibroTest {
     /**
      * @brief Testa la validazione con anno di pubblicazione non corretto.
      */
-    @Test
+    @Test /*caso di test 14 */
     void testIsValido_AnnoNonCorretto() {
         //Ad esempio un anno troppo nel futuro 
         Libro nonValido = new Libro(TITOLO, autoriEsempio, 2050, ISBN_TEST, COPIE);
@@ -193,7 +191,7 @@ public class LibroTest {
      * @brief Testa la validazione con un numero negativo di copie.
      */
     
-    @Test
+    @Test /*caso di test 15 */
     void testIsValido_CopieNegative() {
         Libro LibroNonValido = new Libro(TITOLO, autoriEsempio, ANNO, ISBN_TEST, -1);
         assertFalse(LibroNonValido.isValido());
@@ -202,7 +200,7 @@ public class LibroTest {
     /**
      * @brief Testa la validazione con ISBN nullo.
      */
-    @Test
+    @Test /*caso di test 16 */
     void testIsValido_IsbnNullo() {
         Libro nonValido = new Libro(TITOLO, autoriEsempio, ANNO, null, COPIE);
         assertFalse(nonValido.isValido());
@@ -211,7 +209,7 @@ public class LibroTest {
     /**
      * @brief Verifica che il metodo toString() funzioni correttamente.
      */
-    @Test
+    @Test /*caso di test 17 */
     void testToString_FormatoCorretto() {
         String stringaLibro = libro.toString();
         
@@ -225,7 +223,7 @@ public class LibroTest {
     /**
      * @brief Verifica che il metodo getAutori() restituisca la lista corretta.
      */
-    @Test
+    @Test /*caso di test 18 */
     void testGetAutori() {
         assertEquals(2, libro.getAutori().size());
         assertTrue(libro.getAutori().contains("I. Sommerville"));
@@ -234,7 +232,7 @@ public class LibroTest {
     /**
      * @brief Testa che setAutori funzioni correttamente. (MANCANTE DALLA MATRICE)
      */
-    @Test
+    @Test /*caso di test 19 */
     void testSetAutori() {
         List<String> nuoviAutori = Arrays.asList("Nuovo Autore 1", "Nuovo Autore 2");
         libro.setAutori(nuoviAutori);
