@@ -1,19 +1,17 @@
-
-
-
 package it.unisa.diem.ingegneriadelsoftware.service;
+
 import java.util.List;
 import java.util.Comparator;
 
 /**
  * @interface InterfaceService
- * @brief Interfaccia generica per i servizi di gestione.
- * @tparam T Il tipo di entità gestita dal servizio.
+ * @brief Interfaccia generica per i service di gestione.
+ * @tparam T Il tipo di entità gestita dal service.
  */
 public interface InterfaceService<T> {
 
     /**
-     * @brief Salva un nuovo elemento o aggiorna uno esistente.
+     * @brief Salva un nuovo elemento o ne aggiorna uno esistente.
      * @param [in] elemento L'oggetto da salvare.
      * @pre L'elemento non deve essere null e deve essere valido.
      * @post L'elemento viene salvato sul file.
@@ -23,7 +21,7 @@ public interface InterfaceService<T> {
     /**
      * @brief Modifica i dati di un elemento esistente.
      * @param [in] elemento L'oggetto contenente i dati aggiornati.
-     * @pre L'elemento deve esistere nel sistema.
+     * @pre L'elemento deve esistere.
      * @post I dati dell'elemento nel repository risultano aggiornati.
      */
     void modifica(T elemento);
@@ -39,7 +37,7 @@ public interface InterfaceService<T> {
     /**
      * @brief Cerca un singolo elemento tramite il suo identificativo.
      * @param [in] id La stringa identificativa dell'oggetto.
-     * @return L'oggetto trovato, altrimenti restituisce un valore nullo.
+     * @return L'oggetto trovato, altrimenti restituisce il valore null.
      * @pre L'ID non deve essere null.
      * @post Lo stato del sistema non viene alterato.
      */
@@ -55,7 +53,7 @@ public interface InterfaceService<T> {
     List<T> cercaGenerico(String filtro);
 
     /**
-     * @brief Restituisce tutti gli elementi gestiti dal servizio.
+     * @brief Restituisce tutti gli elementi gestiti dal service.
      * @return La lista completa degli oggetti, altrimenti restituisce una lista vuota.
      */
     List<T> getAll();
@@ -64,7 +62,7 @@ public interface InterfaceService<T> {
      * @brief Ordina gli elementi in memoria secondo un comparatore specifico.
      * @param [in] comparatore L'oggetto Comparator che definisce l'ordinamento.
      * @pre Il comparatore non deve essere null.
-     * @post L'ordine degli elementi seguirà il criterio imposto.
+     * @post L'ordine degli elementi segue il criterio imposto.
      */
     void ordina(Comparator<T> comparatore);
 }
