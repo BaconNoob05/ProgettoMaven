@@ -1,5 +1,3 @@
-
-
 package it.unisa.diem.ingegneriadelsoftware.view;
 
 import java.util.List;
@@ -16,6 +14,7 @@ public interface InterfaceView<T> {
      * @brief Visualizza una lista di elementi nella view.
      * @param [in] lista La lista di oggetti T da mostrare.
      * @pre La lista non può essere null.
+     * @throws IllegalArgumentException Se la lista è null, viene lanciata un'eccezione.
      * @post La view riflette il contenuto della lista passata.
      */
     void mostraLista(List<T> lista);
@@ -23,8 +22,8 @@ public interface InterfaceView<T> {
     
     
     /**
-     * @brief Recupera l'elemento attualmente selezionato dall'utente.
-     * @return L'oggetto selezionato, altrimenti restituisce un valore nullo.
+     * @brief Recupera l'elemento attualmente selezionato dall'amministratore
+     * @return L'oggetto selezionato, altrimenti restituisce il valore null.
      * @pre La view deve essere inizializzata.
      * @post Lo stato della selezione non cambia.
      */
@@ -32,7 +31,7 @@ public interface InterfaceView<T> {
 
     /**
      * @brief Ottiene il testo inserito nel campo di ricerca.
-     * @return Il testo contenuto nel campo di ricerca, altrimenti restituisce un valore nullo.
+     * @return Il testo contenuto nel campo di ricerca, altrimenti restituisce il valore null.
      * @pre L'elemento da cercare deve esistere.
      * @post Nessuna modifica alla UI.
      */
@@ -41,10 +40,10 @@ public interface InterfaceView<T> {
     
     
     /**
-     * @brief Mostra un messaggio all'utente.
+     * @brief Mostra un messaggio.
      * @param [in] messaggio Il testo da visualizzare.
      * @pre Il messaggio non deve essere null.
-     * @post L'utente visualizza il responso.
+     * @post L'amministratore visualizza il responso.
      */
     void mostraMessaggio(String messaggio);
 }
