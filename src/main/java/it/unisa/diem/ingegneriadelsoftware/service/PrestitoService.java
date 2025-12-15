@@ -18,7 +18,7 @@ import it.unisa.diem.ingegneriadelsoftware.repository.Repository;
 public class PrestitoService extends BaseService<Prestito> {
 
     /**
-     * @brief Riferimento al servizio dei libri.
+     * @brief Riferimento al service dei libri.
      * Necessario per aggiornare il numero di copie disponibili quando avviene un prestito o una restituzione.
      */
     private LibroService libroService;
@@ -43,6 +43,8 @@ public class PrestitoService extends BaseService<Prestito> {
      * @pre Il libro deve avere copie disponibili.
      * @post Un nuovo oggetto Prestito viene salvato nel repository.
      * @post Il numero di copie disponibili del libro viene decrementato di 1.
+     * @throws IllegalArgumentException Se l'utente o il libro sono null o la data di restituzione prevista non è valida.
+     * @throws IllegalStateException Se l'utente ha troppi prestiti o il libro non ha copie disponibili.
      * @see LibroService
      */
     public void registraPrestito(Utente utente, Libro libro, LocalDate dataPrevista) { 
@@ -65,10 +67,10 @@ public class PrestitoService extends BaseService<Prestito> {
         if (libro.getCopieDisponibili() <= 0) {
             throw new IllegalStateException("Nessuna copia disponibile");
         }
-            Prestito nuovoPrestito = new Prestito(utente, libro, dataPrevista);
-            libro.decrementaCopie();
-            libroService.modifica(libro);
-            this.salva(nuovoPrestito);  
+        Prestito nuovoPrestito = new Prestito(utente, libro, dataPrevista);
+        libro.decrementaCopie();
+        libroService.modifica(libro);
+        this.salva(nuovoPrestito);  
        
     }
  
@@ -79,6 +81,8 @@ public class PrestitoService extends BaseService<Prestito> {
      * @pre Il prestito deve essere ancora attivo.
      * @post Il campo dataEffettiva del prestito viene impostato.
      * @post Il numero di copie disponibili del libro viene incrementato di 1.
+     * @throws IllegalArgumentException Se il parametro prestito è null.
+     * @throws IllegalStateException Se il prestito è già stato chiuso
      * @see LibroService
      */
     public void registraRestituzione(Prestito prestito, LocalDate dataEffettiva) { 
@@ -114,8 +118,8 @@ public class PrestitoService extends BaseService<Prestito> {
 
      /**
      * @brief Ricerca generica per il Prestito.
-     * @param [in] filtro La stringa di ricerca, rappresentata dal nome dell'utente o dal titolo del libro.
-     * @return La lista dei prestiti corrispondenti al filtro.
+     * @param [in] filtro La stringa di ricerca, rappresentata dal nome dell'utente o dal titolo del libro. 
+     * @return La lista dei prestiti corrispondenti al filtro, altrimenti restituisce una lista vuota.
      */
     @Override
     public List<Prestito> cercaGenerico(String filtro) {
