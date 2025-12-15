@@ -34,7 +34,7 @@ public class UtenteServiceTest {
      */
     private Utente utenteLorenzoTrovato;
     
-      /**
+     /**
      * @brief Utente per i test.
      */
     private Utente utenteAlessandroPicariello;
@@ -44,12 +44,12 @@ public class UtenteServiceTest {
      */
     private Utente utenteMatteoIandiorio;
     
-      /**
+     /**
      * @brief Utente per i test.
      */
     private Utente utenteDanieleManzo;
 
-   /**
+    /**
      * @brief Metodo eseguito prima di ogni test.
      */
     @BeforeEach
@@ -75,7 +75,7 @@ public class UtenteServiceTest {
     /**
      * @brief Testa il costruttore di UtenteService e l'inizializzazione delle dipendenze.
      */
-    @Test
+    @Test /*caso di test 121 */
     void testCostruttore() {
         assertNotNull(utenteService);
         assertNotNull(utenteRepoStub);
@@ -86,7 +86,7 @@ public class UtenteServiceTest {
     /**
      * @brief Testa la ricerca generica per cognome (case-insensitive).
      */
-    @Test
+    @Test /*caso di test 122 */
     void testCercaGenerico_MatchCognome() {
         final String FILTRO = "manzo"; 
         List<Utente> risultati = utenteService.cercaGenerico(FILTRO);
@@ -98,7 +98,7 @@ public class UtenteServiceTest {
     /**
      * @brief Testa la ricerca generica per matricola.
      */
-    @Test
+    @Test /*caso di test 123 */
     void testCercaGenerico_MatchMatricola() {
         final String FILTRO = "0612709975"; 
         List<Utente> risultati = utenteService.cercaGenerico(FILTRO);
@@ -110,7 +110,7 @@ public class UtenteServiceTest {
     /**
      * @brief Testa la ricerca generica con filtro nullo/vuoto/spazi (deve restituire tutti).
      */
-    @Test
+    @Test /*caso di test 124 */
     void testCercaGenerico_FiltroVuotoONullo_RestituisceTutti() {
 
         assertEquals(4, utenteService.cercaGenerico(null).size());
@@ -121,7 +121,7 @@ public class UtenteServiceTest {
     /**
      * @brief Testa la ricerca per cognome in base a un filtro con zero risultati.
      */
-    @Test
+    @Test /*caso di test 125 */
     void testCercaPerCognome_MatchMultiplo_Nessuno() {
         final String COGNOME_FILTRO = "Rossi";
 
@@ -135,7 +135,7 @@ public class UtenteServiceTest {
     /**
      * @brief Testa la ricerca per cognome in base a un filtro con un singolo risultato .
      */
-    @Test
+    @Test /*caso di test 126 */
     void testCercaPerCognome_MatchSingolo() {
         final String COGNOME_FILTRO = "iandiorio";
 
@@ -150,7 +150,7 @@ public class UtenteServiceTest {
     /**
      * @brief Testa la ricerca per cognome in base a un filtro con zero risultati .
      */
-    @Test
+    @Test /*caso di test 127 */
     void testCercaPerCognome_NessunMatch() {
         final String COGNOME_FILTRO = "Bianchi";
 
@@ -163,7 +163,7 @@ public class UtenteServiceTest {
     /**
      * @brief Testa la ricerca per cognome con un filtro nullo.
      */
-    @Test
+    @Test /*caso di test 128 */
     void testCercaPerCognome_FiltroNullo() {
         assertThrows(IllegalArgumentException.class, () -> {
             utenteService.cercaPerCognome(null);
@@ -173,7 +173,7 @@ public class UtenteServiceTest {
     /**
      * @brief Testa la ricerca per cognome con il case-insensitive.
      */
-    @Test
+    @Test /*caso di test 129 */
     void testCercaPerCognome_CaseSensitivityEsatta() {
         final String COGNOME_FILTRO = "Trovato";
 
@@ -187,7 +187,7 @@ public class UtenteServiceTest {
     /**
      * @brief Testa la ricerca per cognome con un filtro in minuscolo.
      */
-    @Test
+    @Test /*caso di test 130 */
     void testCercaPerCognome_CaseSensitivityMinuscola() {
         final String COGNOME_FILTRO = "manzo";
 
@@ -201,7 +201,7 @@ public class UtenteServiceTest {
     /**
      * @brief Testa la ricerca per cognome con un filtro vuoto.
      */
-    @Test
+    @Test /*caso di test 131 */
     void testCercaPerCognome_FiltroVuoto() {
         final String COGNOME_FILTRO = "";
 
@@ -214,7 +214,7 @@ public class UtenteServiceTest {
     /**
      * @brief Testa la ricerca per cognome con un filtro contenente solo spazi.
      */
-    @Test
+    @Test /*caso di test 132 */
     void testCercaPerCognome_FiltroSpazi() {
         final String COGNOME_FILTRO = " ";
 
@@ -227,7 +227,7 @@ public class UtenteServiceTest {
     /**
      * @brief Testa la ricerca per cognome con un filtro che ha corrispondenza per due utenti.
      */
-    @Test
+    @Test /*caso di test 133 */
     void testCercaPerCognome_AltroSingolo() {
         final String COGNOME_FILTRO = "Trovato";
  
@@ -245,7 +245,7 @@ public class UtenteServiceTest {
     /**
      * @brief Testa la ricerca per cognome con un filtro che corrisponde a un utente il cui cognome è in minuscolo.
      */
-    @Test
+    @Test /*caso di test 134 */
     void testCercaPerCognome_AltroSingoloMinuscolo() {
         final String COGNOME_FILTRO = "picariello";
 
@@ -259,7 +259,7 @@ public class UtenteServiceTest {
     /**
      * @brief Testa l'eliminazione di un utente con prestiti attivi.
      */
-    @Test
+    @Test /*caso di test 135 */
     void testElimina_PrestitiAttiviImpedisconoEliminazione() {
         Libro l = new Libro("Clean Code", Arrays.asList("R. Martin"), 2008, "ISBN01", 10);
         Prestito prestitoAttivo = new Prestito(utenteLorenzoTrovato, l, LocalDate.now().plusDays(10), LocalDate.now()); 
@@ -276,7 +276,7 @@ public class UtenteServiceTest {
     /**
      * @brief Testa l'eliminazione di un utente senza prestiti attivi.
      */
-    @Test
+    @Test /*caso di test 136 */
     void testElimina_NessunPrestitoAttivo() {
         assertDoesNotThrow(() -> utenteService.elimina(utenteDanieleManzo));
         assertNull(utenteRepoStub.cerca(utenteDanieleManzo.getId()));
