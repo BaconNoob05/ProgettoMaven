@@ -168,4 +168,52 @@ public class UtenteTest {
         assertTrue(stringaUtente.contains(EMAIL));
     }
     
+    /**
+     * @brief Testa che setMatricola lanci un'IllegalArgumentException se la matricola è nulla o vuota.
+     */
+    @Test
+    void testSetMatricola_MatricolaNullaOVuota(){
+        assertThrows(IllegalArgumentException.class, () -> {
+            utente.setMatricola(null);
+        });
+        assertThrows(IllegalArgumentException.class, () -> {
+            utente.setMatricola("");
+        });
+        assertThrows(IllegalArgumentException.class, () -> {
+            utente.setMatricola(" ");
+        });
+    } 
+    
+    /**
+     * @brief Testa il getter per il nome.
+     */
+    @Test
+    void testGetNome() {
+        assertEquals(NOME, utente.getNome());
+    }
+
+    /**
+     * @brief Testa il getter per il cognome.
+     */
+    @Test
+    void testGetCognome() {
+        assertEquals(COGNOME, utente.getCognome());
+    }
+
+    /**
+     * @brief Testa il getter per la matricola (oltre a testGetID).
+     */
+    @Test
+    void testGetMatricola() {
+        assertEquals(MATRICOLA, utente.getMatricola());
+    }
+
+    /**
+     * @brief Testa il getter per l'email.
+     */
+    @Test
+    void testGetEmail() {
+        assertEquals(EMAIL, utente.getEmail());
+    }
+    
 }

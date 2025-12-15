@@ -222,4 +222,23 @@ public class LibroTest {
         assertTrue(stringaLibro.contains(Integer.toString(COPIE)));
         assertTrue(stringaLibro.contains(ISBN_TEST));
     }
+    /**
+     * @brief Verifica che il metodo getAutori() restituisca la lista corretta.
+     */
+    @Test
+    void testGetAutori() {
+        assertEquals(2, libro.getAutori().size());
+        assertTrue(libro.getAutori().contains("I. Sommerville"));
+    }
+
+    /**
+     * @brief Testa che setAutori funzioni correttamente. (MANCANTE DALLA MATRICE)
+     */
+    @Test
+    void testSetAutori() {
+        List<String> nuoviAutori = Arrays.asList("Nuovo Autore 1", "Nuovo Autore 2");
+        libro.setAutori(nuoviAutori);
+        assertEquals(nuoviAutori.size(), libro.getAutori().size());
+        assertEquals("Nuovo Autore 1, Nuovo Autore 2", libro.getAutoriString());
+    }
 }

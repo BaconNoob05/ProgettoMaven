@@ -261,4 +261,61 @@ public class PrestitoTest {
         assertEquals(LocalDate.now(), nuovoPrestito.getDataPrestito());
         assertEquals(dataPrevista, nuovoPrestito.getDataPrevista());
     }
+    
+    /**
+     * @brief Testa il getter getNomeUtente().
+     */
+    @Test
+    void testGetNomeUtente() {
+        assertEquals("Trovato Lorenzo", prestito.getNomeUtente());
+    }
+
+    /**
+     * @brief Testa il getter getTitoloLibro().
+     */
+    @Test
+    void testGetTitoloLibro() {
+        assertEquals("Ingegneria del Software", prestito.getTitoloLibro());
+    }
+
+    /**
+     * @brief Testa il getter getDataPrestito().
+     */
+    @Test
+    void testGetDataPrestito() {
+        assertEquals(DATA_PRESTITO_STORICA, prestito.getDataPrestito());
+    }
+
+    /**
+     * @brief Testa il getter getDataPrevista().
+     */
+    @Test
+    void testGetDataPrevista() {
+        assertEquals(DATA_SCADUTA, prestito.getDataPrevista());
+    }
+
+    /**
+     * @brief Testa il getter getDataEffettiva() quando il prestito è attivo.
+     */
+    @Test
+    void testGetDataEffettiva_Attivo() {
+        assertNull(prestito.getDataEffettiva());
+    }
+    
+    /**
+     * @brief Testa il getter getUtente().
+     */
+    @Test
+    void testGetUtente() {
+        assertEquals(utente, prestito.getUtente());
+    }
+    
+    /**
+     * @brief Testa il getter getLibro().
+     */
+    @Test
+    void testGetLibro() {
+        assertEquals(libro, prestito.getLibro());
+    }
+    
 }
