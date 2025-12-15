@@ -36,6 +36,7 @@ public class Utente extends Dati {
      * @param [in] cognome Il cognome dell'utente.
      * @param [in] matricola La matricola univoca.
      * @param [in] email L'indirizzo email.
+     * @throws IllegalArgumentException Se uno tra i parametri nome, cognome e matricola sono nulli o vuoti o se l'email non è valida, viene lanciata un'eccezione.
      */
     public Utente(String nome, String cognome, String matricola, String email) {
         if (nome == null || nome.trim().isEmpty() ||
@@ -67,7 +68,7 @@ public class Utente extends Dati {
 
     /**
      * @brief Ottiene la matricola dell'utente.
-     * @return La matricola dell'utente, altrimenti restituisce un valore nullo.
+     * @return La matricola dell'utente, altrimenti restituisce il valore null.
      * @see Dati#getId()
      */
     @Override 
@@ -78,23 +79,23 @@ public class Utente extends Dati {
  
     /**
      * @brief Restituisce il nome dell'utente.
-     * @return Il nome dell'utente, altrimenti restituisce un valore nullo.
+     * @return Il nome dell'utente, altrimenti restituisce il valore null.
      */
     public String getNome() {
         return nome;
     }
 
-    /** * @brief Restituisce il cognome dell'utente.
-     * @return Il cognome dell'utente, altrimenti restituisce un valore nullo.
+    /** 
+     * @brief Restituisce il cognome dell'utente.
+     * @return Il cognome dell'utente, altrimenti restituisce il valore null.
      */
-
     public String getCognome() {
         return cognome;
     }
 
     /**
      * @brief Restituisce la matricola dell'utente.
-     * @return La matricola dell'utente, altrimenti restituisce un valore nullo.
+     * @return La matricola dell'utente, altrimenti restituisce il valore null.
      */
     public String getMatricola() {
         return matricola;
@@ -102,7 +103,7 @@ public class Utente extends Dati {
 
     /**
      * @brief Restituisce l'email dell'utente.
-     * @return L'email dell'utente, altrimenti restituisce un valore nullo.
+     * @return L'email dell'utente, altrimenti restituisce il valore null.
      */
     public String getEmail() {
         return email;
@@ -111,7 +112,7 @@ public class Utente extends Dati {
     /**
      * @brief Imposta il nome dell'utente.
      * @param nuovoNome Il nuovo nome.
-     * @pre nuovoNome non deve essere nullo.
+     * @pre nuovoNome non deve assumere il valore null.
      * @post Il nome è uguale a nuovoNome.
      */
     public void setNome(String nuovoNome) {
@@ -120,8 +121,8 @@ public class Utente extends Dati {
 
     /**
      * @brief Imposta il cognome dell'utente.
-     * @param nuovoCognome Il nuovo cognome.
-     * @pre nuovoCognome non deve essere nullo.
+     * @param [in] nuovoCognome Il nuovo cognome.
+     * @pre nuovoCognome non deve assumere il valore null.
      * @post Il cognome è uguale a nuovoCognome.
      */
     public void setCognome(String nuovoCognome) {
@@ -130,9 +131,10 @@ public class Utente extends Dati {
 
     /**
      * @brief Imposta l'indirizzo email dell'utente.
-     * @param nuovaEmail La nuova email.
-     * @pre nuovaEmail non deve essere nullo.
-     * @post L' email è uguale ad nuovaEmail.
+     * @param [in] nuovaEmail La nuova email.
+     * @pre nuovaEmail non deve assumere il valore null.
+     * @throws IllegalArgumentException Se l'email non rispetta il formato richiesto, viene lanciata un'eccezione.
+     * @post L' email è uguale a nuovaEmail.
      */
     public void setEmail(String nuovaEmail) {
         if (nuovaEmail == null || !nuovaEmail.endsWith(suffissoEmail)) {
@@ -143,8 +145,9 @@ public class Utente extends Dati {
     
     /**
      * @brief Imposta la matricola dell'utente.
-     * @param nuovaMatricola La nuova matricola.
-     * @pre nuovaMatricola non deve essere nullo o vuoto.
+     * @param [in] nuovaMatricola La nuova matricola.
+     * @pre nuovaMatricola non deve assumere il valore null o essere vuota.
+     * @throws IllegalArgumentException Se la matricola è vuota o nulla, viene lanciata un'eccezione
      * @post La matricola è uguale a nuovaMatricola.
      */
     public void setMatricola(String nuovaMatricola) {
@@ -159,7 +162,7 @@ public class Utente extends Dati {
      * @brief Restituisce una rappresentazione in formato stringa dell'utente.
      * @details Genera una stringa contenente i dati anagrafici dell'utente,
      * quali nome, cognome, matricola ed email.
-     * @return Una stringa formattata con i dettagli dell'utente, altrimenti restituisce un valore nullo.
+     * @return Una stringa formattata con i dettagli dell'utente, altrimenti restituisce il valore null.
      * @pre L'oggetto Utente deve essere stato inizializzato.
      * @post I dati interni dell'oggetto non subiscono modifiche.
      * @see Dati#toString()
