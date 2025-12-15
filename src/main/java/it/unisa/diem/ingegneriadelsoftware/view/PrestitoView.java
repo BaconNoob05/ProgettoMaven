@@ -25,29 +25,62 @@ import javafx.geometry.Insets;
 
 public class PrestitoView extends DatiBaseView<Prestito> {
     
-    
+    /** 
+     * @brief Formattatore per la visualizzazione delle date. 
+     */
     private static final DateTimeFormatter DATA = DateTimeFormatter.ofPattern("dd/MM/yyyy");
 
-   
+    /** 
+     * @brief Menu a tendina per la selezione del libro. 
+     */
     private final ComboBox<Libro> libroComboBox;
     
+    /** 
+     * @brief Menu a tendina per la selezione dell'utente. 
+     */
     private final ComboBox<Utente> utenteComboBox;
 
-    
+    /** 
+     * @brief Selettore per la data di inizio prestito. 
+     */
     private final DatePicker dataPrestitoPicker;
-    private final DatePicker dataRestituzionePicker; 
-    private final ComboBox<String> statoComboBox; 
     
+    /** 
+     * @brief Selettore per la data di restituzione. 
+     */
+    private final DatePicker dataRestituzionePicker;
+     
+    /** 
+     * @brief Menu a tendina per visualizzare lo stato del prestito. 
+     */
+    private final ComboBox<String> statoComboBox;
 
+    /** 
+     * @brief Bottone per registrare un nuovo prestito. 
+     */
     private final Button registraPrestitoButton;
+    
+    /** 
+     * @brief Bottone per registrare la restituzione di un libro. 
+     */
     private final Button restituisciLibroButton;
-    private final Button annullaSpecifcButton;
 
+    /** 
+     * @brief Riferimento locale al bottone di annullamento specifico per questo pannello. 
+     */
+    private final Button annullaSpecificButton;
+   
+   
+    /**
+     * @brief Costruttore della view Prestito.
+     * @details Configura i componenti dell'interfaccia grafica utente, il pannello di dettaglio 
+     * e definisce il RowFactory per colorare le righe in base allo stato del prestito (Verde: Restituito, Rosso: Scaduto).
+     * @post La vista è inizializzata e pronta per l'uso.
+     */
     public PrestitoView() {
 
         super("Prestito"); 
     
-
         this.libroComboBox = new ComboBox<>();
         this.utenteComboBox = new ComboBox<>();
         this.dataPrestitoPicker = new DatePicker(LocalDate.now()); 
@@ -56,25 +89,22 @@ public class PrestitoView extends DatiBaseView<Prestito> {
         this.statoComboBox.setValue("In Prestito"); 
         this.registraPrestitoButton = new Button("Registra Prestito");
         this.restituisciLibroButton = new Button("Restituisci Libro");
-        this.annullaSpecifcButton = getAnnullaButton(); 
-        this.annullaSpecifcButton.setText("Annulla"); 
+        this.annullaSpecificButton = getAnnullaButton(); 
+        this.annullaSpecificButton.setText("Annulla"); 
 
         registraPrestitoButton.setStyle("-fx-background-color: #4CAF50; -fx-text-fill: white; -fx-font-weight: bold;");
         restituisciLibroButton.setStyle("-fx-background-color: #2196F3; -fx-text-fill: white; -fx-font-weight: bold;");
-        this.annullaSpecifcButton.setStyle("-fx-background-color: #f44336; -fx-text-fill: white;");
+        this.annullaSpecificButton.setStyle("-fx-background-color: #f44336; -fx-text-fill: white;");
 
 
         GridPane innerDetailPane = creaPaneDettaglio();
         VBox detailFrame = new VBox(innerDetailPane);
         detailFrame.setStyle("-fx-border-color: gray; -fx-border-width: 1; -fx-padding: 10; -fx-background-color: white; -fx-border-radius: 5;");
         
-
         detailFrame.setPrefHeight(350); 
         detailFrame.setMaxHeight(350);
 
-
         contentHBox.getChildren().add(detailFrame); 
-
 
         tableView.setRowFactory(tv -> new TableRow<Prestito>() {
             @Override
@@ -102,6 +132,7 @@ public class PrestitoView extends DatiBaseView<Prestito> {
     
     /**
      * @brief Configurazione delle colonne della tabella Prestito.
+     * @post La tabella visualizza le seguenti colonne: Libro, Utente, Data Prestito, Data Restituzione e Stato.
      */
     
     @Override
@@ -123,7 +154,6 @@ public class PrestitoView extends DatiBaseView<Prestito> {
             new SimpleStringProperty(cellData.getValue().getDataPrestito().format(DATA))
         );
         
-
         
         TableColumn<Prestito, String> dataRestituzioneCol = new TableColumn<>("Data restituzione");
         dataRestituzioneCol.setCellValueFactory(cellData -> {
@@ -154,7 +184,8 @@ public class PrestitoView extends DatiBaseView<Prestito> {
 
     /**
      * @brief Popola i campi di input con i dati del prestito selezionato.
-     * @param prestito L'oggetto Prestito selezionato, può essere null.
+     * @param [in] prestito L'oggetto Prestito selezionato.
+     * @see DatiBaseView#impostaValoriDefault
      */
     @Override
     protected void impostaValoriDefault(Prestito prestito) {
@@ -166,12 +197,10 @@ public class PrestitoView extends DatiBaseView<Prestito> {
             
             dataPrestitoPicker.setDisable(true);
 
-            
             libroComboBox.getSelectionModel().select(prestito.getLibro());
             utenteComboBox.getSelectionModel().select(prestito.getUtente());
             
             dataPrestitoPicker.setValue(prestito.getDataPrestito());
-            
 
             if (prestito.getDataEffettiva() != null) {
                 
@@ -201,6 +230,7 @@ public class PrestitoView extends DatiBaseView<Prestito> {
     /**
      * @brief Crea il pannello dei dettagli Prestito a destra.
      * @return Il GridPane con i campi ComboBox e DatePicker.
+     * @see DatiBaseView#creaPaneDettaglio()
      */
     
     @Override
@@ -291,8 +321,9 @@ public class PrestitoView extends DatiBaseView<Prestito> {
     }
     
     /**
-     * @brief Ottiene i dati dal form per la creazione di un nuovo Prestito.
-     * @return Un'istanza di Prestito con i dati inseriti (non salvato), altrimenti null.
+     * @brief Ottiene i dati dal form per la creazione di un nuovo prestito.
+     * @return Un'istanza di Prestito con i dati inseriti, altrimenti restituisce il valore null.
+     * @pre Dev'essere effettuata la selezione di Libro, Utente e Data Restituzione.
      */
 
     public Prestito getPrestitoNuovo() {
@@ -320,27 +351,37 @@ public class PrestitoView extends DatiBaseView<Prestito> {
      * @brief Restituisce la data inserita nel DatePicker per la restituzione effettiva.
      * @return La data selezionata.
      */
-
     public LocalDate getDataRestituzione() {
         return dataRestituzionePicker.getValue();
     }
 
+    /**
+     * @return Il bottone per registrare un nuovo prestito.
+     */
     public Button getRegistraPrestitoButton() {
         return registraPrestitoButton;
     }
-
+    
+    /**
+     * @return Il bottone per restituire un libro.
+     */
     public Button getRestituisciLibroButton() {
         return restituisciLibroButton;
     }
     
-
+    /**
+     * @brief Imposta la lista dei libri disponibili nel ComboBox.
+     * @param [in] libri La lista di libri da visualizzare.
+     */
     public void setLibriList(List<Libro> libri) {
-        
         libroComboBox.setItems(FXCollections.observableArrayList(libri));
     }
     
+    /**
+     * @brief Imposta la lista degli utenti disponibili nel ComboBox.
+     * @param [in] utenti La lista di utenti da visualizzare.
+     */
     public void setUtentiList(List<Utente> utenti) {
-        
         utenteComboBox.setItems(FXCollections.observableArrayList(utenti));
     }
 }
