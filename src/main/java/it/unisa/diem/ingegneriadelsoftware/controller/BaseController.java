@@ -67,6 +67,7 @@ public abstract class BaseController<T> implements InterfaceController {
         try {
             operazione.run();
             
+            //in caso di successo aggiorna la lista da mostrare al bibliotecario
             aggiornaVista();
             if (messaggioDiConferma != null && !messaggioDiConferma.isEmpty()) {
                 view.mostraMessaggio(messaggioDiConferma);

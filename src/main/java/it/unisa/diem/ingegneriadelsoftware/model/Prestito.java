@@ -93,7 +93,7 @@ public class Prestito extends Dati {
      * @return Vero se il libro non è stato restituito e la data attuale è successiva alla data prevista, altrimenti restituisce falso.
      */
     public boolean isScaduto() {
-        // I metodi isAfter e isBefore confrontano la data su cui viene chiamata il metodo con la data passata come parametro.
+        //confronta la data attuale con la data prevista
         return dataEffettiva == null && LocalDate.now().isAfter(dataPrevista);
     }
 
@@ -122,6 +122,8 @@ public class Prestito extends Dati {
         if (utente == null || libro == null || dataPrestito == null) { 
             return null; 
         }
+        
+        //id composito
         return utente.getId() + "_" + libro.getId() + "_" + dataPrestito.toString();
     }
 
@@ -137,6 +139,8 @@ public class Prestito extends Dati {
     @Override
     public String toString() {
         DateTimeFormatter formattatore = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+        
+        //calcola lo stato del prestito
         String stato = (dataEffettiva == null) ? "ATTIVO (Prevista: " + dataPrevista.format(formattatore) + ")" : "CHIUSO (Restituito: " + dataEffettiva.format(formattatore) + ")";
         
         return String.format("[%s] Prestito: %s | Utente: %s | Libro: %s | Stato: %s",getId(), dataPrestito.format(formattatore), getNomeUtente(), getTitoloLibro(), stato);

@@ -32,6 +32,7 @@ public class LibroController extends CrudController<Libro> {
      * @return La view specifica del libro altrimenti restituisce il valore null.
      */
     private LibroView getSpecificView() {
+        //visto che il costruttore accetta solo LibroView 
         return (LibroView) view;
     }
 
@@ -68,7 +69,7 @@ public class LibroController extends CrudController<Libro> {
      */
     @Override
     public void salva(Libro nuovo){
-        eseguiOperazione(() -> service.salva(nuovo), "Libro inserito nel catalogo correttamente.");
+        eseguiOperazione(() -> service.salva(nuovo), "Libro inserito correttamente.");
     }
 
     /**
@@ -77,6 +78,7 @@ public class LibroController extends CrudController<Libro> {
      */
     @Override
     public void modifica(Libro elemento){
+        //lamba expression per la chiamata a Service
         eseguiOperazione(() -> service.modifica(elemento), "Dati libro aggiornati correttamente.");
     }
 
@@ -91,26 +93,33 @@ public class LibroController extends CrudController<Libro> {
         
         LibroView view = getSpecificView();
         
+        //pulsante OK (Salva/Modifica)
         view.getOkButton().setOnAction(e -> {
             Button pulsante = view.getOkButton();
             String azione;
             Runnable operazione;
 
+            //Modifica (selezionato un elemento)
             if (view.getTableView().getSelectionModel().getSelectedItem() != null) {
                 Libro modificato = view.getLibroModificato();
                 if (modificato == null) { view.resetConferma(); return; }
                 azione = "aggiornare il libro selezionato";
                 operazione = () -> modifica(modificato);
             } else {
+                
+                //Salva (nessun elemento selezionato)
                 Libro nuovo = view.getLibroNuovo();
                 if (nuovo == null) { view.resetConferma(); return; }
                 azione = "salvare il nuovo libro";
                 operazione = () -> salva(nuovo);
             }
             
+            //Doppio clic per la conferma
             view.richiediConferma(pulsante, operazione, "Clicca di nuovo per " + azione);
         });
         
+        
+        //pulsante elimina
         view.getCancellaButton().setOnAction(e -> {
             Button pulsante = view.getCancellaButton();
             
@@ -119,16 +128,22 @@ public class LibroController extends CrudController<Libro> {
                 return;
             }
             
+            //Doppio clic per la conferma
             view.richiediConferma(pulsante, this::elimina, "Clicca di nuovo per confermare l'eliminazione.");
         });
         
+        
+        //pulsante annulla
         view.getAnnullaButton().setOnAction(e -> view.pulisciDettagli());
         
+        
+        //gestione ricerca
         view.getCercaField().textProperty().addListener((observable, oldValue, newValue) -> {
             cerca();
             view.resetConferma();
         });
         
+        //pulsante annulla ricerca
         view.getAnnullaCercaButton().setOnAction(e -> {
             view.getCercaField().clear();
             aggiornaVista();

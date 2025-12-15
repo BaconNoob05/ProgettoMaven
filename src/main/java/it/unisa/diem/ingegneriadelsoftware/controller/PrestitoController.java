@@ -68,25 +68,31 @@ public class PrestitoController extends CrudController<Prestito> {
      */
     @Override
     public void init() {
+        //carica i dati iniziali dei prestiti e applicato l'ordinamento
         super.init(); 
         
         PrestitoView view = getSpecificView();
 
+        //pulsante registra prestito
         view.getRegistraPrestitoButton().setOnAction(e -> {
             Button pulsante = view.getRegistraPrestitoButton();
             Prestito datiInseriti = view.getPrestitoNuovo();
             
+            //controlla se la view abbia restituito qualcosa 
             if (datiInseriti == null) { 
                 view.resetConferma();
                 return;
             }
             
+            //doppio click per confermare
             view.richiediConferma(pulsante, this::registraPrestito, "Clicca di nuovo per confermare il prestito.");
         });
         
+        //pulsante restituisci libro
         view.getRestituisciLibroButton().setOnAction(e -> {
             Button pulsante = view.getRestituisciLibroButton();
             
+            //controlli sull'input
             if (view.getElementoSelezionato() == null || view.getElementoSelezionato().getDataEffettiva() != null) {
                 view.mostraMessaggio("Errore: Seleziona un prestito attivo per la restituzione.");
                 view.resetConferma();
@@ -97,10 +103,12 @@ public class PrestitoController extends CrudController<Prestito> {
                 view.resetConferma();
                 return;
             }
-
+            
+            //doppio click per conferma
             view.richiediConferma(pulsante, this::registraRestituzione, "Clicca di nuovo per confermare la restituzione.");
         });     
-
+        
+        //pulsante cancella
         view.getCancellaButton().setOnAction(e -> {
             Button pulsante = view.getCancellaButton();
             
@@ -109,9 +117,11 @@ public class PrestitoController extends CrudController<Prestito> {
                 return;
             }
             
+            //doppio click per conferma
             view.richiediConferma(pulsante, this::elimina, "Clicca di nuovo per confermare l'eliminazione del prestito.");
         });
         
+        //ricerca
         view.getCercaField().textProperty().addListener((observable, oldValue, newValue) -> {
             if (newValue == null || newValue.isEmpty()) {
                 aggiornaLista(); 
@@ -121,7 +131,7 @@ public class PrestitoController extends CrudController<Prestito> {
             view.resetConferma();
         });
         
-
+       //pulsante annulla ricerca
         view.getAnnullaCercaButton().setOnAction(e -> {
             view.getCercaField().clear();
             aggiornaLista(); 
@@ -152,7 +162,7 @@ public class PrestitoController extends CrudController<Prestito> {
     public void registraPrestito(){
         Prestito datiInseriti = getSpecificView().getPrestitoNuovo();
         
-        if (datiInseriti == null) return; 
+        if (datiInseriti == null) return; //controllo aggiuntivo per sicurezza
         
         eseguiOperazione(() -> {
             getSpecificService().registraPrestito(
@@ -193,27 +203,27 @@ public class PrestitoController extends CrudController<Prestito> {
     public void aggiornaLista(){
         List<Prestito> tutti = service.getAll();
         
-
+        //Comparator personalizzato
         tutti.sort((p1, p2) -> {
             boolean p1Restituito = p1.getDataEffettiva() != null;
             boolean p2Restituito = p2.getDataEffettiva() != null;
             boolean p1Scaduto = p1.isScaduto();
             boolean p2Scaduto = p2.isScaduto();
 
-
+            //ordina quelli scaduti per primi
             if (p1Scaduto && !p2Scaduto) return -1;
             if (!p1Scaduto && p2Scaduto) return 1;
 
-
+            //ordina in non restituiti prima dei restituiti
             if (p1Restituito && !p2Restituito) return 1;
             if (!p1Restituito && p2Restituito) return -1;
             
-
+            //se entrambi non restituiti ordina per data prevista crescente
             if (!p1Restituito && !p2Restituito) {
                 return p1.getDataPrevista().compareTo(p2.getDataPrevista());
             }
 
-
+            //se entrambi restituiti ordina per data effettiva decrescente
             if (p1Restituito && p2Restituito) {
 
                 return p2.getDataEffettiva().compareTo(p1.getDataEffettiva());

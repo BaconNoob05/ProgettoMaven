@@ -39,6 +39,8 @@ public class Utente extends Dati {
      * @throws IllegalArgumentException Se uno tra i parametri nome, cognome e matricola sono nulli o vuoti o se l'email non è valida, viene lanciata un'eccezione.
      */
     public Utente(String nome, String cognome, String matricola, String email) {
+        
+        //validazione campi obbligatori
         if (nome == null || nome.trim().isEmpty() ||
             cognome == null || cognome.trim().isEmpty() ||
             matricola == null || matricola.trim().isEmpty()) {
@@ -49,6 +51,8 @@ public class Utente extends Dati {
         this.cognome = cognome;
         this.matricola = matricola;
         
+        
+        //validazione email (deve finire con @studenti.unisa.it)
         if (email == null || !email.endsWith(EMAIL_SUFFIX)) {
              throw new IllegalArgumentException("L'email deve terminare con " + EMAIL_SUFFIX);
         }

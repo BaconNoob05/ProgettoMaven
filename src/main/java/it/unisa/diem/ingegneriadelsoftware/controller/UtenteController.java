@@ -36,6 +36,7 @@ public class UtenteController extends CrudController<Utente> {
     public void aggiornaVista() {
         List<Utente> lista = service.getAll();
         
+        //ordina gli utenti prima per cognome poi per nome(non case sensitive)
         lista.sort(Comparator
                 .comparing(Utente::getCognome, String.CASE_INSENSITIVE_ORDER)
                 .thenComparing(Utente::getNome, String.CASE_INSENSITIVE_ORDER)
@@ -50,30 +51,36 @@ public class UtenteController extends CrudController<Utente> {
      */
     @Override
     public void init() {
+        //carica i dati iniziali e configura la view
         super.init();
         
         UtenteView view = getSpecificView();
         
+        //pulsante ok (salva/modifica)
         view.getOkButton().setOnAction(e -> {
             Button pulsante = view.getOkButton();
             String azione;
             Runnable operazione;
 
-            if (view.getTableView().getSelectionModel().getSelectedItem() != null) {
+            if (view.getTableView().getSelectionModel().getSelectedItem() != null) {  
+                //modifica
                 Utente modificato = view.getUtenteModificato();
                 if (modificato == null) { view.resetConferma(); return; }
                 azione = "aggiornare l'utente selezionato";
                 operazione = () -> modifica(modificato);
             } else {
+                //salva
                 Utente nuovo = view.getUtenteNuovo();
                 if (nuovo == null) { view.resetConferma(); return; }
                 azione = "salvare il nuovo utente";
                 operazione = () -> salva(nuovo);
             }
             
+            //doppio click per conferma
             view.richiediConferma(pulsante, operazione, "Clicca di nuovo per " + azione);
         });
         
+        //pulsante elimina
         view.getCancellaButton().setOnAction(e -> {
             Button pulsante = view.getCancellaButton();
 
@@ -82,9 +89,12 @@ public class UtenteController extends CrudController<Utente> {
                 return;
             }
             
+            //doppio click per conferma
             view.richiediConferma(pulsante, this::elimina, "Clicca di nuovo per confermare l'eliminazione.");
         });
         
+        
+        //pulsante anulla
         view.getAnnullaButton().setOnAction(e -> view.pulisciDettagli());
         
         view.getCercaField().textProperty().addListener((observable, oldValue, newValue) -> {
@@ -92,7 +102,7 @@ public class UtenteController extends CrudController<Utente> {
             view.resetConferma();
         });
         
-
+        //pulsante annulla ricerca
         view.getAnnullaCercaButton().setOnAction(e -> {
             view.getCercaField().clear();
             aggiornaVista();

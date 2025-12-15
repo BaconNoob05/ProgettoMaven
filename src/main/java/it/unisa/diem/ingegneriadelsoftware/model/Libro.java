@@ -59,11 +59,13 @@ public class Libro extends Dati {
     public boolean isValido() {
         int annoCorrente = Year.now().getValue(); 
         
+       
         return titolo != null && !titolo.trim().isEmpty() &&
                isbn != null && !isbn.trim().isEmpty() &&
-               copie >= 0 &&
-               autori != null && !autori.isEmpty() &&
-               anno <= annoCorrente; 
+               copie >= 0 && //numero di copie positivo
+               autori != null && !autori.isEmpty() && //almeno un autore
+               anno >0 &&  //anno positivo
+               anno <= annoCorrente; //l'anno non puo essere nel futuro
     }
 
     /**

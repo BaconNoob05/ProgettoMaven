@@ -45,33 +45,34 @@ public class Main extends Application {
     @Override
     public void start(Stage primaryStage) {
         
-
+        //inizializzazione repository
         Repository<Libro> libroRepo = new Repository<>(FILE_LIBRI, new GestoreFile<>());
         Repository<Utente> utenteRepo = new Repository<>(FILE_UTENTI, new GestoreFile<>());
         Repository<Prestito> prestitoRepo = new Repository<>(FILE_PRESTITI, new GestoreFile<>());
 
-
+        //inizializzazione service
         libroService = new LibroService(libroRepo);
-        // PrestitoService dipende da LibroService
+
         prestitoService = new PrestitoService(prestitoRepo, libroService); 
-        // UtenteService ora dipende da PrestitoService
+
         utenteService = new UtenteService(utenteRepo, prestitoService); 
 
 
         libroService.setPrestitoService(prestitoService);
 
-
+        //carica i dati se i file sono vuoti
         if (libroService.getAll().isEmpty() && utenteService.getAll().isEmpty()) {
             initializeSampleData();
         }
 
 
-
+        //inizializzazione view
         LibroView libroView = new LibroView();
         UtenteView utenteView = new UtenteView();
         PrestitoView prestitoView = new PrestitoView();
 
-
+        
+        //inizializzazione controller
         InterfaceController libroController = new LibroController(libroView, libroService);
         InterfaceController utenteController = new UtenteController(utenteView, utenteService);
         InterfaceController prestitoController = new PrestitoController(prestitoView, prestitoService);
@@ -83,7 +84,8 @@ public class Main extends Application {
         prestitoView.setLibriList(libroService.getAll());
         prestitoView.setUtentiList(utenteService.getAll());
 
-
+        
+        //inizializzazione interfaccia grafica
         TabPane tabPane = new TabPane();
 
         Tab libroTab = new Tab("Gestione Libri", libroView.getRoot());
@@ -95,7 +97,8 @@ public class Main extends Application {
         Tab prestitoTab = new Tab("Gestione Prestiti", prestitoView.getRoot());
         prestitoTab.setClosable(false);
 
-
+        
+        //per visualizzare le modifiche su prestiti bisogna ricaricare la lista di libri e utenti
         prestitoTab.setOnSelectionChanged(event -> {
             if (prestitoTab.isSelected()) {
                 prestitoView.setLibriList(libroService.getAll());
@@ -109,6 +112,7 @@ public class Main extends Application {
         BorderPane root = new BorderPane(tabPane);
         Scene scene = new Scene(root, 1000, 500);
         
+        //stage
         primaryStage.setTitle("Sistema Gestione Biblioteca");
         primaryStage.setScene(scene);
         primaryStage.show();
@@ -126,7 +130,7 @@ public class Main extends Application {
         LocalDate dataStoricaBase = oggi.minusMonths(1); 
         LocalDate dataStoricaLontana = oggi.minusMonths(5); 
 
-
+        //inizializzazione libri
         l1 = new Libro("Il Codice Da Vinci", Arrays.asList("Dan Brown"), 2003, "978-8804526211", 3);
         l2 = new Libro("Guerra e Pace", Arrays.asList("Lev Tolstoj"), 1869, "978-8806208882", 1);
         l3 = new Libro("Fisica per l'università", Arrays.asList("Halliday", "Resnick"), 2018, "978-8808182740", 5);
@@ -149,7 +153,7 @@ public class Main extends Application {
         libroService.salva(l9);
         libroService.salva(l10);
         
-
+        //inizializzazione utente
         u1 = new Utente("Mario", "Rossi", "M0001", "mario.rossi@studenti.unisa.it");
         u2 = new Utente("Anna", "Bianchi", "A0002", "anna.bianchi@studenti.unisa.it");
         u3 = new Utente("Luca", "Verdi", "L0003", "luca.verdi@studenti.unisa.it");
@@ -172,7 +176,8 @@ public class Main extends Application {
         utenteService.salva(u9);
         utenteService.salva(u10);
 
-
+        
+        //inizializzazione prestito
         l1.decrementaCopie(); 
         libroService.modifica(l1); 
         Prestito p1Attivo = new Prestito(u1, l1, oggi.plusDays(7), dataStoricaBase.plusDays(1)); 
@@ -232,7 +237,7 @@ public class Main extends Application {
         prestitoService.salva(p9Chiuso); 
         
 
-        
+        //salvataggio finale di tutti gli stati modificati sul disco
         System.out.println("Salvataggio finale di tutti gli stati...");
         
 
