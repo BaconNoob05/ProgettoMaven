@@ -16,26 +16,35 @@ import java.util.stream.Collectors;
 /**
  * @class LibroView
  * @brief Permette la modifica e l'inserimento dei dati a video all'utente per i Libri.
- * @see CrudViewBase
+ * @see DatiBaseView
  * @see BaseView
  */
-
 public class LibroView extends DatiBaseView<Libro> {
 
     
-    /** @brief Campo di input per il titolo del libro. */
+    /** 
+     * @brief Campo di input per il titolo del libro. 
+     */
     private final TextField titoloInput;
     
-    /** @brief Campo di input per l'anno di pubblicazione. */
+    /** 
+     * @brief Campo di input per l'anno di pubblicazione. 
+     */
     private final TextField annoInput;
     
-    /** @brief Campo di input per il codice ISBN . */
+    /** 
+     * @brief Campo di input per il codice ISBN. 
+     */
     private final TextField isbnInput;
     
-    /** @brief Campo di input per il numero di copie disponibili. */
+    /** 
+     * @brief Campo di input per il numero di copie disponibili. 
+     */
     private final TextField copieInput;
 
-    /** @brief Campo di input per la lista degli autori (separati da virgole). */
+    /** 
+     * @brief Campo di input per la lista degli autori (separati da virgole). 
+     */
     private final TextField autoriInput; 
     
     
@@ -43,13 +52,10 @@ public class LibroView extends DatiBaseView<Libro> {
      * @brief Costruttore di base della vista Libro.
      * @post I campi di input sono istanziati e la vista è pronta per l'inizializzazione.
      */
-    
     public LibroView() {
         
-
         super("Libro"); 
         
-
         this.titoloInput = new TextField();
         this.annoInput = new TextField();
         this.isbnInput = new TextField();
@@ -66,8 +72,6 @@ public class LibroView extends DatiBaseView<Libro> {
         detailFrame.setMaxHeight(350);
 
         contentHBox.getChildren().add(detailFrame); 
-        
-
     }
     
 
@@ -111,7 +115,7 @@ public class LibroView extends DatiBaseView<Libro> {
      * @brief Imposta i valori nei campi di input per la modifica o l'inserimento.
      * @param [in] libro L'oggetto Libro i cui dati devono essere mostrati.
      * @post I campi di input riflettono i dati del libro o sono vuoti. 
-     * @see CrudViewBase#impostaValoriDefault(T)
+     * @see DatiBaseView#impostaValoriDefault(T)
      */
     @Override
     protected void impostaValoriDefault(Libro libro) {
@@ -143,12 +147,11 @@ public class LibroView extends DatiBaseView<Libro> {
     }
 
     /**
-     * @brief Crea e configura il pannello  per l'inserimento/modifica.
+     * @brief Crea e configura il pannello per l'inserimento o la modifica.
      * @return Il pannello GridPane contenente i controlli di input per l'entità Libro.
-     * @post Il pannello viene restituito pronto per essere integrato nella vista principale altrimenti un valore nullo.
-     * @see CrudViewBase#creaPaneDettaglio()
+     * @post Il pannello viene restituito pronto per essere integrato nella view principale, altrimenti restituisce un valore nullo.
+     * @see DatiBaseView#creaPaneDettaglio()
      */
-    
     @Override
     protected GridPane creaPaneDettaglio() {
 
@@ -220,10 +223,9 @@ public class LibroView extends DatiBaseView<Libro> {
 
     /**
      * @brief Recupera i dati inseriti nel form per creare un nuovo libro.
-     * @return Un nuovo oggetto Libro popolato con i dati del form, altrimenti restituisce un valore nullo.
+     * @return Un nuovo oggetto Libro popolato con i dati del form, altrimenti restituisce il valore null.
      * @pre I campi devono contenere dati validi.
      */
-
     public Libro getLibroNuovo() {
         try {
             String titolo = titoloInput.getText().trim();
@@ -273,12 +275,11 @@ public class LibroView extends DatiBaseView<Libro> {
 
     /**
      * @brief Recupera i dati modificati dal form per aggiornare un libro esistente.
-     * @return L'oggetto Libro con i dati aggiornati, altrimenti restituisce un valore nullo.
+     * @return L'oggetto Libro con i dati aggiornati, altrimenti restituisce il valore null.
      * @pre Un libro deve essere stato precedentemente selezionato o caricato nel form.
      * @post Viene restituito l'oggetto pronto per essere passato al controller.
      */
     
-
     public Libro getLibroModificato() {
         Libro libroDaModificare = getElementoSelezionato();
         
@@ -321,7 +322,6 @@ public class LibroView extends DatiBaseView<Libro> {
                  return null;
             }
             
-
             return libroAggiornato;
             
         } catch (NumberFormatException e) {
