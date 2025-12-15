@@ -55,7 +55,7 @@ public class GestoreFileTest {
     /**
      * @brief Testa l'integrità dei dati caricati.
      */
-    @Test
+    @Test /*caso di test 61 */
     void testSalvaECaricaDati() {
         String nomeFile = "test_salva.txt";
         fileDaCancellare.add(nomeFile);
@@ -71,7 +71,7 @@ public class GestoreFileTest {
     /**
      * @brief Testa il salvataggio di una lista vuota.
      */
-    @Test
+    @Test /*caso di test 62 */
     void testSalvaListaVuota() {
         String nomeFile = "test_lista_vuota.txt";
         fileDaCancellare.add(nomeFile);
@@ -86,7 +86,7 @@ public class GestoreFileTest {
     /**
      * @brief Testa il salvataggio con una lista di valori nulli.
      */
-    @Test
+    @Test /*caso di test 63 */
     void testSalvaListaNull() {
         String nomeFile = "test_lista_null.txt";
         fileDaCancellare.add(nomeFile);
@@ -101,7 +101,7 @@ public class GestoreFileTest {
     /**
      * @brief Verifica che i dati caricati siano gli ultimi salvati.
      */
-    @Test
+    @Test /*caso di test 64 */
     void testSovrascritturaFile() {
         String nomeFile = "test_sovrascrittura.txt";
         fileDaCancellare.add(nomeFile);
@@ -120,7 +120,7 @@ public class GestoreFileTest {
     /**
      * @brief Testa il caricamento dati.
      */
-    @Test
+    @Test /*caso di test 65 */
     void testCaricaDati() {
         String nomeFile = "test_carica.txt";
         fileDaCancellare.add(nomeFile);
@@ -136,7 +136,7 @@ public class GestoreFileTest {
     /**
      * @brief Testa il caricamento di un file che non esiste.
      */
-    @Test
+    @Test /*caso di test 66 */
     void testCaricaFileInesistente() {
         String nomeFile = "test_file_inesistente.txt";
 
