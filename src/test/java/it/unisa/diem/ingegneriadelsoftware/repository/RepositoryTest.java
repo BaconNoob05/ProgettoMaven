@@ -1,4 +1,3 @@
-
 package it.unisa.diem.ingegneriadelsoftware.repository;
 import it.unisa.diem.ingegneriadelsoftware.model.DatiStub;
 import java.io.File;
@@ -64,7 +63,7 @@ public class RepositoryTest {
     /**
      * @brief Testa il costruttore verificando il caricamento dei dati all'inizializzazione del repository.
      */
-    @Test
+    @Test /*caso di test 67 */
     void testCostruttore_CaricamentoDatiIniziali() {
         GestoreFileStub<DatiStub> gestorePreriempito = new GestoreFileStub<>();
         List<DatiStub> datiVecchi = Arrays.asList(new DatiStub("ID_VECCHIO_1"), new DatiStub("ID_VECCHIO_2"));
@@ -84,7 +83,7 @@ public class RepositoryTest {
      * @brief Testa il costruttore per assicurare che il repository venga inizializzato
      * correttamente (lista vuota) quando non ci sono dati preesistenti.
      */
-    @Test
+    @Test /*caso di test 68 */
     void testCostruttore_InizializzazioneVuota() {
 
         assertTrue(repository.getAll().isEmpty());
@@ -93,7 +92,7 @@ public class RepositoryTest {
     /**
      * @brief Testa l'inserimento di un nuovo elemento nel repository.
      */
-    @Test
+    @Test /*caso di test 69 */
     void testInserisci_NuovoElemento() {
         repository.inserisciOAggiorna(dato1);
         List<DatiStub> risultati = repository.getAll();
@@ -105,7 +104,7 @@ public class RepositoryTest {
     /**
      * @brief Testa l'aggiornamento di un elemento esistente.
      */
-    @Test
+    @Test /*caso di test 70 */
     void testInserisci_AggiornamentoElemento() {
         repository.inserisciOAggiorna(dato1);
         DatiStub dato1_Aggiornato = new DatiStub("ID_1"); 
@@ -119,7 +118,7 @@ public class RepositoryTest {
     /**
      * @brief Testa l'inserimento di un elemento nullo.
      */
-    @Test
+    @Test /*caso di test 71 */
     void testInserisci_ElementoNull() {
         //Inseriamo un elemento nullo
         assertThrows(IllegalArgumentException.class, () -> {repository.inserisciOAggiorna(null);});
@@ -128,7 +127,7 @@ public class RepositoryTest {
     /**
      * @brief Testa l'inserimento di un elemento con ID nullo.
      */
-    @Test
+    @Test /*caso di test 72 */
     void testInserisci_ElementoConIdNull() {
         DatiStub datoConIdNull = new DatiStub(null);
         //Inseriamo un elemento con ID nullo.
@@ -138,7 +137,7 @@ public class RepositoryTest {
     /**
      * @brief Testa l'eliminazione di un elemento esistente.
      */
-    @Test
+    @Test /*caso di test 73 */
     void testElimina_ElementoEsistente() {
         repository.inserisciOAggiorna(dato1);
         repository.inserisciOAggiorna(dato2);
@@ -152,7 +151,7 @@ public class RepositoryTest {
     /**
      * @brief Testa l'eliminazione di un elemento inesistente.
      */
-    @Test
+    @Test /*caso di test 74 */
     void testElimina_ElementoInesistente() {
         repository.inserisciOAggiorna(dato1);
         //Eliminiamo un elemento che non esiste.
@@ -164,10 +163,10 @@ public class RepositoryTest {
     /**
      * @brief Testa l'eliminazione con ID nullo.
      */
-    @Test
+    @Test /*caso di test 75 */
     void testElimina_IdNull() {
         repository.inserisciOAggiorna(dato1);
-  
+ 
         assertDoesNotThrow(() -> repository.elimina(null));
         assertEquals(1, repository.getAll().size());
     }
@@ -175,7 +174,7 @@ public class RepositoryTest {
     /**
      * @brief Testa la ricerca di un elemento in base all'ID.
      */
-    @Test
+    @Test /*caso di test 76 */
     void testCerca_ElementoPresente() {
         repository.inserisciOAggiorna(dato1);
         DatiStub risultato = repository.cerca("ID_1");
@@ -187,7 +186,7 @@ public class RepositoryTest {
     /**
      * @brief Testa la ricerca di un elemento assente tramite ID.
      */
-    @Test
+    @Test /*caso di test 77 */
     void testCerca_ElementoAssente() {
         repository.inserisciOAggiorna(dato1);
         //Cerchiamo un elemento che non esiste.
@@ -199,7 +198,7 @@ public class RepositoryTest {
     /**
      * @brief Testa la ricerca con ID nullo.
      */
-    @Test
+    @Test /*caso di test 78 */
     void testCerca_IdNull() {
         //Cerchiamo un elemento con id null.
         DatiStub risultato = repository.cerca(null);
@@ -210,7 +209,7 @@ public class RepositoryTest {
     /**
      * @brief Testa il recupero di tutti gli elementi quando la lista è vuota.
      */
-    @Test
+    @Test /*caso di test 79 */
     void testGetAll_ListaVuota() {
         assertTrue(repository.getAll().isEmpty());
     }
@@ -218,7 +217,7 @@ public class RepositoryTest {
     /**
      * @brief Testa il recupero di tutti gli elementi quando la lista è stata riempita.
      */
-    @Test
+    @Test /*caso di test 80 */
     void testGetAll_ListaRiempita() {
         repository.inserisciOAggiorna(dato1);
         repository.inserisciOAggiorna(dato2);
@@ -232,7 +231,7 @@ public class RepositoryTest {
     /**
      * @brief Testa getAll.
      */
-    @Test
+    @Test /*caso di test 81 */
     void testGetAll_Incapsulamento() {
         repository.inserisciOAggiorna(dato1);
         List<DatiStub> copiaLista = repository.getAll();
@@ -244,7 +243,7 @@ public class RepositoryTest {
     /**
      * @brief Testa il salvataggio dei dati.
      */
-    @Test
+    @Test /*caso di test 82 */
     void testSalvaSuFile() {
         repository.inserisciOAggiorna(dato1);
         repository.inserisciOAggiorna(dato2);
@@ -258,7 +257,7 @@ public class RepositoryTest {
     /**
      * @brief Testa il caricamento dei dati quando si  inizializzazione il repository.
      */
-    @Test
+    @Test /*caso di test 83 */
     void testCaricaTutti() {
         GestoreFileStub<DatiStub> gestorePreriempito = new GestoreFileStub<>();
         List<DatiStub> datiVecchi = Arrays.asList(new DatiStub("ID_VECCHIO_1"), new DatiStub("ID_VECCHIO_2"));
