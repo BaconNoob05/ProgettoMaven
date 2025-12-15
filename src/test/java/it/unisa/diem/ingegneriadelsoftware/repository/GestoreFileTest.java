@@ -24,31 +24,28 @@ public class GestoreFileTest {
     /**
      * @brief Lista dei file da cancellare.
      */
-    private List<String> filesDaCancellare;
+    private List<String> fileDaCancellare;
 
-   /**
+    /**
      * @brief Metodo eseguito prima di ogni test.
      */
     @BeforeEach
     void setUp() {
-        
         gestore = new GestoreFile<>();
         datiTest = Arrays.asList(
-                
             new DatiStub("ID_1"),
             new DatiStub("ID_2")
         );
-        filesDaCancellare = new ArrayList<>();
+        fileDaCancellare = new ArrayList<>();
     }
 
     /**
-     * @brief Cancella tutti i file durante il test.
+     * @brief Cancella tutti i file usati durante il test.
      */
     @AfterEach
-    void tearDown() {
-        
-        for (String fileName : filesDaCancellare) {
-            File file = new File(fileName);
+    void eliminaFile() {
+        for (String nomeFile : fileDaCancellare) {
+            File file = new File(nomeFile);
             if (file.exists()) {
                 file.delete();
             }
@@ -60,12 +57,11 @@ public class GestoreFileTest {
      */
     @Test
     void testSalvaECaricaDati() {
-        
-        String fileName = "test_salva.txt";
-        filesDaCancellare.add(fileName);
+        String nomeFile = "test_salva.txt";
+        fileDaCancellare.add(nomeFile);
 
-        gestore.salvaDati(fileName, datiTest);
-        List<DatiStub> risultato = gestore.caricaDati(fileName);
+        gestore.salvaDati(nomeFile, datiTest);
+        List<DatiStub> risultato = gestore.caricaDati(nomeFile);
 
         assertNotNull(risultato);
         assertEquals(datiTest.size(), risultato.size());
@@ -77,12 +73,11 @@ public class GestoreFileTest {
      */
     @Test
     void testSalvaListaVuota() {
-        
-        String fileName = "test_lista_vuota.txt";
-        filesDaCancellare.add(fileName);
+        String nomeFile = "test_lista_vuota.txt";
+        fileDaCancellare.add(nomeFile);
 
-        gestore.salvaDati(fileName, new ArrayList<>());
-        List<DatiStub> risultato = gestore.caricaDati(fileName);
+        gestore.salvaDati(nomeFile, new ArrayList<>());
+        List<DatiStub> risultato = gestore.caricaDati(nomeFile);
 
         assertNotNull(risultato);
         assertTrue(risultato.isEmpty());
@@ -93,12 +88,11 @@ public class GestoreFileTest {
      */
     @Test
     void testSalvaListaNull() {
-        
-        String fileName = "test_lista_null.txt";
-        filesDaCancellare.add(fileName);
+        String nomeFile = "test_lista_null.txt";
+        fileDaCancellare.add(nomeFile);
 
-        gestore.salvaDati(fileName, null);
-        List<DatiStub> risultato = gestore.caricaDati(fileName);
+        gestore.salvaDati(nomeFile, null);
+        List<DatiStub> risultato = gestore.caricaDati(nomeFile);
 
         assertNotNull(risultato);
         assertTrue(risultato.isEmpty());
@@ -109,16 +103,15 @@ public class GestoreFileTest {
      */
     @Test
     void testSovrascritturaFile() {
-        
-        String fileName = "test_sovrascrittura.txt";
-        filesDaCancellare.add(fileName);
+        String nomeFile = "test_sovrascrittura.txt";
+        fileDaCancellare.add(nomeFile);
 
-        gestore.salvaDati(fileName, datiTest);
+        gestore.salvaDati(nomeFile, datiTest);
 
         List<DatiStub> nuoviDati = Collections.singletonList(new DatiStub("ID_NUOVO_1"));
-        gestore.salvaDati(fileName, nuoviDati);
+        gestore.salvaDati(nomeFile, nuoviDati);
 
-        List<DatiStub> caricati = gestore.caricaDati(fileName);
+        List<DatiStub> caricati = gestore.caricaDati(nomeFile);
 
         assertEquals(1, caricati.size());
         assertEquals(nuoviDati.get(0).toString(), caricati.get(0).toString());
@@ -129,12 +122,11 @@ public class GestoreFileTest {
      */
     @Test
     void testCaricaDati() {
-        
-        String fileName = "test_carica.txt";
-        filesDaCancellare.add(fileName);
+        String nomeFile = "test_carica.txt";
+        fileDaCancellare.add(nomeFile);
 
-        gestore.salvaDati(fileName, datiTest);
-        List<DatiStub> risultato = gestore.caricaDati(fileName);
+        gestore.salvaDati(nomeFile, datiTest);
+        List<DatiStub> risultato = gestore.caricaDati(nomeFile);
 
         assertNotNull(risultato);
         assertEquals(datiTest.size(), risultato.size());
@@ -146,10 +138,9 @@ public class GestoreFileTest {
      */
     @Test
     void testCaricaFileInesistente() {
-        
-        String fileName = "file_inesistente.txt";
+        String nomeFile = "test_file_inesistente.txt";
 
-        List<DatiStub> risultato = gestore.caricaDati(fileName);
+        List<DatiStub> risultato = gestore.caricaDati(nomeFile);
 
         assertNotNull(risultato);
         assertTrue(risultato.isEmpty());

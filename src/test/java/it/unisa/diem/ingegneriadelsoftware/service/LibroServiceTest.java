@@ -27,8 +27,7 @@ public class LibroServiceTest {
     /**
      * @brief Stub del servizio prestiti per simulare prestiti attivi.
      */
-    private PrestitoServiceStub prestitoServiceStub; // AGGIUNTO
-
+    private PrestitoServiceStub prestitoServiceStub;
     
     /**
      * @brief Oggetto Libro per i test.
@@ -60,7 +59,6 @@ public class LibroServiceTest {
      */
     @BeforeEach
     public void setUp() {
-        
         List<String> autoriDeSio = Arrays.asList("Claudio De Sio Cesari");
         
         List<String> autoriSommerville = Arrays.asList("Ian Sommerville");
@@ -89,9 +87,8 @@ public class LibroServiceTest {
 
         service = new LibroService(repo);
         
-        // INIEZIONE DELLO STUB DI PRESTITO SERVICE PER IL CONTROLLO
         prestitoServiceStub = new PrestitoServiceStub(); 
-        service.setPrestitoService(prestitoServiceStub); // AGGIUNTO
+        service.setPrestitoService(prestitoServiceStub);
     }
     
     /**
@@ -99,7 +96,6 @@ public class LibroServiceTest {
      */
     @Test
     void testCercaPerTitolo_MatchSingolo() {
-        
         final String FILTRO_TITOLO = "Christmas"; 
         List<Libro> risultati = service.cercaPerTitolo(FILTRO_TITOLO);
 
@@ -112,7 +108,6 @@ public class LibroServiceTest {
      */
     @Test
     void testCercaPerTitolo_MatchMultiplo() {
-        
         final String FILTRO_TITOLO = "Ragion";
         List<Libro> risultati = service.cercaPerTitolo(FILTRO_TITOLO);
 
@@ -136,7 +131,6 @@ public class LibroServiceTest {
      */
     @Test
     void testCercaPerTitolo_FiltroCaseInsensitive() {
-        
         final String FILTRO_TITOLO = "guida";
         List<Libro> risultati = service.cercaPerTitolo(FILTRO_TITOLO);
         
@@ -181,7 +175,6 @@ public class LibroServiceTest {
      */
     @Test
     void testCercaPerAutore_MatchMultiplo_StessoAutore() {
-        
         List<String> autoriDeSio = Arrays.asList("Claudio De Sio Cesari");
         
         Libro libroJavaAdvanced = new Libro("Java Advanced", autoriDeSio, 2022, "978-8868945637", 6);
@@ -200,7 +193,6 @@ public class LibroServiceTest {
      */
     @Test
     void testCercaPerAutore_NessunMatch() {
-        
         final String FILTRO_AUTORE = "Stephen King";
         List<Libro> risultati = service.cercaPerAutore(FILTRO_AUTORE);
 
@@ -212,7 +204,6 @@ public class LibroServiceTest {
      */
     @Test
     void testCercaPerAutore_FiltroCaseInsensitive() {
-        
         final String FILTRO_AUTORE = "martin heidegger";
         List<Libro> risultati = service.cercaPerAutore(FILTRO_AUTORE);
 
@@ -225,11 +216,9 @@ public class LibroServiceTest {
      */
     @Test
     void testCercaPerAutore_FiltroVuotoONullo_ComportamentoAtteso() {
-        
         assertTrue(service.cercaPerAutore(null).isEmpty());
         assertTrue(service.cercaPerAutore("").isEmpty());
         assertTrue(service.cercaPerAutore(" ").isEmpty());
-        
     }
     
     /**
@@ -245,20 +234,14 @@ public class LibroServiceTest {
      */
     @Test
     void testElimina_PrestitiAttiviImpedisconoEliminazione() {
-
         Utente u = new Utente("Test", "User", "ID01", "test.user@studenti.unisa.it");
         LocalDate data = LocalDate.now().plusDays(10);
-
         Prestito prestitoAttivo = new Prestito(u, libroSoftwareEng, data, LocalDate.now()); 
-        
-
         prestitoServiceStub.list.add(prestitoAttivo); 
-
 
         assertThrows(IllegalStateException.class, () -> {
             service.elimina(libroSoftwareEng);
         });
-
         assertNotNull(repo.cerca(libroSoftwareEng.getId()));
     }
     
@@ -267,9 +250,7 @@ public class LibroServiceTest {
      */
     @Test
     void testElimina_NessunPrestitoAttivo_Successo() {
-
         assertDoesNotThrow(() -> service.elimina(libroCriticaRagionPura));
-
         assertNull(repo.cerca(libroCriticaRagionPura.getId()));
         assertEquals(4, repo.getAll().size());
     }

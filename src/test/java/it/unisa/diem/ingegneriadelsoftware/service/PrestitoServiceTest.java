@@ -53,12 +53,11 @@ public class PrestitoServiceTest {
      */
     private Utente u2;
         
-   /**
+    /**
      * @brief Metodo eseguito prima di ogni test.
      */
     @BeforeEach
     void setup() {
-        
         repo = new RepositoryStub<>();
         repoLibri = new RepositoryStub<>();
         libroService = new LibroService(repoLibri);
@@ -81,7 +80,7 @@ public class PrestitoServiceTest {
      * @brief Testa la registrazione di un prestito con dati validi.
      */
     @Test
-    void testRegistraPrestito_Successo() {
+    void testRegistraPrestito() {
         LocalDate dataPrevista = LocalDate.now().plusDays(30);
 
         service.registraPrestito(u1, l1, dataPrevista);
@@ -148,17 +147,16 @@ public class PrestitoServiceTest {
      * @brief Testa la registrazione della restituzione di un prestito attivo.
      */
     @Test
-    void testRegistraRestituzione_Successo() {
-
+    void testRegistraRestituzione() {
         LocalDate dataStorica = LocalDate.now().minusDays(5);
         Prestito p = new Prestito(u1, l1, LocalDate.now().plusDays(30), dataStorica);
         repo.inserisciOAggiorna(p);
-        l1.setCopieDisponibili(11); // Stato iniziale dopo il prestito
+        l1.setCopieDisponibili(11);
 
         service.registraRestituzione(p, LocalDate.now());
 
         assertNotNull(p.getDataEffettiva());
-        assertEquals(12, l1.getCopieDisponibili()); // Copie incrementate
+        assertEquals(12, l1.getCopieDisponibili());
     }
 
     /**
@@ -167,13 +165,12 @@ public class PrestitoServiceTest {
      */
     @Test
     void testRegistraRestituzione_PrestitoGiaChiuso() {
-
         LocalDate dataStorica = LocalDate.now().minusDays(30);
         Prestito p = new Prestito(u1, l1, LocalDate.now().plusDays(30), dataStorica);
         p.setDataEffettiva(LocalDate.now().minusDays(5));
         repo.inserisciOAggiorna(p);
         l1.setCopieDisponibili(12); 
-
+        
         assertThrows(IllegalStateException.class, () -> {
             service.registraRestituzione(p, LocalDate.now());
         });
@@ -196,7 +193,6 @@ public class PrestitoServiceTest {
      */
     @Test
     void testListaPrestitiAttivi_UnoAttivo() {
-
         LocalDate dataStorica = LocalDate.now().minusDays(5);
         Prestito pAttivo = new Prestito(u1, l1, LocalDate.now().plusDays(30), dataStorica);
         repo.inserisciOAggiorna(pAttivo);
@@ -207,11 +203,10 @@ public class PrestitoServiceTest {
     }
 
     /**
-     * @brief Testa listaPrestitiAttivi.
+     * @brief Testa listaPrestitiAttivi con nessun prestito attivo.
      */
     @Test
     void testListaPrestitiAttivi_NessunAttivo() {
-
         LocalDate dataStorica = LocalDate.now().minusDays(5);
         Prestito pChiuso = new Prestito(u1, l1, LocalDate.now().plusDays(30), dataStorica);
         pChiuso.setDataEffettiva(LocalDate.now());
@@ -222,11 +217,10 @@ public class PrestitoServiceTest {
     }
     
     /**
-     * @brief listaPrestitiAttivi.
+     * @brief listaPrestitiAttivi con prestiti misti.
      */
     @Test
     void testListaPrestitiAttivi_Misti() {
-
         LocalDate dataStorica = LocalDate.now().minusDays(10);
         Prestito pAttivo1 = new Prestito(u1, l1, LocalDate.now().plusDays(30), dataStorica);
         repo.inserisciOAggiorna(pAttivo1);
@@ -248,7 +242,7 @@ public class PrestitoServiceTest {
     }
     
     /**
-     * @brief Testa  listaPrestitiAttivi.
+     * @brief Testa  listaPrestitiAttivi con repository vuoto.
      */
     @Test
     void testListaPrestitiAttivi_RepositoryVuoto() {
@@ -263,12 +257,10 @@ public class PrestitoServiceTest {
     void testRegistraPrestito_LimiteSuperato() {
         LocalDate dataFutura = LocalDate.now().plusDays(10);
         LocalDate dataStorica = LocalDate.now().minusDays(5);
-        
 
         Prestito p1 = new Prestito(u1, l1, dataFutura, dataStorica.minusDays(3));
         Prestito p2 = new Prestito(u1, l2, dataFutura, dataStorica.minusDays(2));
         Prestito p3 = new Prestito(u1, l1, dataFutura, dataStorica.minusDays(1)); 
-        
 
         repo.inserisciOAggiorna(p1);
         repo.inserisciOAggiorna(p2);
@@ -276,16 +268,11 @@ public class PrestitoServiceTest {
         
         l1.setCopieDisponibili(l1.getCopieDisponibili() - 2); 
         l2.setCopieDisponibili(l2.getCopieDisponibili() - 1); 
-        
 
         assertThrows(IllegalStateException.class, () -> {
             service.registraPrestito(u1, l2, dataFutura);
         });
-        
-
         assertEquals(3, service.listaPrestitiAttivi().size());
-        
-
         assertEquals(7, l2.getCopieDisponibili()); 
     }
 }

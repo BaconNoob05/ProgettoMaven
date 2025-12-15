@@ -44,8 +44,6 @@ public class RepositoryTest {
     @BeforeEach
     void setUp() {
         gestore = new GestoreFileStub<>();
-        
-  
         repository = new Repository<>(nomeFile, gestore);
 
         dato1 = new DatiStub("ID_1");
@@ -53,17 +51,14 @@ public class RepositoryTest {
     }
     
     /**
-     * @brief Elimina un file.
+     * @brief Cancella tutti i file usati durante i test.
      */
     @AfterEach
-    void tearDown() {
-
+    void eliminaFile() {
         File file = new File(nomeFile);
         if (file.exists()) {
             file.delete();
-
         }
-
     }
     
     /**
@@ -72,8 +67,8 @@ public class RepositoryTest {
     @Test
     void testInserisci_NuovoElemento() {
         repository.inserisciOAggiorna(dato1);
-        
         List<DatiStub> risultati = repository.getAll();
+        
         assertEquals(1, risultati.size());
         assertEquals(dato1, repository.cerca("ID_1"));
     }
@@ -84,11 +79,10 @@ public class RepositoryTest {
     @Test
     void testInserisci_AggiornamentoElemento() {
         repository.inserisciOAggiorna(dato1);
-        
         DatiStub dato1_Aggiornato = new DatiStub("ID_1"); 
         repository.inserisciOAggiorna(dato1_Aggiornato);
-
         List<DatiStub> risultati = repository.getAll();
+        
         assertEquals(1, risultati.size());
         assertTrue(risultati.contains(dato1_Aggiornato));
     }
@@ -108,7 +102,7 @@ public class RepositoryTest {
     @Test
     void testInserisci_ElementoConIdNull() {
         DatiStub datoConIdNull = new DatiStub(null);
-        //Inseriamo un elemento con ID nullo
+        //Inseriamo un elemento con ID nullo.
         assertThrows(IllegalArgumentException.class, () -> {repository.inserisciOAggiorna(datoConIdNull);});
     }
 
@@ -119,7 +113,6 @@ public class RepositoryTest {
     void testElimina_ElementoEsistente() {
         repository.inserisciOAggiorna(dato1);
         repository.inserisciOAggiorna(dato2);
-        
         repository.elimina("ID_1");
         
         assertEquals(1, repository.getAll().size());
@@ -133,9 +126,8 @@ public class RepositoryTest {
     @Test
     void testElimina_ElementoInesistente() {
         repository.inserisciOAggiorna(dato1);
-        
-
-        repository.elimina("ID_CHE_NON_ESISTE");
+        //Eliminiamo un elemento che non esiste.
+        repository.elimina("ID_INESISTENTE");
         
         assertEquals(1, repository.getAll().size());
     }
@@ -146,10 +138,8 @@ public class RepositoryTest {
     @Test
     void testElimina_IdNull() {
         repository.inserisciOAggiorna(dato1);
-        
   
         assertDoesNotThrow(() -> repository.elimina(null));
-        
         assertEquals(1, repository.getAll().size());
     }
 
@@ -159,7 +149,6 @@ public class RepositoryTest {
     @Test
     void testCerca_ElementoPresente() {
         repository.inserisciOAggiorna(dato1);
-        
         DatiStub risultato = repository.cerca("ID_1");
         
         assertNotNull(risultato);
@@ -172,9 +161,8 @@ public class RepositoryTest {
     @Test
     void testCerca_ElementoAssente() {
         repository.inserisciOAggiorna(dato1);
-        
-    
-        DatiStub risultato = repository.cerca("ID_CHE_NON_ESISTE");
+        //Cerchiamo un elemento che non esiste.
+        DatiStub risultato = repository.cerca("ID_INESISTENTE");
         
         assertNull(risultato);
     }
@@ -184,7 +172,9 @@ public class RepositoryTest {
      */
     @Test
     void testCerca_IdNull() {
+        //Cerchiamo un elemento con id null.
         DatiStub risultato = repository.cerca(null);
+        
         assertNull(risultato);
     }
 
@@ -215,9 +205,7 @@ public class RepositoryTest {
      */
     @Test
     void testGetAll_Incapsulamento() {
-    
         repository.inserisciOAggiorna(dato1);
-        
         List<DatiStub> copiaLista = repository.getAll();
         copiaLista.clear();
         
@@ -231,9 +219,7 @@ public class RepositoryTest {
     void testSalvaSuFile() {
         repository.inserisciOAggiorna(dato1);
         repository.inserisciOAggiorna(dato2);
-        
         repository.salvaSuFile();
-        
         List<DatiStub> dati = gestore.caricaDati(nomeFile);
         
         assertEquals(2, dati.size());
@@ -246,15 +232,12 @@ public class RepositoryTest {
     @Test
     void testCaricaTutti() {
         GestoreFileStub<DatiStub> gestorePreriempito = new GestoreFileStub<>();
-        List<DatiStub> datiVecchi = Arrays.asList(new DatiStub("ID_OLD_1"), new DatiStub("ID_OLD_2"));
-        
+        List<DatiStub> datiVecchi = Arrays.asList(new DatiStub("ID_VECCHIO_1"), new DatiStub("ID_VECCHIO_2"));
         gestorePreriempito.salvaDati(nomeFile, datiVecchi);
-        
         Repository<DatiStub> repoConDati = new Repository<>(nomeFile, gestorePreriempito);
-        
         List<DatiStub> dati = repoConDati.getAll();
         
         assertEquals(2, dati.size());
-        assertEquals("ID_OLD_1", dati.get(0).getId());
+        assertEquals("ID_VECCHIO_1", dati.get(0).getId());
     }
 }

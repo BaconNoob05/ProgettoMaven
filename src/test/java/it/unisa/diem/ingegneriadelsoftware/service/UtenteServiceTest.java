@@ -54,7 +54,6 @@ public class UtenteServiceTest {
      */
     @BeforeEach
     public void setUp() {
-
         utenteLorenzoTrovato = new Utente("Lorenzo", "Trovato", "0612709999", "l.trovato@studenti.unisa.it"); 
         utenteAlessandroPicariello = new Utente("alessandro", "picariello", "0612709975", "a.picariello@studenti.unisa.it"); 
         utenteMatteoIandiorio = new Utente("matteo", "iandiorio", "0612709968", "m.iandiorio@studenti.unisa.it"); 
@@ -69,7 +68,6 @@ public class UtenteServiceTest {
         );
         utenteRepoStub.caricaTutti(initialData);
 
-        // Inizializza PrestitoServiceStub e passalo a UtenteService
         prestitoServiceStub = new PrestitoServiceStub();
         utenteService = new UtenteService(utenteRepoStub, prestitoServiceStub); 
     }
@@ -187,7 +185,6 @@ public class UtenteServiceTest {
     @Test
     void testCercaPerCognome_AltroSingolo() {
         final String COGNOME_FILTRO = "Trovato";
-        
  
         Utente utenteSecondoTrovato = new Utente("Giulia", "Trovato", "0612701111", "g.trovato@studenti.unisa.it"); 
         utenteRepoStub.inserisciOAggiorna(utenteSecondoTrovato);
@@ -219,18 +216,14 @@ public class UtenteServiceTest {
      */
     @Test
     void testElimina_PrestitiAttiviImpedisconoEliminazione() {
-        // Preparazione: Aggiungi un prestito attivo per utenteLorenzoTrovato
         Libro l = new Libro("Clean Code", Arrays.asList("R. Martin"), 2008, "ISBN01", 10);
         Prestito prestitoAttivo = new Prestito(utenteLorenzoTrovato, l, LocalDate.now().plusDays(10), LocalDate.now()); 
         
         prestitoServiceStub.list.add(prestitoAttivo); 
 
-        // Tentativo di eliminazione
         assertThrows(IllegalStateException.class, () -> {
             utenteService.elimina(utenteLorenzoTrovato);
         });
-
-        // Verifica che l'utente non sia stato eliminato
         assertNotNull(utenteRepoStub.cerca(utenteLorenzoTrovato.getId()));
         assertEquals(4, utenteService.getAll().size());
     }
@@ -239,13 +232,8 @@ public class UtenteServiceTest {
      * @brief Testa l'eliminazione di un utente senza prestiti attivi.
      */
     @Test
-    void testElimina_NessunPrestitoAttivo_Successo() {
-        // Nessun prestito aggiunto allo stub
-        
-        // Tentativo di eliminazione
+    void testElimina_NessunPrestitoAttivo() {
         assertDoesNotThrow(() -> utenteService.elimina(utenteDanieleManzo));
-
-        // Verifica che l'utente sia stato eliminato
         assertNull(utenteRepoStub.cerca(utenteDanieleManzo.getId()));
         assertEquals(3, utenteService.getAll().size());
     }
