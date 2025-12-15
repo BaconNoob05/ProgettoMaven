@@ -12,55 +12,62 @@ import javafx.geometry.Pos;
 /**
  * @class UtenteView
  * @brief Permette la modifica e l'inserimento dei dati a video all'amministratore per l'entità Utente.
- * @see CrudViewBase
  * @see DatiBaseView
  */
 public class UtenteView extends DatiBaseView<Utente> {
 
 
-    /** @brief Campo di ingresso per il nome a cui è associato l' utente. */
+    /** 
+     * @brief Campo di ingresso per il nome a cui è associato l'utente. 
+     */
     private final TextField nomeInput;
-    /** @brief Campo di input per il cognome utente. */
+    
+    /** 
+     * @brief Campo di input per il cognome utente. 
+     */
     private final TextField cognomeInput;
-    /** @brief Campo di input per la matricola utente . */
+    
+    /** 
+     * @brief Campo di input per la matricola utente. 
+     */
     private final TextField matricolaInput; 
-    /** @brief Campo di ingresso per l'indirizzo email a cui è associato l'utente. */
+    
+    /** 
+     * @brief Campo di ingresso per l'indirizzo email a cui è associato l'utente. 
+     */
     private final TextField emailInput;
     
     
     /**
-     * @brief Costruttore di base della vista Utente.
-     * @post I campi di input sono istanziati e la vista è pronta.
+     * @brief Costruttore di base della view Utente.
+     * @post I campi di input sono istanziati e la view è pronta.
      */
     public UtenteView() {
-        
-    super("Utente"); 
-    
+        super("Utente"); 
 
-    this.nomeInput = new TextField();
-    this.cognomeInput = new TextField();
-    this.matricolaInput = new TextField(); 
-    this.emailInput = new TextField();
-    
-    GridPane innerDetailPane = creaPaneDettaglio();
-    VBox detailFrame = new VBox(innerDetailPane);
-    detailFrame.setStyle("-fx-border-color: gray; -fx-border-width: 1; -fx-padding: 10; -fx-background-color: white; -fx-border-radius: 5;");
-    
-    detailFrame.setPrefHeight(350); 
-    detailFrame.setMaxHeight(350);
+        this.nomeInput = new TextField();
+        this.cognomeInput = new TextField();
+        this.matricolaInput = new TextField(); 
+        this.emailInput = new TextField();
 
-    contentHBox.getChildren().add(detailFrame);
+        GridPane innerDetailPane = creaPaneDettaglio();
+        VBox detailFrame = new VBox(innerDetailPane);
+        detailFrame.setStyle("-fx-border-color: gray; -fx-border-width: 1; -fx-padding: 10; -fx-background-color: white; -fx-border-radius: 5;");
+
+        detailFrame.setPrefHeight(350); 
+        detailFrame.setMaxHeight(350);
+
+        contentHBox.getChildren().add(detailFrame);
     }
 
     /**
-     * @brief Serve per mettere le colonne della tabella per visualizzazione gli attributi dell'Utente.
+     * @brief Configura le colonne della tabella per la visualizzazione degli attributi dell'entità Utente.
      * @pre La TableView deve essere inizializzata.
      * @post La TableView contiene le colonne 'Nome', 'Cognome', 'Matricola' e 'Email'.
      */
     @Override
     protected void impostaColonneTabella() {
 
-        
         TableColumn<Utente, String> nomeCol = new TableColumn<>("Nome");
         nomeCol.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getNome()));
         nomeCol.setPrefWidth(120);
@@ -84,14 +91,13 @@ public class UtenteView extends DatiBaseView<Utente> {
     }
 
     /**
-     * @brief Mette i valori nei campi di input per la modifica o l'inserimento.
+     * @brief Imposta i valori all'interno dei campi di input per la modifica o l'inserimento.
      * @param [in] utente L'oggetto Utente i cui dati devono essere mostrati.
      * @post I campi di input riflettono i dati dell'utente o sono vuoti.
      * @see DatiBaseView#impostaValoriDefault(T)
      */
     @Override
     protected void impostaValoriDefault(Utente utente) {
-
         
         if (utente != null) {
             nomeInput.setText(utente.getNome());
@@ -109,7 +115,7 @@ public class UtenteView extends DatiBaseView<Utente> {
     }
 
     /**
-     * @brief Crea e configura il pannello per l'inserimento/modifica.
+     * @brief Crea e configura il pannello per l'inserimento o la modifica.
      * @return Il pannello GridPane contenente i controlli di input per l'entità Utente.
      * @see DatiBaseView#creaPaneDettaglio()
      */
@@ -141,15 +147,11 @@ public class UtenteView extends DatiBaseView<Utente> {
         detailPane.add(new Label("Matricola:"), 0, 3);
         detailPane.add(matricolaInput, 1, 3);
         
-        
-
         detailPane.add(new Label("Email:"), 0, 4);
         detailPane.add(emailInput, 1, 4);
-        
-
+       
         detailPane.add(getMessaggioBox(), 0, 8, 2, 1); 
          
-
         HBox actionBox = new HBox(10);
         actionBox.setAlignment(Pos.CENTER); 
         
@@ -165,9 +167,9 @@ public class UtenteView extends DatiBaseView<Utente> {
 
     
     /**
-     * @brief Recupera i dati che stanno nel form per la creazione di un nuovo utente.
-     * @return Un oggetto Utente con i dati del form, altrimenti restituisce un valore nullo.
-     * @pre I campi devono essere compilati.
+     * @brief Recupera i dati presenti nel form per la creazione di un nuovo utente.
+     * @return Un oggetto Utente i cui dati vengono attinti dal form, altrimenti restituisce il valore null.
+     * @pre I campi devono essere compilati correttamente.
      */
     public Utente getUtenteNuovo() {
         
@@ -192,7 +194,7 @@ public class UtenteView extends DatiBaseView<Utente> {
 
 
    /**
-     * @brief i dati modificati per aggiornare un utente esistente vengono recuperati.
+     * @brief Recupera i dati modificati per aggiornare un utente esistente.
      * @return L'oggetto Utente con i dati aggiornati, altrimenti restituisce un valore nullo.
      * @pre Un utente deve essere selezionato dalla tabella.
      * @post Viene restituita l'istanza aggiornata.
