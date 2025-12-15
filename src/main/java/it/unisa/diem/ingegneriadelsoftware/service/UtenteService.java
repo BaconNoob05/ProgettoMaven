@@ -31,7 +31,11 @@ public class UtenteService extends BaseService<Utente> {
      */
     public List<Utente> cercaPerCognome(String cognome) {
 
-        if (cognome == null || cognome.trim().isEmpty()) {
+        if (cognome == null) {
+            throw new IllegalArgumentException("Il cognome di ricerca non può essere nullo.");
+        }
+        
+        if (cognome.trim().isEmpty()) {
             return new ArrayList<>();
         }
 
