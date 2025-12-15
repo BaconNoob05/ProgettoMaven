@@ -89,8 +89,8 @@ public abstract class BaseService<T extends InterfaceID> implements InterfaceSer
     /**
      * @brief Esegue una ricerca generica.
      * @param [in] filtro La stringa di ricerca.
-     * @return La lista dei risultati di ricerca 
-     * @note L'implementazione nella classe base restituisce la lista contenente tutti gli elementi
+     * @return La lista dei risultati di ricerca. 
+     * @note L'implementazione nella classe base restituisce la lista contenente tutti gli elementi.
      */
     @Override
     public List<T> cercaGenerico(String filtro) { 
