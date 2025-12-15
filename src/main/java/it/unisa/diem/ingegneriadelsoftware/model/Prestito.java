@@ -42,8 +42,8 @@ public class Prestito extends Dati {
      * @param [in] utente L'utente che effettua il prestito.
      * @param [in] libro Il libro oggetto del prestito.
      * @param [in] dataPrevista La data prevista per la restituzione.
-     * @pre L'oggetto Utente e l'oggetto Libro non devono avere un valore nullo.
-     * @post Viene creato un oggetto Prestito con dataEffettiva impostata a valore nullo e dataPrestito impostata a LocalDate.now().
+     * @pre L'oggetto Utente e l'oggetto Libro non devono assumere il valore null.
+     * @post Viene creato un oggetto Prestito con dataEffettiva impostata al valore null e dataPrestito impostata a LocalDate.now().
      */
     public Prestito(Utente utente, Libro libro, LocalDate dataPrevista) {
         this.utente = utente;
@@ -60,8 +60,8 @@ public class Prestito extends Dati {
      * @param [in] libro Il libro oggetto del prestito.
      * @param [in] dataPrevista La data prevista per la restituzione.
      * @param [in] dataPrestito La data in cui il prestito è stato effettivamente registrato.
-     * @pre L'oggetto Utente e l'oggetto Libro e le date non devono avere un valore nullo.
-     * @post Viene creato un oggetto Prestito con dataEffettiva impostata a valore nullo.
+     * @pre L'oggetto Utente, l'oggetto Libro e le date non devono assumere il valore null.
+     * @post Viene creato un oggetto Prestito con dataEffettiva impostata al valore null.
      */
     public Prestito(Utente utente, Libro libro, LocalDate dataPrevista, LocalDate dataPrestito) {
         this.utente = utente;
@@ -81,9 +81,10 @@ public class Prestito extends Dati {
     }
 
     /**
-     * @brief Registra che la restituzione del libro deve essere effettuata alla data scelta.
+     * @brief Registra che la restituzione del libro deve essere effettuata entro la data indicata.
      * @param [in] data La data in cui avviene la restituzione.
-     * @post dataEffettiva != null
+     * @throws IllegalArgumentException Se la data di registrazione del prestito inserita è null, viene lanciata un'eccezione.
+     * @post Il campo dataEffettiva viene aggiornato.
      */
     public void registraRestituzione(LocalDate data) {
         if (data == null) {
@@ -95,8 +96,8 @@ public class Prestito extends Dati {
     /**
      * @brief Ottiene l'identificativo univoco del prestito.
      * @details L'ID è generato combinando gli identificativi di Utente e Libro e la data del prestito
-     * per garantire l'univocità all'interno del sistema (Utilizzando dataPrestito).
-     * @return L'ID del prestito altrimenti restituisce un valore nullo.
+     * per garantire l'univocità all'interno del sistema.
+     * @return L'ID del prestito, altrimenti restituisce il valore null se i dati sono incompleti.
      * @see Dati#getId()
      */
     @Override 
@@ -110,8 +111,8 @@ public class Prestito extends Dati {
     /**
      * @brief Restituisce una rappresentazione in formato stringa del prestito.
      * @details Fornisce una descrizione testuale completa del prestito, includendo
-     * informazioni su utente, libro, data prevista e data di restituzione (se presente).
-     * @return Una stringa formattata con i dettagli del prestito altrimenti restituisce un valore nullo.
+     * informazioni su utente, libro, data prevista e data di restituzione.
+     * @return Una stringa formattata con i dettagli del prestito altrimenti restituisce il valore null.
      * @pre L'oggetto deve essere istanziato correttamente.
      * @post Lo stato dell'oggetto non viene modificato.
      * @see Dati#toString()
@@ -126,7 +127,7 @@ public class Prestito extends Dati {
 
     /**
      * @brief Restituisce la data in cui il prestito è stato effettuato.
-     * @return La data del prestito altrimenti restituisce un valore nullo.
+     * @return La data del prestito, altrimenti restituisce il valore null.
      */
     public LocalDate getDataPrestito() {
         return dataPrestito;
@@ -134,48 +135,48 @@ public class Prestito extends Dati {
 
 
     /**
-     * @brief Restituisce il titolo del libro prestato. 
-     * @returnIl nome completo dell'utente altrimenti restituisce un valore nullo.
+     * @brief Restituisce il nome completo dell'utente che ha effettuato il prestito. 
+     * @return Il nome completo dell'utente, altrimenti restituisce la stringa "N/D".
      */
     public String getNomeUtente() {
         return (utente != null) ? utente.getCognome() + " " + utente.getNome() : "N/D";
     }
 
     /** 
-     *@brief Restituisce il titolo del libro prestato
-     * @return Il titolo del libro prestato altrimenti restituisce un valore nullo. 
+     * @brief Restituisce il titolo del libro prestato.
+     * @return Il titolo del libro prestato, altrimenti restituisce la stringa "N/D". 
      */
     public String getTitoloLibro() {
         return (libro != null) ? libro.getTitolo() : "N/D";
     }
 
     /** 
-     * @brief Restituisce la data prevista per la restituzione del libro
-     * @return La data prevista per la restituzione altrimenti restituisce un valore nullo. 
+     * @brief Restituisce la data prevista per la restituzione del libro.
+     * @return La data prevista per la restituzione, altrimenti restituisce il valore null. 
      */
     public LocalDate getDataPrevista() {
         return dataPrevista;
     }
 
     /** 
-     * @brief Restituisce la data effettiva di restituzione del libro
-     * @return La data effettiva di restituzione altrimenti restituisce un valore nullo. 
+     * @brief Restituisce la data effettiva di restituzione del libro.
+     * @return La data effettiva di restituzione, altrimenti restituisce il valore null. 
      */
     public LocalDate getDataEffettiva() {
         return dataEffettiva;
     }
 
     /**
-     * @brief Restituisce l'oggetto dell' utente associato 
-     * @return L'oggetto Utente associato altrimenti restituisce un valore nullo. 
+     * @brief Restituisce l'oggetto dell'utente associato. 
+     * @return L'oggetto Utente associato, altrimenti restituisce il valore null. 
      */
     public Utente getUtente() {
         return utente;
     }
 
     /**
-     * @brief Restituisce l'oggeto del libro associato.
-     * @return L'oggetto Libro associato altrimenti restituisce un valore nullo. 
+     * @brief Restituisce l'oggetto del libro associato.
+     * @return L'oggetto Libro associato, altrimenti restituisce il valore null. 
      */
     public Libro getLibro() {
         return libro;
@@ -184,8 +185,8 @@ public class Prestito extends Dati {
     /**
      * @brief Imposta la data di restituzione del libro.
      * @param [in] dataEffettiva La data in cui il libro è stato restituito.
-     * @pre La data fornita non deve essere nulla e dovrebbe essere successiva alla data del prestito.
-     * @post Il campo dataEffettiva assume il valore della  data specificata.
+     * @pre La data fornita non deve assumere il valore null e deve essere successiva alla data del prestito.
+     * @post Il campo dataEffettiva assume il valore della data specificata.
      */
     public void setDataEffettiva(LocalDate dataEffettiva) { 
         this.dataEffettiva=dataEffettiva;
