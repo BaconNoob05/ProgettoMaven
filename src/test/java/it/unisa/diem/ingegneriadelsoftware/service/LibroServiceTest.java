@@ -95,7 +95,7 @@ public class LibroServiceTest {
     /**
      * @brief Testa il costruttore del LibroService e l'inizializzazione del repository.
      */
-    @Test
+    @Test /*caso di test 84 */
     void testCostruttore() {
 
         assertNotNull(service);
@@ -107,7 +107,7 @@ public class LibroServiceTest {
     /**
      * @brief Testa la ricerca generica per titolo e autore (case-insensitive). (MANCANTE DALLA MATRICE)
      */
-    @Test
+    @Test /*caso di test 85 */
     void testCercaGenerico_MatchTitoloAutore() {
         final String FILTRO_TITOLO = "softwar"; // Match "Software Engineering" (titolo)
         List<Libro> risultatiTitolo = service.cercaGenerico(FILTRO_TITOLO);
@@ -125,7 +125,7 @@ public class LibroServiceTest {
     /**
      * @brief Testa la ricerca generica per ISBN. (MANCANTE DALLA MATRICE)
      */
-    @Test
+    @Test /*caso di test 86 */
     void testCercaGenerico_MatchISBN() {
         final String FILTRO_ISBN = "978-0133943030"; // ISBN di libroSoftwareEng
         List<Libro> risultati = service.cercaGenerico(FILTRO_ISBN);
@@ -137,7 +137,7 @@ public class LibroServiceTest {
     /**
      * @brief Testa la ricerca generica con filtro vuoto o nullo.
      */
-    @Test
+    @Test /*caso di test 87 */
     void testCercaGenerico_FiltroVuotoONullo_RestituisceTutti() {
 
         assertEquals(5, service.cercaGenerico(null).size());
@@ -148,7 +148,7 @@ public class LibroServiceTest {
     /**
      * @brief Testa la ricerca per titolo in base a un filtro con un risultato.
      */
-    @Test
+    @Test /*caso di test 88 */
     void testCercaPerTitolo_MatchSingolo() {
         final String FILTRO_TITOLO = "Christmas"; 
         List<Libro> risultati = service.cercaPerTitolo(FILTRO_TITOLO);
@@ -160,7 +160,7 @@ public class LibroServiceTest {
     /**
      * @brief Testa la ricerca per titolo in base a un filtro con più risultati .
      */
-    @Test
+    @Test /*caso di test 89 */
     void testCercaPerTitolo_MatchMultiplo() {
         final String FILTRO_TITOLO = "Ragion";
         List<Libro> risultati = service.cercaPerTitolo(FILTRO_TITOLO);
@@ -172,7 +172,7 @@ public class LibroServiceTest {
     /**
      * @brief Testa la ricerca per titolo in base a un filtro con zero risultati.
      */
-    @Test
+    @Test /*caso di test 90 */
     void testCercaPerTitolo_NessunMatch() {
         final String FILTRO_TITOLO = "Astrologia";
         List<Libro> risultati = service.cercaPerTitolo(FILTRO_TITOLO);
@@ -183,7 +183,7 @@ public class LibroServiceTest {
     /**
      * @brief Testa la ricerca per titolo con  l'insensibilità case .
      */
-    @Test
+    @Test /*caso di test 91 */
     void testCercaPerTitolo_FiltroCaseInsensitive() {
         final String FILTRO_TITOLO = "guida";
         List<Libro> risultati = service.cercaPerTitolo(FILTRO_TITOLO);
@@ -195,7 +195,7 @@ public class LibroServiceTest {
     /**
      * @brief Testa la ricerca per titolo con un filtro nullo e restituisce una lista vuota.
      */
-    @Test
+    @Test /*caso di test 92 */
     void testCercaPerTitolo_FiltroNullo_ComportamentoAtteso() {
         assertTrue(service.cercaPerTitolo(null).isEmpty());
     }
@@ -203,7 +203,7 @@ public class LibroServiceTest {
     /**
      * @brief Testa la ricerca per autore completo con una sola corrispondenza .
      */
-    @Test
+    @Test /*caso di test 93 */
     void testCercaPerAutore_MatchSingoloAutoreCompleto() {
         final String FILTRO_AUTORE = "Charles Dickens"; 
         List<Libro> risultati = service.cercaPerAutore(FILTRO_AUTORE);
@@ -215,7 +215,7 @@ public class LibroServiceTest {
     /**
      * @brief Testa la ricerca per autore parziale con una sola corrispondenza.
      */
-    @Test
+    @Test /*caso di test 94 */
     void testCercaPerAutore_MatchMultiplo_NomeParziale() {
         final String FILTRO_AUTORE = "Kant";
         List<Libro> risultati = service.cercaPerAutore(FILTRO_AUTORE);
@@ -227,7 +227,7 @@ public class LibroServiceTest {
     /**
      * @brief Testa la ricerca per autore quando è associato a più libri.
      */
-    @Test
+    @Test /*caso di test 95 */
     void testCercaPerAutore_MatchMultiplo_StessoAutore() {
         List<String> autoriDeSio = Arrays.asList("Claudio De Sio Cesari");
         
@@ -245,7 +245,7 @@ public class LibroServiceTest {
     /**
      * @brief Testa la ricerca per autore con zero risultati.
      */
-    @Test
+    @Test /*caso di test 96 */
     void testCercaPerAutore_NessunMatch() {
         final String FILTRO_AUTORE = "Stephen King";
         List<Libro> risultati = service.cercaPerAutore(FILTRO_AUTORE);
@@ -256,7 +256,7 @@ public class LibroServiceTest {
     /**
      * @brief Testa la ricerca per autore con l'insensibilità case.
      */
-    @Test
+    @Test /*caso di test 97 */
     void testCercaPerAutore_FiltroCaseInsensitive() {
         final String FILTRO_AUTORE = "martin heidegger";
         List<Libro> risultati = service.cercaPerAutore(FILTRO_AUTORE);
@@ -268,18 +268,18 @@ public class LibroServiceTest {
     /**
      * @brief Testa la ricerca per autore con filtri vuoti o nulli e  restituiscono una lista vuota.
      */
-    @Test
+    @Test /*caso di test 98 */
     void testCercaPerAutore_FiltroVuotoONullo_ComportamentoAtteso() {
         assertTrue(service.cercaPerAutore(null).isEmpty());
         assertTrue(service.cercaPerAutore("").isEmpty());
         assertTrue(service.cercaPerAutore(" ").isEmpty());
     }
     
-   
+    
     /**
      * @brief Testa l'eliminazione di un libro con prestiti attivi (FC-1.1.2).
      */
-    @Test
+    @Test /*caso di test 99 */
     void testElimina_PrestitiAttiviImpedisconoEliminazione() {
         Utente u = new Utente("Test", "User", "ID01", "test.user@studenti.unisa.it");
         LocalDate data = LocalDate.now().plusDays(10);
@@ -295,19 +295,19 @@ public class LibroServiceTest {
     /**
      * @brief Testa l'eliminazione di un libro senza prestiti attivi.
      */
-    @Test
+    @Test /*caso di test 100 */
     void testElimina_NessunPrestitoAttivo_Successo() {
         assertDoesNotThrow(() -> service.elimina(libroCriticaRagionPura));
         assertNull(repo.cerca(libroCriticaRagionPura.getId()));
         assertEquals(4, repo.getAll().size());
     }
     
-   
+    
 
     /**
      * @brief Testa il metodo cerca(String id) con ID nullo o vuoto (logica BaseService).
      */
-    @Test
+    @Test /*caso di test 101 */
     void testCerca_IdNulloOVuoto() {
         assertNull(service.cerca(null));
         assertNull(service.cerca(""));
@@ -317,7 +317,7 @@ public class LibroServiceTest {
     /**
      * @brief Testa che il metodo salva(T elemento) gestisca un elemento nullo (logica BaseService).
      */
-    @Test
+    @Test /*caso di test 102 */
     void testSalva_ElementoNullo() {
         int dimensioneIniziale = repo.getAll().size();
         
@@ -328,7 +328,7 @@ public class LibroServiceTest {
     /**
      * @brief Testa che il metodo elimina(T elemento) gestisca un elemento nullo (logica BaseService).
      */
-    @Test
+    @Test /*caso di test 103 */
     void testElimina_ElementoNullo() {
         int dimensioneIniziale = repo.getAll().size();
         
