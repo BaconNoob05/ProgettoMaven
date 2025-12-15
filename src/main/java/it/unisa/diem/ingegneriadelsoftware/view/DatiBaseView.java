@@ -18,48 +18,59 @@ import javafx.geometry.Insets;
  */
 public abstract class DatiBaseView<T extends InterfaceID> extends BaseView<T> {
 
-    /** * @brief Contenitore principale del layout che racchiude tutti gli elementi grafici della view. 
+    /** 
+     * @brief Contenitore principale del layout che racchiude tutti gli elementi grafici della view. 
      */
     private final VBox root;
 
-    /** * @brief Campo di testo per la ricerca degli elementi. 
+    /** 
+     * @brief Campo di testo per la ricerca degli elementi. 
      */
     protected final TextField cercaField;
 
-    /** * @brief Bottone per avviare la cancellazione dell'elemento. 
+    /** 
+     * @brief Bottone per avviare la cancellazione dell'elemento. 
      */
     protected final Button cancellaButton;
 
-    /** * @brief Bottone di conferma per l'inserimento o la modifica. 
+    /** 
+     * @brief Bottone di conferma per l'inserimento o la modifica. 
      */
     protected final Button okButton;
 
-    /** * @brief Bottone per annullare l'operazione corrente e pulire i campi di dettaglio. 
+    /** 
+     * @brief Bottone per annullare l'operazione corrente e pulire i campi di dettaglio. 
      */
     protected final Button annullaButton; 
 
-    /** * @brief Bottone per annullare la ricerca corrente e mostrare tutti gli elementi. 
+    /** 
+     * @brief Bottone per annullare la ricerca corrente e mostrare tutti gli elementi. 
      */
     protected final Button annullaCercaButton; 
 
-    /** * @brief Label contenente il testo del messaggio. 
+    /** 
+     * @brief Label contenente il testo del messaggio. 
      */
     protected final Label messaggioLabel;
 
-    /** * @brief Contenitore stilizzato per la visualizzazione dei messaggi di stato, errore o conferma. 
+    /** 
+     * @brief Contenitore stilizzato per la visualizzazione dei messaggi di stato, errore o conferma. 
      */
     protected final HBox messaggioBox; 
     
     
-    /** * @brief Tableview serve per la visualizzazione della tabella degli elementi. 
+    /** 
+     * @brief Tableview serve per la visualizzazione della tabella degli elementi. 
      */
     protected final TableView<T> tableView;
     
-    /** * @brief Contenitore HBox per affiancare la tabella al pannello di dettaglio. 
+    /** 
+     * @brief Contenitore HBox per affiancare la tabella al pannello di dettaglio. 
      */
     protected final HBox contentHBox;
 
-    /** * @brief Riferimento al pulsante che è in attesa di conferma (primo click effettuato). 
+    /** 
+     * @brief Riferimento al pulsante che è in attesa di conferma (primo click effettuato). 
      */
     private Button buttonInAttesa = null; 
 
@@ -71,6 +82,7 @@ public abstract class DatiBaseView<T extends InterfaceID> extends BaseView<T> {
      */
     public DatiBaseView(String entità) {
         
+        //inizializzazione componenti 
         this.cercaField = new TextField();
         this.cancellaButton = new Button("Elimina"); 
         this.cancellaButton.setStyle("-fx-background-color: #f44336; -fx-text-fill: white; -fx-font-weight: bold;");
@@ -83,7 +95,7 @@ public abstract class DatiBaseView<T extends InterfaceID> extends BaseView<T> {
         this.messaggioBox.setPadding(new Insets(5));
         this.messaggioBox.setStyle("-fx-border-color: gray; -fx-border-width: 1; -fx-padding: 5; -fx-background-color: #f4f4f4; -fx-border-radius: 3;");
 
-
+        //inizializzazione tableview
         this.tableView = new TableView<>(dataList);
         
         this.tableView.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY); 
@@ -93,13 +105,14 @@ public abstract class DatiBaseView<T extends InterfaceID> extends BaseView<T> {
         impostaColonneTabella();
         impostaListener();
         
+        
         cancellaButton.setPrefWidth(80);
         okButton.setPrefWidth(120); 
         annullaButton.setPrefWidth(80); 
         annullaCercaButton.setPrefWidth(120); 
         
 
-
+        //layout
         this.root = new VBox(15);
         this.root.setPadding(new Insets(10)); 
 
@@ -145,6 +158,7 @@ public abstract class DatiBaseView<T extends InterfaceID> extends BaseView<T> {
      */
     private VBox creaTopControls(String entityName) {
         
+        //riga di ricerca e cancellazione
         HBox searchAndActionBox = new HBox(10);
         searchAndActionBox.setAlignment(Pos.CENTER_LEFT); 
         searchAndActionBox.getChildren().addAll(
@@ -167,6 +181,7 @@ public abstract class DatiBaseView<T extends InterfaceID> extends BaseView<T> {
      */
     protected void impostaListener() {
         
+        //listener per la selezione della riga
         tableView.getSelectionModel().selectedItemProperty().addListener((obs, oldSelection, newSelection) -> {
             impostaValoriDefault(newSelection);
             if (newSelection == null) {
@@ -176,16 +191,16 @@ public abstract class DatiBaseView<T extends InterfaceID> extends BaseView<T> {
             }
         });
         
-        // Listener per resettare lo stato di conferma quando si annulla
+        //listener per resettare lo stato di conferma quando si annulla
         annullaButton.setOnAction(e -> pulisciDettagli());
 
-        // Aggiungo il listener per resettare lo stato di conferma su interazione con la tabella
+        //listener per resettare lo stato di conferma su interazione con la tabella
         tableView.getSelectionModel().selectedItemProperty().addListener((obs, oldSelection, newSelection) -> {
             impostaValoriDefault(newSelection);
             resetConferma();
         });
         
-        // Aggiungo listener per annullare conferma quando si cambia il testo di ricerca
+        //listener per annullare conferma quando si cambia il testo di ricerca
         cercaField.textProperty().addListener((obs, oldVal, newVal) -> resetConferma());
     }
 
@@ -198,24 +213,24 @@ public abstract class DatiBaseView<T extends InterfaceID> extends BaseView<T> {
      */
     public boolean richiediConferma(Button pulsante, Runnable operazione, String messaggioConferma) {
         if (pulsante == buttonInAttesa) {
-            // E' il secondo click sullo stesso pulsante: esegui l'operazione
+            // secondo click: esegui operazione
             buttonInAttesa = null; // Resetta lo stato
             // Esegue l'operazione di business
             operazione.run();
             return true;
         } else {
-            // Primo click su questo pulsante (o click su un pulsante diverso da quello in attesa)
+            // Primo click: chiedi conferma
             
-            // 1. Resetta lo stato precedente (annulla la conferma di qualsiasi altro pulsante)
+            //resetta lo stato precedente 
             if (buttonInAttesa != null) {
                 // Se c'era un altro pulsante in attesa, pulisce il messaggio di quel pulsante
                 mostraMessaggio("Conferma precedente annullata.");
             }
             
-            // 2. Imposta il nuovo stato di attesa
+            //imposta il nuovo stato di attesa
             buttonInAttesa = pulsante;
             
-            // 3. Richiede la conferma
+            //richiede la conferma
             mostraMessaggio(messaggioConferma);
             return false;
         }
@@ -258,10 +273,12 @@ public abstract class DatiBaseView<T extends InterfaceID> extends BaseView<T> {
     public void mostraMessaggio(String messaggio) {
         messaggioLabel.setText(messaggio);
         
+        //per evidenziare gli errori
         if (messaggio != null && messaggio.toLowerCase().contains("errore")) {
             messaggioLabel.setStyle("-fx-text-fill: red; -fx-font-weight: bold;");
             messaggioBox.setStyle("-fx-border-color: red; -fx-border-width: 2; -fx-padding: 5; -fx-background-color: #ffe0e0; -fx-border-radius: 3;");
         } else {
+            //stile messaggi di stato e di conferma
             messaggioLabel.setStyle("-fx-text-fill: black; -fx-font-weight: bold;");
             messaggioBox.setStyle("-fx-border-color: gray; -fx-border-width: 1; -fx-padding: 5; -fx-background-color: #f4f4f4; -fx-border-radius: 3;");
         }

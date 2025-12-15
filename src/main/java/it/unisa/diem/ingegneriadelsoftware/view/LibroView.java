@@ -60,12 +60,14 @@ public class LibroView extends DatiBaseView<Libro> {
         this.copieInput = new TextField();
         this.autoriInput = new TextField(); 
 
+        //crea pannello di dettagli
         GridPane innerDetailPane = creaPaneDettaglio();
         VBox detailFrame = new VBox(innerDetailPane);
         detailFrame.setStyle("-fx-border-color: gray; -fx-border-width: 1; -fx-padding: 10; -fx-background-color: white; -fx-border-radius: 5;");
         detailFrame.setPrefHeight(350); 
         detailFrame.setMaxHeight(350);
-
+        
+        //aggiunge il pannello di dettaglio vicino alla tableview
         contentHBox.getChildren().add(detailFrame); 
     }
     
@@ -111,6 +113,7 @@ public class LibroView extends DatiBaseView<Libro> {
     @Override
     protected void impostaValoriDefault(Libro libro) {
         if (libro != null) {
+            //popola i campi di libro
             titoloInput.setText(libro.getTitolo());
             annoInput.setText(String.valueOf(libro.getAnno()));
             isbnInput.setText(libro.getId());
@@ -172,6 +175,8 @@ public class LibroView extends DatiBaseView<Libro> {
         HBox actionBox = new HBox(10);
         actionBox.setAlignment(Pos.CENTER); 
         
+        
+        //styling pulsanti di azione
         getOkButton().setStyle("-fx-background-color: #4CAF50; -fx-text-fill: white; -fx-font-weight: bold;"); 
         getAnnullaButton().setStyle("-fx-background-color: #f44336; -fx-text-fill: white;");
         
@@ -219,17 +224,20 @@ public class LibroView extends DatiBaseView<Libro> {
             int copie = Integer.parseInt(copieText);
             List<String> autori = parseAutori(autoriString); 
 
+            //validazione: copie negative
             if (copie < 0) {
                  mostraMessaggio("Errore: Le copie disponibili non possono essere negative.");
                  return null;
             }
+            //validazione: autori non vuoti
             if (autori.isEmpty()) { 
                  mostraMessaggio("Errore: Specificare almeno un autore.");
                  return null;
             }
 
             Libro nuovoLibro = new Libro(titolo, autori, anno, isbn, copie); 
-
+            
+            //validazione: vincoli di dominio
             if (!nuovoLibro.isValido()) {
                 mostraMessaggio("Errore: Dati libro non validi (es. anno di pubblicazione futuro o ISBN/Autori non validi).");
                 return null;
@@ -278,10 +286,12 @@ public class LibroView extends DatiBaseView<Libro> {
             int nuoveCopie = Integer.parseInt(copieText);
             List<String> nuoviAutori = parseAutori(autoriString); 
             
+            //validazione: copie negative
             if (nuoveCopie < 0) {
                 mostraMessaggio("Errore: Le copie disponibili non possono essere negative.");
                 return null;
             }
+            //validazione: autori non vuoti
             if (nuoviAutori.isEmpty()) { 
                 mostraMessaggio("Errore: Specificare almeno un autore.");
                 return null;
@@ -289,7 +299,7 @@ public class LibroView extends DatiBaseView<Libro> {
 
             Libro libroAggiornato = new Libro(nuovoTitolo, nuoviAutori, nuovoAnno, nuovoIsbn, nuoveCopie); 
             
-
+            //validazione: vincoli di dominio
             if (!libroAggiornato.isValido()) {
                 mostraMessaggio("Errore: Dati libro non validi (es. anno di pubblicazione futuro o ISBN/Autori non validi).");
                 return null;

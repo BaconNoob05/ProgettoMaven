@@ -115,7 +115,5 @@ public abstract class BaseService<T extends InterfaceID> implements InterfaceSer
      * @post L'ordine di visualizzazione cambia.
      */
     @Override
-    public void ordina(Comparator<T> comparatore) { 
-        
-    }
+    public void ordina(Comparator<T> comparatore) { }
 }

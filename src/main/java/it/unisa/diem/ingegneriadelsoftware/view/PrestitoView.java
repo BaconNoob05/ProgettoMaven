@@ -11,11 +11,9 @@ import javafx.scene.layout.HBox;
 import java.time.LocalDate;
 
 import java.time.format.DateTimeFormatter;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 import javafx.scene.layout.VBox;
-import javafx.geometry.Pos;
-import javafx.geometry.Insets; 
+import javafx.geometry.*; 
 
 /**
  * @class PrestitoView
@@ -96,7 +94,8 @@ public class PrestitoView extends DatiBaseView<Prestito> {
         restituisciLibroButton.setStyle("-fx-background-color: #2196F3; -fx-text-fill: white; -fx-font-weight: bold;");
         this.annullaSpecificButton.setStyle("-fx-background-color: #f44336; -fx-text-fill: white;");
 
-
+        
+        //pannello di dettaglio
         GridPane innerDetailPane = creaPaneDettaglio();
         VBox detailFrame = new VBox(innerDetailPane);
         detailFrame.setStyle("-fx-border-color: gray; -fx-border-width: 1; -fx-padding: 10; -fx-background-color: white; -fx-border-radius: 5;");
@@ -106,6 +105,7 @@ public class PrestitoView extends DatiBaseView<Prestito> {
 
         contentHBox.getChildren().add(detailFrame); 
 
+        //RowFactory per la colorazione condizionale
         tableView.setRowFactory(tv -> new TableRow<Prestito>() {
             @Override
             protected void updateItem(Prestito item, boolean empty) {
@@ -123,10 +123,11 @@ public class PrestitoView extends DatiBaseView<Prestito> {
             }
         });
         
+        //disabilita il pulsante Salva/Aggiorna
         super.getOkButton().setDisable(true);
 
 
-       
+        //pulizia iniziale dei campi
         pulisciDettagli();
     }
     
@@ -191,7 +192,7 @@ public class PrestitoView extends DatiBaseView<Prestito> {
     protected void impostaValoriDefault(Prestito prestito) {
         if (prestito != null) {
 
-            
+            //disabilita le modifiche dei campi associati ai prestiti già esistenti
             libroComboBox.setDisable(true);
             utenteComboBox.setDisable(true);
             
@@ -204,6 +205,7 @@ public class PrestitoView extends DatiBaseView<Prestito> {
 
             if (prestito.getDataEffettiva() != null) {
                 
+                //caso: prestito chiuso
                 dataRestituzionePicker.setValue(prestito.getDataEffettiva());
                 dataRestituzionePicker.setDisable(true); 
                 statoComboBox.setValue("Restituito");
@@ -211,7 +213,7 @@ public class PrestitoView extends DatiBaseView<Prestito> {
                 
             } else {
 
-                
+                //caso: prestito attivo
                 dataRestituzionePicker.setValue(prestito.getDataPrevista()); 
                 dataRestituzionePicker.setDisable(false);
                 
@@ -219,6 +221,7 @@ public class PrestitoView extends DatiBaseView<Prestito> {
                 restituisciLibroButton.setDisable(false);
             }
             
+            //disabilita la registrazione di un nuovo prestito
             registraPrestitoButton.setDisable(true); 
             mostraMessaggio("Prestito selezionato: " + prestito.getId());
 
@@ -283,7 +286,6 @@ public class PrestitoView extends DatiBaseView<Prestito> {
         pulsantiAzione.getChildren().addAll(registraPrestitoButton, restituisciLibroButton, getAnnullaButton());
         
         
-
         detailPane.add(getMessaggioBox(), 0, 9, 2, 1); 
         detailPane.add(pulsantiAzione, 0, 12, 2, 1);
         
@@ -331,7 +333,8 @@ public class PrestitoView extends DatiBaseView<Prestito> {
         Utente utenteSelezionato = utenteComboBox.getValue();
 
         LocalDate dataPrevista = dataRestituzionePicker.getValue(); 
-
+        
+        //validazione campi obbligatori
         if (libroSelezionato == null || utenteSelezionato == null || dataPrevista == null) {
             mostraMessaggio("Errore: Selezionare Libro, Utente e Data di Restituzione Prevista.");
             return null;

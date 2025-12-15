@@ -44,9 +44,12 @@ public class UtenteService extends BaseService<Utente> {
                         .anyMatch(p -> p.getUtente().getId().equals(elemento.getId()));
                 
                 if (haPrestitiAttivi) {
+                    
                     throw new IllegalStateException("Impossibile eliminare l'utente: sono presenti prestiti attivi associati.");
                 }
             }
+            
+            //se non ci sono prestiti attivi elimina l'utente
             repository.elimina(elemento.getId());
         }
     }
@@ -68,6 +71,7 @@ public class UtenteService extends BaseService<Utente> {
         }
         String filtro = cognome.toLowerCase();
         return getAll().stream()
+                //filtra gli utenti il cui cognome contiene la stringa di ricerca
             .filter(u -> u.getCognome().toLowerCase().contains(filtro))
             .collect(Collectors.toList());
     }
@@ -86,6 +90,7 @@ public class UtenteService extends BaseService<Utente> {
         }
         String filtroLowerCase = filtro.toLowerCase();
         return getAll().stream()
+                //filtra se il cognome o la matricola contiene la stringa di ricerca
                .filter(u -> u.getCognome().toLowerCase().contains(filtroLowerCase) || 
                             u.getMatricola().toLowerCase().contains(filtroLowerCase))
                .collect(Collectors.toList());

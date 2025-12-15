@@ -42,13 +42,19 @@ public class LibroService extends BaseService<Libro> {
     @Override
     public void elimina(Libro elemento) {
         if (elemento != null && elemento.getId() != null) {
+            
+            //controllo di integrità della reference 
             if (prestitoService != null) {
+                
+                //steam utilizzati per verificare se esiste almeno un prestito attivo
                 boolean haPrestitiAttivi = prestitoService.listaPrestitiAttivi().stream()
                         .anyMatch(p -> p.getLibro().getId().equals(elemento.getId()));
                 if (haPrestitiAttivi) {
                     throw new IllegalStateException("Impossibile eliminare il libro: sono presenti prestiti attivi associati.");
                 }
             }
+            
+            //se nessun prestito attivo è stato trovato, si procede con l'eliminazione del repository
             repository.elimina(elemento.getId());
         }
     }
@@ -69,6 +75,7 @@ public class LibroService extends BaseService<Libro> {
         String filtro = titolo.toLowerCase();
 
         return getAll().stream()
+                //filtra se il titolo del libro contiene la stringa per la ricerca (non case sensitive)
             .filter(l -> l.getTitolo().toLowerCase().contains(filtro))
             .collect(Collectors.toList());
     }
@@ -87,6 +94,7 @@ public class LibroService extends BaseService<Libro> {
            return new ArrayList<>();
        String filtro = autore.toLowerCase();
        return getAll().stream()
+               //filtra se la lista degli autori del libro contiene la stringa per la ricerca (non case sensitive)
            .filter(l -> l.getAutoriString().toLowerCase().contains(filtro))
            .collect(Collectors.toList());
    }
@@ -101,7 +109,7 @@ public class LibroService extends BaseService<Libro> {
     @Override
     public List<Libro> cercaGenerico(String filtro) {
         if (filtro == null || filtro.trim().isEmpty()) {
-            return getAll();
+            return getAll(); //se il filtro è vuoto ritorna la lista intera
         }
         String filtroLowerCase = filtro.toLowerCase();
         return getAll().stream()

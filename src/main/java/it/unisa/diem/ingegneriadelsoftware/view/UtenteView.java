@@ -100,12 +100,14 @@ public class UtenteView extends DatiBaseView<Utente> {
     protected void impostaValoriDefault(Utente utente) {
         
         if (utente != null) {
+            //modalità modifica: popola i campi
             nomeInput.setText(utente.getNome());
             cognomeInput.setText(utente.getCognome());
             matricolaInput.setText(utente.getId());
             emailInput.setText(utente.getEmail());
             matricolaInput.setEditable(true); 
         } else {
+            //modalità inserimento: svuota i campi
             nomeInput.setText("");
             cognomeInput.setText("");
             matricolaInput.setText("");
@@ -155,6 +157,7 @@ public class UtenteView extends DatiBaseView<Utente> {
         HBox actionBox = new HBox(10);
         actionBox.setAlignment(Pos.CENTER); 
         
+        //styling pulsanti di azione
         getOkButton().setStyle("-fx-background-color: #4CAF50; -fx-text-fill: white; -fx-font-weight: bold;"); 
         getAnnullaButton().setStyle("-fx-background-color: #f44336; -fx-text-fill: white;");
         
@@ -179,6 +182,7 @@ public class UtenteView extends DatiBaseView<Utente> {
             String matricola = matricolaInput.getText().trim();
             String email = emailInput.getText().trim();
             
+            //validazione campi obbligatori
             if (nome.isEmpty() || cognome.isEmpty() || matricola.isEmpty() || email.isEmpty()) { 
                 mostraMessaggio("Errore: Tutti i campi (Nome, Cognome, Matricola, Email) sono obbligatori.");
                 return null;
@@ -215,6 +219,8 @@ public class UtenteView extends DatiBaseView<Utente> {
             String nuovaMatricola = matricolaInput.getText().trim(); 
             String nuovaEmail = emailInput.getText().trim();
             
+            
+            //validazione campi obbligatori
             if (nuovoNome.isEmpty() || nuovoCognome.isEmpty() || nuovaMatricola.isEmpty() || nuovaEmail.isEmpty()) {
                  throw new IllegalArgumentException("Errore: Tutti i campi sono obbligatori.");
             }

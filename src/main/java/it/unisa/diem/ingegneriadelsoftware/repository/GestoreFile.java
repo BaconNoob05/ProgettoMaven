@@ -22,6 +22,7 @@ public class GestoreFile<T> implements InterfaceGestoreIO<T> {
      */
     @Override
     public void salvaDati(String nomeFile, List<T> dati) {
+        //ObjectStream per scrivere gli oggetti su disco
         try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(nomeFile))) {
 
             oos.writeObject(dati);
@@ -40,11 +41,12 @@ public class GestoreFile<T> implements InterfaceGestoreIO<T> {
     @Override
     public List<T> caricaDati(String nomeFile) {
         List<T> risultato = new ArrayList<>();
-
+        
         try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream(nomeFile))) {
 
             Object oggettoLetto = ois.readObject();
-
+            
+            //verifica che l'oggetto sia una lista
             if (oggettoLetto instanceof List) {
                 risultato = (List<T>) oggettoLetto;
             } else {

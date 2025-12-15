@@ -51,11 +51,13 @@ public class PrestitoService extends BaseService<Prestito> {
         if (utente == null || libro == null) {
             throw new IllegalArgumentException("Utente o libro nullo");
         }
-
+        
+        //controllo validità data prevista (futura)
         if (dataPrevista == null || dataPrevista.isBefore(LocalDate.now())) {
             throw new IllegalArgumentException("Data prevista non valida: deve essere futura.");
         }
         
+        //controllo vincolo: massimo 3 prestiti attivi per utente
         long prestitiAttiviUtente = listaPrestitiAttivi().stream()
                 .filter(p -> p.getUtente().getId().equals(utente.getId()))
                 .count();
@@ -64,6 +66,8 @@ public class PrestitoService extends BaseService<Prestito> {
             throw new IllegalStateException("L'utente ha già il massimo di 3 prestiti attivi consentiti.");
         }
 
+        
+        //controllo disponibilità: almeno una copia deve essere disponibile
         if (libro.getCopieDisponibili() <= 0) {
             throw new IllegalStateException("Nessuna copia disponibile");
         }
@@ -88,11 +92,18 @@ public class PrestitoService extends BaseService<Prestito> {
         if (prestito == null) {
             throw new IllegalArgumentException("Prestito nullo");
         }
+        
+        //controlla se il prestito è stato chiuso
         if (prestito.getDataEffettiva() != null) {
             throw new IllegalStateException("Prestito già chiuso");
         }
+        
+        //aggiorna prestito
         prestito.registraRestituzione(dataEffettiva);
         this.modifica(prestito);
+        
+        
+        //aggiorna copie del libro
         Libro libro = prestito.getLibro();
         if (libro != null) 
         {
@@ -108,6 +119,8 @@ public class PrestitoService extends BaseService<Prestito> {
      * @post Lo stato dei dati non viene modificato.
      */
     public List<Prestito> listaPrestitiAttivi() { 
+        
+        //filtra i prestiti il cui campo dataEffettiva sia nullo
         return getAll().stream().filter(p -> p.getDataEffettiva() == null).collect(Collectors.toList());
     }
       
@@ -125,6 +138,8 @@ public class PrestitoService extends BaseService<Prestito> {
         String filtroLowerCase = filtro.toLowerCase();
         
         return getAll().stream()
+                
+                //filtra il nome dell'utente o il titolo del libro
                 .filter(p -> p.getNomeUtente().toLowerCase().contains(filtroLowerCase) || p.getTitoloLibro().toLowerCase().contains(filtroLowerCase))
                 .collect(Collectors.toList());
     }

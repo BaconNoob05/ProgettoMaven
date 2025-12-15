@@ -74,13 +74,19 @@ public class Repository<T extends InterfaceID> implements InterfaceRepository<T>
         if (elemento == null || elemento.getId() == null) {
             throw new IllegalArgumentException("L'elemento da inserire non può essere nullo.");
         }
+        
+        //cerca l'elemento tramite id
         T elementoEsistente = cerca(elemento.getId());
         if (elementoEsistente != null) {
+            
+            //l'elemento esiste: aggiornamento
             int index = lista.indexOf(elementoEsistente);
             if (index != -1) {
                 lista.set(index, elemento);
             }
         } else {
+            
+            //l'elemento non esiste: inserimento
             lista.add(elemento);
         }
         salvaSuFile();
