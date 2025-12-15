@@ -77,6 +77,71 @@ public class PrestitoServiceTest {
     }
 
     /**
+     * @brief Testa il costruttore di PrestitoService e l'inizializzazione delle dipendenze.
+     */
+    @Test
+    void testCostruttore() {
+
+        assertNotNull(service);
+        assertNotNull(libroService); 
+        assertNotNull(repo);
+    }
+    
+    /**
+     * @brief Testa la ricerca generica per nome utente (case-insensitive).
+     */
+    @Test
+    void testCercaGenerico_MatchNomeUtente() {
+
+        Prestito pAttivo = new Prestito(u1, l1, LocalDate.now().plusDays(30), LocalDate.now().minusDays(5));
+        Prestito pChiuso = new Prestito(u2, l2, LocalDate.now().plusDays(10), LocalDate.now().minusDays(10));
+        repo.inserisciOAggiorna(pAttivo);
+        repo.inserisciOAggiorna(pChiuso);
+
+        final String FILTRO = "trovato"; 
+        List<Prestito> risultati = service.cercaGenerico(FILTRO);
+
+        assertEquals(1, risultati.size());
+        assertTrue(risultati.contains(pAttivo)); 
+        assertFalse(risultati.contains(pChiuso));
+    }
+    
+    /**
+     * @brief Testa la ricerca generica per titolo libro (case-insensitive).
+     */
+    @Test
+    void testCercaGenerico_MatchTitoloLibro() {
+        Prestito pAttivo = new Prestito(u1, l1, LocalDate.now().plusDays(30), LocalDate.now().minusDays(5));
+        Prestito pChiuso = new Prestito(u2, l2, LocalDate.now().plusDays(10), LocalDate.now().minusDays(10));
+        repo.inserisciOAggiorna(pAttivo);
+        repo.inserisciOAggiorna(pChiuso);
+
+        final String FILTRO = "java"; 
+        List<Prestito> risultati = service.cercaGenerico(FILTRO);
+
+        assertEquals(1, risultati.size());
+        assertTrue(risultati.contains(pAttivo)); 
+        assertFalse(risultati.contains(pChiuso));
+    }
+    
+    /**
+     * @brief Testa la ricerca generica con filtro nullo, vuoto o spazi (deve restituire tutti gli elementi).
+     */
+    @Test
+    void testCercaGenerico_FiltroNullo_RestituisceTutti() {
+        Prestito p1 = new Prestito(u1, l1, LocalDate.now().plusDays(30));
+        Prestito p2 = new Prestito(u2, l2, LocalDate.now().plusDays(10));
+        repo.inserisciOAggiorna(p1);
+        repo.inserisciOAggiorna(p2);
+        
+        assertEquals(2, service.cercaGenerico(null).size());
+        assertEquals(2, service.cercaGenerico("").size());
+        assertEquals(2, service.cercaGenerico(" ").size());
+    }
+    
+    
+    
+    /**
      * @brief Testa la registrazione di un prestito con dati validi.
      */
     @Test

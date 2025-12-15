@@ -91,6 +91,60 @@ public class LibroServiceTest {
         service.setPrestitoService(prestitoServiceStub);
     }
     
+
+    /**
+     * @brief Testa il costruttore del LibroService e l'inizializzazione del repository.
+     */
+    @Test
+    void testCostruttore() {
+
+        assertNotNull(service);
+        assertEquals(5, service.getAll().size());
+        
+        assertNotNull(prestitoServiceStub);
+    }
+
+    /**
+     * @brief Testa la ricerca generica per titolo e autore (case-insensitive). (MANCANTE DALLA MATRICE)
+     */
+    @Test
+    void testCercaGenerico_MatchTitoloAutore() {
+        final String FILTRO_TITOLO = "softwar"; // Match "Software Engineering" (titolo)
+        List<Libro> risultatiTitolo = service.cercaGenerico(FILTRO_TITOLO);
+
+        assertEquals(1, risultatiTitolo.size());
+        assertTrue(risultatiTitolo.contains(libroSoftwareEng)); 
+        
+        final String FILTRO_AUTORE = "dickens"; // Match "Charles Dickens" (autore)
+        List<Libro> risultatiAutore = service.cercaGenerico(FILTRO_AUTORE);
+        
+        assertEquals(1, risultatiAutore.size());
+        assertTrue(risultatiAutore.contains(libroChristmasCarol));
+    }
+    
+    /**
+     * @brief Testa la ricerca generica per ISBN. (MANCANTE DALLA MATRICE)
+     */
+    @Test
+    void testCercaGenerico_MatchISBN() {
+        final String FILTRO_ISBN = "978-0133943030"; // ISBN di libroSoftwareEng
+        List<Libro> risultati = service.cercaGenerico(FILTRO_ISBN);
+
+        assertEquals(1, risultati.size());
+        assertTrue(risultati.contains(libroSoftwareEng)); 
+    }
+    
+    /**
+     * @brief Testa la ricerca generica con filtro vuoto o nullo.
+     */
+    @Test
+    void testCercaGenerico_FiltroVuotoONullo_RestituisceTutti() {
+
+        assertEquals(5, service.cercaGenerico(null).size());
+        assertEquals(5, service.cercaGenerico("").size());
+        assertEquals(5, service.cercaGenerico(" ").size());
+    }
+    
     /**
      * @brief Testa la ricerca per titolo in base a un filtro con un risultato.
      */

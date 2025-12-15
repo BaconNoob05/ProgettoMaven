@@ -62,6 +62,35 @@ public class RepositoryTest {
     }
     
     /**
+     * @brief Testa il costruttore verificando il caricamento dei dati all'inizializzazione del repository.
+     */
+    @Test
+    void testCostruttore_CaricamentoDatiIniziali() {
+        GestoreFileStub<DatiStub> gestorePreriempito = new GestoreFileStub<>();
+        List<DatiStub> datiVecchi = Arrays.asList(new DatiStub("ID_VECCHIO_1"), new DatiStub("ID_VECCHIO_2"));
+
+        gestorePreriempito.salvaDati(nomeFile, datiVecchi); 
+
+        Repository<DatiStub> repoConDati = new Repository<>(nomeFile, gestorePreriempito);
+        
+
+        List<DatiStub> dati = repoConDati.getAll();
+        
+        assertEquals(2, dati.size());
+        assertEquals("ID_VECCHIO_1", dati.get(0).getId());
+    }
+    
+    /**
+     * @brief Testa il costruttore per assicurare che il repository venga inizializzato
+     * correttamente (lista vuota) quando non ci sono dati preesistenti.
+     */
+    @Test
+    void testCostruttore_InizializzazioneVuota() {
+
+        assertTrue(repository.getAll().isEmpty());
+    }
+    
+    /**
      * @brief Testa l'inserimento di un nuovo elemento nel repository.
      */
     @Test

@@ -72,6 +72,51 @@ public class UtenteServiceTest {
         utenteService = new UtenteService(utenteRepoStub, prestitoServiceStub); 
     }
 
+    /**
+     * @brief Testa il costruttore di UtenteService e l'inizializzazione delle dipendenze.
+     */
+    @Test
+    void testCostruttore() {
+        assertNotNull(utenteService);
+        assertNotNull(utenteRepoStub);
+        assertNotNull(prestitoServiceStub);
+        assertEquals(4, utenteService.getAll().size());
+    }
+
+    /**
+     * @brief Testa la ricerca generica per cognome (case-insensitive).
+     */
+    @Test
+    void testCercaGenerico_MatchCognome() {
+        final String FILTRO = "manzo"; 
+        List<Utente> risultati = utenteService.cercaGenerico(FILTRO);
+
+        assertEquals(1, risultati.size());
+        assertTrue(risultati.contains(utenteDanieleManzo)); 
+    }
+    
+    /**
+     * @brief Testa la ricerca generica per matricola.
+     */
+    @Test
+    void testCercaGenerico_MatchMatricola() {
+        final String FILTRO = "0612709975"; 
+        List<Utente> risultati = utenteService.cercaGenerico(FILTRO);
+
+        assertEquals(1, risultati.size());
+        assertTrue(risultati.contains(utenteAlessandroPicariello)); 
+    }
+    
+    /**
+     * @brief Testa la ricerca generica con filtro nullo/vuoto/spazi (deve restituire tutti).
+     */
+    @Test
+    void testCercaGenerico_FiltroVuotoONullo_RestituisceTutti() {
+
+        assertEquals(4, utenteService.cercaGenerico(null).size());
+        assertEquals(4, utenteService.cercaGenerico("").size());
+        assertEquals(4, utenteService.cercaGenerico(" ").size());
+    }
 
     /**
      * @brief Testa la ricerca per cognome in base a un filtro con zero risultati.
