@@ -57,7 +57,7 @@ public class PrestitoTest {
      /**
      * @brief Verifica che il costruttore inizializzi correttamente tutti i campi.
      */
-    @Test
+    @Test /*caso di test 20 */
     void testCostruttore() {
         assertNotNull(prestito.getUtente());
         assertNotNull(prestito.getLibro());
@@ -70,7 +70,7 @@ public class PrestitoTest {
     /**
      * @brief Testa che il costruttore lanci un'IllegalArgumentException se l'Utente risulta avere un valore nullo.
      */
-    @Test
+    @Test /*caso di test 21 */
     void testCostruttore_UtenteNullo() {
         assertThrows(IllegalArgumentException.class, () -> {
             new Prestito(null, libro, DATA_SCADUTA, DATA_PRESTITO_STORICA);
@@ -80,7 +80,7 @@ public class PrestitoTest {
     /**
      * @brief Testa che il costruttore lanci un'IllegalArgumentException se il Libro risulta avere un valore nullo.
      */
-    @Test
+    @Test /*caso di test 22 */
     void testCostruttore_LibroNullo() {
         assertThrows(IllegalArgumentException.class, () -> {
             new Prestito(utente, null, DATA_SCADUTA, DATA_PRESTITO_STORICA);
@@ -90,7 +90,7 @@ public class PrestitoTest {
     /**
      * @brief Testa che il costruttore lanci un'IllegalArgumentException se la data di prestito è nulla. (AGGIUNTO)
      */
-    @Test
+    @Test /*caso di test 23 */
     void testCostruttore_DataPrestitoNulla() {
         assertThrows(IllegalArgumentException.class, () -> {
             new Prestito(utente, libro, DATA_SCADUTA, null);
@@ -100,7 +100,7 @@ public class PrestitoTest {
     /**
      * @brief Testa l'aggiornamento della data di restituzione.
      */
-    @Test
+    @Test /*caso di test 24 */
     void testRegistraRestituzione() {
         LocalDate restituzione = LocalDate.of(2050, 1, 15); 
         prestito.registraRestituzione(restituzione);
@@ -111,7 +111,7 @@ public class PrestitoTest {
     /**
      * @brief Testa che registraRestituzione.
      */
-    @Test
+    @Test /*caso di test 25 */
     void testRegistraRestituzione_DataNulla() {
         assertThrows(IllegalArgumentException.class, () -> {
             prestito.registraRestituzione(null);
@@ -122,7 +122,7 @@ public class PrestitoTest {
     /**
      * @brief Testa isScaduto .
      */
-    @Test
+    @Test /*caso di test 26 */
     void testIsScaduto() {
         //Forziamo il contesto temporale nel passato per verificare la scadenza
         LocalDate dataPrevistaPassata = LocalDate.now().minusDays(10);
@@ -133,7 +133,7 @@ public class PrestitoTest {
     /**
      * @brief Testa isScaduto. (Testa la scadenza al giorno stesso)
      */
-    @Test
+    @Test /*caso di test 27 */
     void testIsScaduto_GiornoDiScadenza() {
         //Simula la data prevista come oggi.
         LocalDate oggi = LocalDate.now();
@@ -144,7 +144,7 @@ public class PrestitoTest {
     /**
      * @brief Testa isScaduto. (Testa la scadenza nel futuro)
      */
-    @Test
+    @Test /*caso di test 28 */
     void testIsScaduto_NonScaduto() {
         //Simula la data prevista come futura.
         LocalDate futura = LocalDate.now().plusDays(3);
@@ -155,7 +155,7 @@ public class PrestitoTest {
     /**
      * @brief Testa che un prestito chiuso non sia scaduto.
      */
-    @Test
+    @Test /*caso di test 29 */
     void testIsScaduto_DopoRestituzione() {
         //Usiamo date passate per assicurarci che sia logicamente scaduto prima della restituzione
         LocalDate dataPrestito = LocalDate.now().minusMonths(2);
@@ -171,7 +171,7 @@ public class PrestitoTest {
     /**
      * @brief Testa che l'ID sia corretto.
      */
-    @Test
+    @Test /*caso di test 30 */
     void testGetId() {
         String id = prestito.getId();
         assertNotNull(id);
@@ -183,7 +183,7 @@ public class PrestitoTest {
     /**
      * @brief Testa dei getter di Utente e Libro .
      */
-    @Test
+    @Test /*caso di test 31 */
     void testGetter() {
         assertEquals("Trovato Lorenzo", prestito.getNomeUtente());
         assertEquals("Ingegneria del Software", prestito.getTitoloLibro());
@@ -192,7 +192,7 @@ public class PrestitoTest {
     /**
      * @brief Testa che la stringa contenga il nome dell'utente.
      */
-    @Test
+    @Test /*caso di test 32 */
     void testToString_NotNull() {
         assertNotNull(prestito.toString());
 
@@ -203,7 +203,7 @@ public class PrestitoTest {
     /**
      * @brief Testa che la stringa ha la data di restituzione effettiva .
      */
-    @Test
+    @Test /*caso di test 33 */
     void testToString_DopoRestituzione() {
         LocalDate restituzione = LocalDate.of(2050, 1, 15); 
         prestito.registraRestituzione(restituzione);
@@ -219,7 +219,7 @@ public class PrestitoTest {
     /**
      * @brief Testa la registrazione della restituzione anticipata .
      */
-    @Test
+    @Test /*caso di test 34 */
     void testRestituzionePrestito_InAnticipo() {
 
         LocalDate dataDiPrestito = LocalDate.now().minusDays(10);
@@ -240,7 +240,7 @@ public class PrestitoTest {
     /**
      * @brief Testa che l'ID generato sia unico per i diversi prestiti .
      */
-    @Test
+    @Test /*caso di test 35 */
     void testGetId_Unico() {
         String id1 = prestito.getId(); 
 
@@ -252,7 +252,7 @@ public class PrestitoTest {
         assertNotEquals(id1, id2);
     }
 
-    @Test
+    @Test /*caso di test 36 */
     void testCostruttore_DefaultDataPrestito() {
         LocalDate dataPrevista = LocalDate.now().plusDays(10);
 
@@ -265,7 +265,7 @@ public class PrestitoTest {
     /**
      * @brief Testa il getter getNomeUtente().
      */
-    @Test
+    @Test /*caso di test 37 */
     void testGetNomeUtente() {
         assertEquals("Trovato Lorenzo", prestito.getNomeUtente());
     }
@@ -273,7 +273,7 @@ public class PrestitoTest {
     /**
      * @brief Testa il getter getTitoloLibro().
      */
-    @Test
+    @Test /*caso di test 38 */
     void testGetTitoloLibro() {
         assertEquals("Ingegneria del Software", prestito.getTitoloLibro());
     }
@@ -281,7 +281,7 @@ public class PrestitoTest {
     /**
      * @brief Testa il getter getDataPrestito().
      */
-    @Test
+    @Test /*caso di test 39 */
     void testGetDataPrestito() {
         assertEquals(DATA_PRESTITO_STORICA, prestito.getDataPrestito());
     }
@@ -289,7 +289,7 @@ public class PrestitoTest {
     /**
      * @brief Testa il getter getDataPrevista().
      */
-    @Test
+    @Test /*caso di test 40 */
     void testGetDataPrevista() {
         assertEquals(DATA_SCADUTA, prestito.getDataPrevista());
     }
@@ -297,7 +297,7 @@ public class PrestitoTest {
     /**
      * @brief Testa il getter getDataEffettiva() quando il prestito è attivo.
      */
-    @Test
+    @Test /*caso di test 41 */
     void testGetDataEffettiva_Attivo() {
         assertNull(prestito.getDataEffettiva());
     }
@@ -305,7 +305,7 @@ public class PrestitoTest {
     /**
      * @brief Testa il getter getUtente().
      */
-    @Test
+    @Test /*caso di test 42 */
     void testGetUtente() {
         assertEquals(utente, prestito.getUtente());
     }
@@ -313,7 +313,7 @@ public class PrestitoTest {
     /**
      * @brief Testa il getter getLibro().
      */
-    @Test
+    @Test /*caso di test 43 */
     void testGetLibro() {
         assertEquals(libro, prestito.getLibro());
     }
