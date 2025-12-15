@@ -17,7 +17,7 @@ public class Repository<T extends InterfaceID> implements InterfaceRepository<T>
     private List<T> lista;
 
     /**
-     * @brief Rappresenta il percorso o il nome del file su cui i dati vengono salvati o caricati.
+     * @brief Rappresenta il nome del file su cui i dati vengono salvati o caricati.
      */
     private String nomeFile;
 
@@ -71,14 +71,10 @@ public class Repository<T extends InterfaceID> implements InterfaceRepository<T>
      */
     @Override
     public void inserisciOAggiorna(T elemento) {
-        
         if (elemento == null || elemento.getId() == null) {
             throw new IllegalArgumentException("L'elemento da inserire non può essere nullo.");
         }
-
-
         T elementoEsistente = cerca(elemento.getId());
-
         if (elementoEsistente != null) {
             int index = lista.indexOf(elementoEsistente);
             if (index != -1) {

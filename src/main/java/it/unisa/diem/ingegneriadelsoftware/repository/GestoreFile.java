@@ -15,9 +15,9 @@ public class GestoreFile<T> implements InterfaceGestoreIO<T> {
 
     /**
      * @brief Salva una lista di oggetti su file.
-     * @param [in] nomeFile Il percorso/nome del file di destinazione.
+     * @param [in] nomeFile Il nome del file di destinazione.
      * @param [in] dati La lista di oggetti da salvare.
-     * @pre La lista passata può essere vuota ma non null, evitando in tal modo il NullPointerException.
+     * @pre La lista passata può essere vuota ma non null, evitando così il NullPointerException.
      * @post Il file viene creato o sovrascritto con i dati della lista.
      */
     @Override
@@ -34,7 +34,7 @@ public class GestoreFile<T> implements InterfaceGestoreIO<T> {
 
     /**
      * @brief Carica una lista di oggetti da file.
-     * @param [in] nomeFile Il percorso/nome del file da leggere.
+     * @param [in] nomeFile Il nome del file da leggere.
      * @return La lista di oggetti caricata, altrimenti restituisce una lista vuota.
      */
     @Override
@@ -61,7 +61,7 @@ public class GestoreFile<T> implements InterfaceGestoreIO<T> {
             System.err.println("Il file '" + nomeFile + "' contiene oggetti di un tipo sconosciuto o non compatibile.");
             System.err.println("Assicurati che le classi originali siano presenti. Dettagli: " + ex.getMessage());
         }
-
+        
         return risultato;
     }
 }
