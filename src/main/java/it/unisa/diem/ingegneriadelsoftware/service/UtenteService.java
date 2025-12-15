@@ -1,6 +1,3 @@
-
-
-
 package it.unisa.diem.ingegneriadelsoftware.service;
 
 import java.util.List;
@@ -29,8 +26,6 @@ public class UtenteService extends BaseService<Utente> {
      * @brief Cerca gli utenti che corrispondono a un determinato cognome.
      * @param [in] cognome Il cognome da cercare.
      * @return Una lista di oggetti Utente che rispettano il criterio di ricerca, altrimenti restituisce una lista vuota.
-     * @throws IllegalArgumentException Se il cognome è null.
-     * @pre La stringa 'cognome' non deve essere null.
      * @post Nessuna modifica viene apportata ai dati.
      * @see BaseService#cercaGenerico(String)
      */
@@ -49,10 +44,10 @@ public class UtenteService extends BaseService<Utente> {
 
 
     /**
-     * @brief Necessario per il funzionamento della barra di ricerca del Controller.
-     * Collega la ricerca generica alla ricerca specifica per cognome.
+     * @brief Esegue una ricerca generica, filtrata per cognome o matricola.
      * @param [in] filtro La stringa di ricerca.
-     * @return La lista degli utenti che hanno un cognome corrispondente al filtro.
+     * @return La lista degli utenti che contengono la stringa inserita nel cognome o all'interno della matricola. In alternativa, restituisce una lista vuota.
+     * @note La ricerca è case-insensitive.
      */
     @Override
     public List<Utente> cercaGenerico(String filtro) {
