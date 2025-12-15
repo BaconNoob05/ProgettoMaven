@@ -32,7 +32,7 @@ public class UtenteTest {
      */
     private final String EMAIL="l.trovato@studenti.unisa.it";
     
-   
+    
     /**
      * @brief Metodo eseguito prima di ogni test.
      */
@@ -44,7 +44,7 @@ public class UtenteTest {
     /**
      * @brief Testa sia il costruttore sia i getter per vedere se funzionino correttamente,
      */
-    @Test
+    @Test /*caso di test 44 */
     void testCostruttoreEGetter(){
         
        assertEquals(NOME, utente.getNome());
@@ -59,7 +59,7 @@ public class UtenteTest {
     /**
      * @brief Testa il getter per l'id.
      */
-    @Test
+    @Test /*caso di test 45 */
     void testGetID(){
         assertEquals(MATRICOLA, utente.getId());
     }
@@ -67,7 +67,7 @@ public class UtenteTest {
     /**
      * @brief Testa il setter per il nome.
      */
-    @Test
+    @Test /*caso di test 46 */
     void testSetNome(){
         String nuovoNome="Alessandro";
         utente.setNome(nuovoNome);
@@ -77,7 +77,7 @@ public class UtenteTest {
     /**
      * @brief Testa il setter per il cognome.
      */
-    @Test
+    @Test /*caso di test 47 */
     void testSetCognome(){
         String nuovoCognome="Picariello";
         utente.setCognome(nuovoCognome);
@@ -87,7 +87,7 @@ public class UtenteTest {
     /**
      * @brief Testa il setter per l'email.
      */
-    @Test
+    @Test /*caso di test 48 */
     void testSetEmail(){
         String nuovaEmail = "a.picariello42@studenti.unisa.it";
         utente.setEmail(nuovaEmail);
@@ -97,7 +97,7 @@ public class UtenteTest {
     /**
      * @brief Testa il setter per la matricola.
      */
-    @Test
+    @Test /*caso di test 49 */
     void testSetMatricola(){
         String nuovaMatricola = "0000000001";
         utente.setMatricola(nuovaMatricola);
@@ -108,7 +108,7 @@ public class UtenteTest {
     /**
      * @brief Testa che il costruttore lanci un'IllegalArgumentException se l'email non è conforme.
      */
-    @Test
+    @Test /*caso di test 50 */
     void testCostruttore_EmailNonConformeLanciaEccezione(){
         assertThrows(IllegalArgumentException.class, () -> {
             new Utente(NOME, COGNOME, MATRICOLA, "email@sbagliata.it");
@@ -118,7 +118,7 @@ public class UtenteTest {
     /**
      * @brief Testa che il setter email lanci un'IllegalArgumentException se l'email non è conforme.
      */
-    @Test
+    @Test /*caso di test 51 */
     void testSetEmail_NonConformeLanciaEccezione(){
         assertThrows(IllegalArgumentException.class, () -> {
             utente.setEmail("email@sbagliata.it");
@@ -128,7 +128,7 @@ public class UtenteTest {
     /**
      * @brief Testa isValido .
      */
-    @Test
+    @Test /*caso di test 52 */
     void testIsValido(){
         assertTrue(utente.isValido());
     }
@@ -136,7 +136,7 @@ public class UtenteTest {
     /**
      * @brief Testa che il costruttore lanci un' IllegalArgumentException  se il nome è nulla.
      */
-    @Test
+    @Test /*caso di test 53 */
     void testCostruttore_UtenteSenzaNomeLanciaEccezione(){
         assertThrows(IllegalArgumentException.class, () -> {
             new Utente(null,COGNOME,MATRICOLA,EMAIL);
@@ -146,7 +146,7 @@ public class UtenteTest {
     /**
      * @brief Testa che il costruttore lanci un' IllegalArgumentException se la matricola è nulla.
      */
-    @Test
+    @Test /*caso di test 54 */
     void testCostruttore_UtenteSenzaMatricolaLanciaEccezione(){
         assertThrows(IllegalArgumentException.class, () -> {
             new Utente(NOME,COGNOME,null,EMAIL);
@@ -157,11 +157,11 @@ public class UtenteTest {
     /**
      * @brief Testa toString.
      */
-    @Test
+    @Test /*caso di test 55 */
     void testToString(){
         String stringaUtente = utente.toString();
         assertNotNull(stringaUtente);
-       
+        
         assertTrue(stringaUtente.contains(NOME));
         assertTrue(stringaUtente.contains(COGNOME));
         assertTrue(stringaUtente.contains(MATRICOLA));
@@ -171,7 +171,7 @@ public class UtenteTest {
     /**
      * @brief Testa che setMatricola lanci un'IllegalArgumentException se la matricola è nulla o vuota.
      */
-    @Test
+    @Test /*caso di test 56 */
     void testSetMatricola_MatricolaNullaOVuota(){
         assertThrows(IllegalArgumentException.class, () -> {
             utente.setMatricola(null);
@@ -187,7 +187,7 @@ public class UtenteTest {
     /**
      * @brief Testa il getter per il nome.
      */
-    @Test
+    @Test /*caso di test 57 */
     void testGetNome() {
         assertEquals(NOME, utente.getNome());
     }
@@ -195,7 +195,7 @@ public class UtenteTest {
     /**
      * @brief Testa il getter per il cognome.
      */
-    @Test
+    @Test /*caso di test 58 */
     void testGetCognome() {
         assertEquals(COGNOME, utente.getCognome());
     }
@@ -203,7 +203,7 @@ public class UtenteTest {
     /**
      * @brief Testa il getter per la matricola (oltre a testGetID).
      */
-    @Test
+    @Test /*caso di test 59 */
     void testGetMatricola() {
         assertEquals(MATRICOLA, utente.getMatricola());
     }
@@ -211,7 +211,7 @@ public class UtenteTest {
     /**
      * @brief Testa il getter per l'email.
      */
-    @Test
+    @Test /*caso di test 60 */
     void testGetEmail() {
         assertEquals(EMAIL, utente.getEmail());
     }
