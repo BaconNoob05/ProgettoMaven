@@ -57,7 +57,7 @@ public class Libro extends Dati {
      */
 
     public boolean isValido() {
-        int annoCorrente = Year.now().getValue(); // Ottiene l'anno corrente (e.g., 2025)
+        int annoCorrente = Year.now().getValue(); 
         
         return titolo != null && !titolo.trim().isEmpty() &&
                isbn != null && !isbn.trim().isEmpty() &&
@@ -69,8 +69,8 @@ public class Libro extends Dati {
     /**
      * @brief Decrementa il numero di copie disponibili quando un libro viene prestato.
      * @post Il numero di copie disponibili diminuisce di uno.
-     * @throws IllegalStateException Se il numero di copie non è un valore positivo.
-     * @details Questo metodo deve essere invocato quando bisogna effettuare un prestito.
+     * @throws IllegalStateException Se il numero di copie non è un valore positivo, viene lanciata un'eccezione.
+     * @details Viene invocato quando occorre effettuare un prestito.
      */
 
     public void decrementaCopie() {
@@ -84,7 +84,7 @@ public class Libro extends Dati {
     /**
      * @brief Incrementa il numero di copie disponibili quando un libro viene restituito.
      * @post Il numero di copie disponibili aumenta di uno.
-     * @details Questo metodo deve essere invocato quando bisogna effettuaze una restituzione.
+     * @details Questo metodo deve essere invocato quando bisogna effettuare una restituzione.
      */
     public void incrementaCopie() {
         copie++;
@@ -92,7 +92,7 @@ public class Libro extends Dati {
 
     /**
      * @brief Ottiene l'ISBN del libro.
-     * @return Il codice ISBN del libro altrimenti restituisce un valore nullo.
+     * @return Il codice ISBN del libro altrimenti restituisce il valore null.
      * @see Dati#getId()
      */
     @Override 
@@ -101,8 +101,8 @@ public class Libro extends Dati {
     }
 
     /** 
-    * @brief Restituisce il titolo del libro.
-     * @return Il titolo del libro altrimenti restituisce un valore nullo. 
+     * @brief Restituisce il titolo del libro.
+     * @return Il titolo del libro altrimenti restituisce il valore null. 
      */
     public String getTitolo() {
         return titolo;
@@ -110,15 +110,16 @@ public class Libro extends Dati {
     
     /**
      * @brief Restituisce l'elenco degli autori associati al libro.
-     * @return Una lista di stringhe dove ci sono i nomi degli autori, altrimenti restituisce una lista vuota.
+     * @return Una lista di stringhe in cui sono presenti i nomi degli autori, altrimenti restituisce una lista vuota.
      * @pre L'oggetto Libro deve essere inizializzato con il costruttore.
      */
     public List<String> getAutori() { 
         return autori;
     }
 
-    /** * @brief Restituisce il codice ISBN.
-     * @return Il codice ISBN altrimenti restituisce un valore nullo. 
+    /** 
+     * @brief Restituisce il codice ISBN.
+     * @return Il codice ISBN altrimenti restituisce il valore null. 
      */
     public String getIsbn() {
         return isbn;
@@ -126,7 +127,7 @@ public class Libro extends Dati {
 
     /** 
      * @brief Restituisce l'anno di pubblicazione.
-     * @return L'anno di pubblicazione altrimenti restituisce zero. 
+     * @return L'anno di pubblicazione, altrimenti restituisce zero. 
      */
     public int getAnno() {
         return anno;
@@ -134,7 +135,7 @@ public class Libro extends Dati {
 
     /** 
      * @brief Restituisce il numero di copie.
-     * @return Il numero di copie attualmente disponibili altrimenti restituisce zero. 
+     * @return Il numero di copie attualmente disponibili, altrimenti restituisce zero. 
      */
     public int getCopieDisponibili() {
         return copie;
@@ -142,7 +143,7 @@ public class Libro extends Dati {
     
     /** 
      * @brief Restituisce un elenco di autori.
-     * @return Una stringa contenente l'elenco degli autori altrimenti restituisce un valore nullo. 
+     * @return Una stringa contenente l'elenco degli autori, altrimenti restituisce il valore null. 
      */
     public String getAutoriString() {
         return String.join(", ", autori);
@@ -151,6 +152,7 @@ public class Libro extends Dati {
     /** 
      * @brief Imposta il titolo del libro.
      * @param [in] nuovoTitolo il nuovo titolo del libro. 
+     * @post Il titolo del libro viene aggiornato.
      */
     public void setTitolo(String nuovoTitolo) {
         this.titolo = nuovoTitolo;
@@ -159,6 +161,7 @@ public class Libro extends Dati {
     /** 
      * @brief Imposta la lista degli autori.
      * @param [in] nuovoAutori la nuova lista di autori. 
+     * @post La lista degli autori viene aggiornata.
      */
     public void setAutori(List<String> nuovoAutori) {
         this.autori = nuovoAutori;
@@ -167,6 +170,7 @@ public class Libro extends Dati {
     /**
      * @brief Imposta l'anno di pubblicazione.
      * @param [in] nuovoAnno il nuovo anno di pubblicazione. 
+     * @post L'anno di pubblicazione viene aggiornato.
      */
     public void setAnno(int nuovoAnno) {
         this.anno = nuovoAnno;
@@ -176,7 +180,7 @@ public class Libro extends Dati {
      * @brief Imposta il numero di copie disponibili.
      * @param [in] nuovoCopie il nuovo numero di copie. 
      * @pre L'argomento nuovoCopie deve essere un numero intero maggiore o uguale a zero.
-     * @post il campo copie assume esattamente il valore di nuovoCopie.
+     * @post Il campo copie assume esattamente il valore di nuovoCopie.
      */
     public void setCopieDisponibili(int nuovoCopie) {
         this.copie = nuovoCopie;
@@ -186,7 +190,7 @@ public class Libro extends Dati {
      * @brief Restituisce una rappresentazione in formato stringa del libro.
      * @details Genera una stringa contenente i dettagli principali del libro:
      * titolo, autori, anno, ISBN e copie disponibili.
-     * @return Una stringa formattata con i dati del libro altrimenti restituisce un valore nullo.
+     * @return Una stringa formattata con i dati del libro, altrimenti restituisce il valore null.
      * @pre L'oggetto Libro deve essere istanziato correttamente.
      * @post Lo stato dell'oggetto non viene modificato.
      * @see Dati#toString()
