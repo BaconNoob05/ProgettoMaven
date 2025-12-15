@@ -14,13 +14,44 @@ import it.unisa.diem.ingegneriadelsoftware.model.Utente;
  */
 public class UtenteService extends BaseService<Utente> {
     
+    // Nuovo campo: Riferimento al service dei prestiti
+    private PrestitoService prestitoService;
+
     /**
      * @brief Costruttore.
      * @param [in] repository Il repository degli utenti.
+     * @param [in] prestitoService Il servizio per la gestione dei prestiti.
      */
-    public UtenteService(InterfaceRepository<Utente> repository) {
+    public UtenteService(InterfaceRepository<Utente> repository, PrestitoService prestitoService) {
         super(repository);
+        this.prestitoService = prestitoService;
     }
+    
+    /**
+     * @brief Elimina un elemento utilizzando il suo ID.
+     * @param [in] elemento L'oggetto da eliminare.
+     * @pre L'elemento non deve essere null.
+     * @post L'elemento viene rimosso dal repository.
+     * @throws IllegalStateException Se l'utente ha prestiti attivi in corso, non può essere eliminato.
+     * @see InterfaceRepository#elimina(String)
+     */
+    @Override
+    public void elimina(Utente elemento) {
+        if (elemento != null && elemento.getId() != null) {
+            
+            if (prestitoService != null) {
+                // Controllo se l'utente ha prestiti attivi
+                boolean haPrestitiAttivi = prestitoService.listaPrestitiAttivi().stream()
+                        .anyMatch(p -> p.getUtente().getId().equals(elemento.getId()));
+                
+                if (haPrestitiAttivi) {
+                    throw new IllegalStateException("Impossibile eliminare l'utente: sono presenti prestiti attivi associati.");
+                }
+            }
+            repository.elimina(elemento.getId());
+        }
+    }
+
 
     /**
      * @brief Cerca gli utenti che corrispondono a un determinato cognome.

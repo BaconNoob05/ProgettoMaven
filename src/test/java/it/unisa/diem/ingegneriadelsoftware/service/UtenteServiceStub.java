@@ -29,7 +29,9 @@ public class UtenteServiceStub extends UtenteService{
      * @brief Costruttore dello Stub.
      */
     public UtenteServiceStub() {
-        super(null); 
+        // CORREZIONE: Chiamata al costruttore di UtenteService che ora richiede
+        // InterfaceRepository<Utente> e PrestitoService.
+        super(null, null); 
     }
 
     /**
@@ -56,6 +58,8 @@ public class UtenteServiceStub extends UtenteService{
      */
     @Override
     public void elimina(Utente utente) {
+        // La logica di eliminazione qui è semplificata e non esegue il controllo sui prestiti attivi, 
+        // che è responsabilità di UtenteService, non dello stub.
         lista.removeIf(u -> u.getId().equals(utente.getId()));
     }
         

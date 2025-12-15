@@ -23,6 +23,11 @@ public class UtenteServiceTest {
      */
     private UtenteService utenteService;
 
+    /**
+     * @brief Stub del servizio prestiti per simulare prestiti attivi.
+     */
+    private PrestitoServiceStub prestitoServiceStub; 
+
 
     /**
      * @brief Utente per i test.
@@ -64,7 +69,9 @@ public class UtenteServiceTest {
         );
         utenteRepoStub.caricaTutti(initialData);
 
-        utenteService = new UtenteService(utenteRepoStub);
+        // Inizializza PrestitoServiceStub e passalo a UtenteService
+        prestitoServiceStub = new PrestitoServiceStub();
+        utenteService = new UtenteService(utenteRepoStub, prestitoServiceStub); 
     }
 
 
@@ -205,5 +212,41 @@ public class UtenteServiceTest {
         assertNotNull(risultati);
         assertEquals(1, risultati.size());
         assertTrue(risultati.contains(utenteAlessandroPicariello));
+    }
+
+    /**
+     * @brief Testa l'eliminazione di un utente con prestiti attivi.
+     */
+    @Test
+    void testElimina_PrestitiAttiviImpedisconoEliminazione() {
+        // Preparazione: Aggiungi un prestito attivo per utenteLorenzoTrovato
+        Libro l = new Libro("Clean Code", Arrays.asList("R. Martin"), 2008, "ISBN01", 10);
+        Prestito prestitoAttivo = new Prestito(utenteLorenzoTrovato, l, LocalDate.now().plusDays(10), LocalDate.now()); 
+        
+        prestitoServiceStub.list.add(prestitoAttivo); 
+
+        // Tentativo di eliminazione
+        assertThrows(IllegalStateException.class, () -> {
+            utenteService.elimina(utenteLorenzoTrovato);
+        });
+
+        // Verifica che l'utente non sia stato eliminato
+        assertNotNull(utenteRepoStub.cerca(utenteLorenzoTrovato.getId()));
+        assertEquals(4, utenteService.getAll().size());
+    }
+
+    /**
+     * @brief Testa l'eliminazione di un utente senza prestiti attivi.
+     */
+    @Test
+    void testElimina_NessunPrestitoAttivo_Successo() {
+        // Nessun prestito aggiunto allo stub
+        
+        // Tentativo di eliminazione
+        assertDoesNotThrow(() -> utenteService.elimina(utenteDanieleManzo));
+
+        // Verifica che l'utente sia stato eliminato
+        assertNull(utenteRepoStub.cerca(utenteDanieleManzo.getId()));
+        assertEquals(3, utenteService.getAll().size());
     }
 }

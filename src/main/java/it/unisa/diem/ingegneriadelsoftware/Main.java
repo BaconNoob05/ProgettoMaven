@@ -52,8 +52,10 @@ public class Main extends Application {
 
 
         libroService = new LibroService(libroRepo);
-        utenteService = new UtenteService(utenteRepo);
+        // PrestitoService dipende da LibroService
         prestitoService = new PrestitoService(prestitoRepo, libroService); 
+        // UtenteService ora dipende da PrestitoService
+        utenteService = new UtenteService(utenteRepo, prestitoService); 
 
 
         libroService.setPrestitoService(prestitoService);

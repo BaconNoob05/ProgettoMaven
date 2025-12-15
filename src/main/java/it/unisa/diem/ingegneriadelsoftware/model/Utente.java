@@ -8,7 +8,7 @@ package it.unisa.diem.ingegneriadelsoftware.model;
  */
 public class Utente extends Dati {
 
-    private static final String suffissoEmail = "@studenti.unisa.it"; 
+    private static final String EMAIL_SUFFIX = "@studenti.unisa.it"; 
 
     /**
      * @brief Nome dell'utente.
@@ -49,8 +49,8 @@ public class Utente extends Dati {
         this.cognome = cognome;
         this.matricola = matricola;
         
-        if (email == null || !email.endsWith(suffissoEmail)) {
-             throw new IllegalArgumentException("L'email deve terminare con " + suffissoEmail);
+        if (email == null || !email.endsWith(EMAIL_SUFFIX)) {
+             throw new IllegalArgumentException("L'email deve terminare con " + EMAIL_SUFFIX);
         }
         this.email = email;
     }
@@ -63,7 +63,7 @@ public class Utente extends Dati {
         return nome != null && !nome.trim().isEmpty() && 
                cognome != null && !cognome.trim().isEmpty() && 
                matricola != null && !matricola.trim().isEmpty() &&
-               email != null && email.endsWith(suffissoEmail);
+               email != null && email.endsWith(EMAIL_SUFFIX);
     }
 
     /**
@@ -85,8 +85,7 @@ public class Utente extends Dati {
         return nome;
     }
 
-    /** 
-     * @brief Restituisce il cognome dell'utente.
+    /** * @brief Restituisce il cognome dell'utente.
      * @return Il cognome dell'utente, altrimenti restituisce il valore null.
      */
     public String getCognome() {
@@ -137,8 +136,8 @@ public class Utente extends Dati {
      * @post L' email è uguale a nuovaEmail.
      */
     public void setEmail(String nuovaEmail) {
-        if (nuovaEmail == null || !nuovaEmail.endsWith(suffissoEmail)) {
-            throw new IllegalArgumentException("L'email deve terminare con " + suffissoEmail);
+        if (nuovaEmail == null || !nuovaEmail.endsWith(EMAIL_SUFFIX)) {
+            throw new IllegalArgumentException("L'email deve terminare con " + EMAIL_SUFFIX);
         }
         this.email = nuovaEmail;
     }
