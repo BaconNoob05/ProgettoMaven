@@ -79,7 +79,7 @@ public class PrestitoServiceTest {
     /**
      * @brief Testa il costruttore di PrestitoService e l'inizializzazione delle dipendenze.
      */
-    @Test
+    @Test /*caso di test 104 */
     void testCostruttore() {
 
         assertNotNull(service);
@@ -90,7 +90,7 @@ public class PrestitoServiceTest {
     /**
      * @brief Testa la ricerca generica per nome utente (case-insensitive).
      */
-    @Test
+    @Test /*caso di test 105 */
     void testCercaGenerico_MatchNomeUtente() {
 
         Prestito pAttivo = new Prestito(u1, l1, LocalDate.now().plusDays(30), LocalDate.now().minusDays(5));
@@ -109,7 +109,7 @@ public class PrestitoServiceTest {
     /**
      * @brief Testa la ricerca generica per titolo libro (case-insensitive).
      */
-    @Test
+    @Test /*caso di test 106 */
     void testCercaGenerico_MatchTitoloLibro() {
         Prestito pAttivo = new Prestito(u1, l1, LocalDate.now().plusDays(30), LocalDate.now().minusDays(5));
         Prestito pChiuso = new Prestito(u2, l2, LocalDate.now().plusDays(10), LocalDate.now().minusDays(10));
@@ -127,7 +127,7 @@ public class PrestitoServiceTest {
     /**
      * @brief Testa la ricerca generica con filtro nullo, vuoto o spazi (deve restituire tutti gli elementi).
      */
-    @Test
+    @Test /*caso di test 107 */
     void testCercaGenerico_FiltroNullo_RestituisceTutti() {
         Prestito p1 = new Prestito(u1, l1, LocalDate.now().plusDays(30));
         Prestito p2 = new Prestito(u2, l2, LocalDate.now().plusDays(10));
@@ -144,7 +144,7 @@ public class PrestitoServiceTest {
     /**
      * @brief Testa la registrazione di un prestito con dati validi.
      */
-    @Test
+    @Test /*caso di test 108 */
     void testRegistraPrestito() {
         LocalDate dataPrevista = LocalDate.now().plusDays(30);
 
@@ -163,7 +163,7 @@ public class PrestitoServiceTest {
     /**
      * @brief Testa la registrazione di un prestito per un libro con poche copie.
      */
-    @Test
+    @Test /*caso di test 109 */
     void testRegistraPrestito_LibroConPocheCopie() {
         service.registraPrestito(u2, l2, LocalDate.now().plusDays(30)); 
         
@@ -174,7 +174,7 @@ public class PrestitoServiceTest {
     /**
      * @brief Testa la registrazione di un prestito con Utente nullo.
      */
-    @Test
+    @Test /*caso di test 110 */
     void testRegistraPrestito_UtenteNullo() {
         assertThrows(IllegalArgumentException.class, () -> {
              service.registraPrestito(null, l1, LocalDate.now().plusDays(30));
@@ -186,7 +186,7 @@ public class PrestitoServiceTest {
     /**
      * @brief Testa la registrazione di un prestito con Libro nullo.
      */
-    @Test
+    @Test /*caso di test 111 */
     void testRegistraPrestito_LibroNullo() {
         assertThrows(IllegalArgumentException.class, () -> {
              service.registraPrestito(u1, null, LocalDate.now().plusDays(30));
@@ -197,7 +197,7 @@ public class PrestitoServiceTest {
     /**
      * @brief Testa la registrazione di un prestito con data passata.
      */
-    @Test
+    @Test /*caso di test 112 */
     void testRegistraPrestito_DataPrevistaPassata() {
         LocalDate dataPassata = LocalDate.now().minusDays(1);
         
@@ -211,7 +211,7 @@ public class PrestitoServiceTest {
     /**
      * @brief Testa la registrazione della restituzione di un prestito attivo.
      */
-    @Test
+    @Test /*caso di test 113 */
     void testRegistraRestituzione() {
         LocalDate dataStorica = LocalDate.now().minusDays(5);
         Prestito p = new Prestito(u1, l1, LocalDate.now().plusDays(30), dataStorica);
@@ -226,9 +226,9 @@ public class PrestitoServiceTest {
 
     /**
      * @brief Testa la registrazione della restituzione per un prestito già chiuso.
-  
+ 
      */
-    @Test
+    @Test /*caso di test 114 */
     void testRegistraRestituzione_PrestitoGiaChiuso() {
         LocalDate dataStorica = LocalDate.now().minusDays(30);
         Prestito p = new Prestito(u1, l1, LocalDate.now().plusDays(30), dataStorica);
@@ -246,7 +246,7 @@ public class PrestitoServiceTest {
     /**
      * @brief Testa la registrazione della restituzione con Prestito nullo.
      */
-    @Test
+    @Test /*caso di test 115 */
     void testRegistraRestituzione_PrestitoNullo() {
         assertThrows(IllegalArgumentException.class, () -> {
             service.registraRestituzione(null, LocalDate.now());
@@ -256,7 +256,7 @@ public class PrestitoServiceTest {
     /**
      * @brief Testa listaPrestitiAttivi.
      */
-    @Test
+    @Test /*caso di test 116 */
     void testListaPrestitiAttivi_UnoAttivo() {
         LocalDate dataStorica = LocalDate.now().minusDays(5);
         Prestito pAttivo = new Prestito(u1, l1, LocalDate.now().plusDays(30), dataStorica);
@@ -270,7 +270,7 @@ public class PrestitoServiceTest {
     /**
      * @brief Testa listaPrestitiAttivi con nessun prestito attivo.
      */
-    @Test
+    @Test /*caso di test 117 */
     void testListaPrestitiAttivi_NessunAttivo() {
         LocalDate dataStorica = LocalDate.now().minusDays(5);
         Prestito pChiuso = new Prestito(u1, l1, LocalDate.now().plusDays(30), dataStorica);
@@ -284,7 +284,7 @@ public class PrestitoServiceTest {
     /**
      * @brief listaPrestitiAttivi con prestiti misti.
      */
-    @Test
+    @Test /*caso di test 118 */
     void testListaPrestitiAttivi_Misti() {
         LocalDate dataStorica = LocalDate.now().minusDays(10);
         Prestito pAttivo1 = new Prestito(u1, l1, LocalDate.now().plusDays(30), dataStorica);
@@ -309,7 +309,7 @@ public class PrestitoServiceTest {
     /**
      * @brief Testa  listaPrestitiAttivi con repository vuoto.
      */
-    @Test
+    @Test /*caso di test 119 */
     void testListaPrestitiAttivi_RepositoryVuoto() {
         List<Prestito> attivi = service.listaPrestitiAttivi();
         assertTrue(attivi.isEmpty());
@@ -318,7 +318,7 @@ public class PrestitoServiceTest {
     /**
      * @brief Testa la registrazione di un prestito quando l'utente ha già il massimo di 3 prestiti attivi.
      */
-    @Test
+    @Test /*caso di test 120 */
     void testRegistraPrestito_LimiteSuperato() {
         LocalDate dataFutura = LocalDate.now().plusDays(10);
         LocalDate dataStorica = LocalDate.now().minusDays(5);
