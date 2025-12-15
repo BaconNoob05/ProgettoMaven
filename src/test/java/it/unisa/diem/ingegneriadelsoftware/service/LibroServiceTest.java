@@ -308,4 +308,38 @@ public class LibroServiceTest {
         assertNull(repo.cerca(libroCriticaRagionPura.getId()));
         assertEquals(4, repo.getAll().size());
     }
+    
+   
+
+    /**
+     * @brief Testa il metodo cerca(String id) con ID nullo o vuoto (logica BaseService).
+     */
+    @Test
+    void testCerca_IdNulloOVuoto() {
+        assertNull(service.cerca(null));
+        assertNull(service.cerca(""));
+        assertNull(service.cerca(" "));
+    }
+
+    /**
+     * @brief Testa che il metodo salva(T elemento) gestisca un elemento nullo (logica BaseService).
+     */
+    @Test
+    void testSalva_ElementoNullo() {
+        int dimensioneIniziale = repo.getAll().size();
+        
+        assertDoesNotThrow(() -> service.salva(null));
+        assertEquals(dimensioneIniziale, repo.getAll().size());
+    }
+    
+    /**
+     * @brief Testa che il metodo elimina(T elemento) gestisca un elemento nullo (logica BaseService).
+     */
+    @Test
+    void testElimina_ElementoNullo() {
+        int dimensioneIniziale = repo.getAll().size();
+        
+        assertDoesNotThrow(() -> service.elimina(null));
+        assertEquals(dimensioneIniziale, repo.getAll().size());
+    }
 }
